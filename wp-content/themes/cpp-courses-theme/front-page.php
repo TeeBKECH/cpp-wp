@@ -10,14 +10,5 @@ if (!defined('ABSPATH')) {
 }
 
 get_header();
-?>
-<main class="page page--index">
-    <section class="section section--content">
-        <div class="container">
-            <h1>Тема подключена</h1>
-            <p>Каркас WordPress темы создан. Следующим шагом переносим блоки из Vite/Pug шаблонов.</p>
-        </div>
-    </section>
-</main>
-<?php
+echo cpp_courses_render_static_page('index-static.html');
 get_footer();
