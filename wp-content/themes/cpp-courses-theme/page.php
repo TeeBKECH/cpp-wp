@@ -11,22 +11,11 @@ if (!defined('ABSPATH')) {
 
 get_header();
 
-$slug = get_post_field('post_name', get_post());
-$static_map = array(
-    'services' => 'services.html',
-    'service' => 'service.html',
-    'course' => 'course.html',
-    'articles' => 'articles.html',
-    'article' => 'article.html',
-    'contacts' => 'contacts.html',
-    'edu-info' => 'edu-info.html',
-    'test-intro' => 'test-intro.html',
-    'test-quiz' => 'test-quiz.html',
-    'links' => 'links.html',
-);
+$page_id = get_queried_object_id();
+$mapped_template = cpp_courses_get_static_template_for_post($page_id);
 
-if (isset($static_map[$slug])) {
-    echo cpp_courses_render_static_page($static_map[$slug]);
+if (!empty($mapped_template)) {
+    echo cpp_courses_render_static_page($mapped_template);
 } else {
     ?>
     <main class="page">

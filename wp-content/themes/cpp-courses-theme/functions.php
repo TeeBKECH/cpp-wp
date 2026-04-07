@@ -21,6 +21,26 @@ function cpp_courses_theme_setup() {
 }
 add_action('after_setup_theme', 'cpp_courses_theme_setup');
 
+/**
+ * Get static HTML file mapping by page slug.
+ *
+ * @return array<string, string>
+ */
+function cpp_courses_static_page_map() {
+    return array(
+        'services' => 'services.html',
+        'service' => 'service.html',
+        'course' => 'course.html',
+        'articles' => 'articles.html',
+        'article' => 'article.html',
+        'contacts' => 'contacts.html',
+        'edu-info' => 'edu-info.html',
+        'test-intro' => 'test-intro.html',
+        'test-quiz' => 'test-quiz.html',
+        'links' => 'links.html',
+    );
+}
+
 function cpp_courses_enqueue_assets() {
     $theme_uri = get_template_directory_uri();
     $theme_dir = get_template_directory();
@@ -75,25 +95,51 @@ function cpp_courses_render_static_page($file_name) {
     $theme_uri = trailingslashit(get_template_directory_uri());
     $asset_uri = $theme_uri . 'assets/';
 
-    $replacements = array(
-        'src="assets/' => 'src="' . $asset_uri,
-        "src='assets/" => "src='" . $asset_uri,
-        'href="assets/' => 'href="' . $asset_uri,
-        "href='assets/" => "href='" . $asset_uri,
-        'href="index.html"' => 'href="' . esc_url(home_url('/')) . '"',
-        'href="services.html"' => 'href="' . esc_url(home_url('/services/')) . '"',
-        'href="service.html"' => 'href="' . esc_url(home_url('/service/')) . '"',
-        'href="course.html"' => 'href="' . esc_url(home_url('/course/')) . '"',
-        'href="articles.html"' => 'href="' . esc_url(home_url('/articles/')) . '"',
-        'href="article.html"' => 'href="' . esc_url(home_url('/article/')) . '"',
-        'href="contacts.html"' => 'href="' . esc_url(home_url('/contacts/')) . '"',
-        'href="edu-info.html"' => 'href="' . esc_url(home_url('/edu-info/')) . '"',
-        'href="test-intro.html"' => 'href="' . esc_url(home_url('/test-intro/')) . '"',
-        'href="test-quiz.html"' => 'href="' . esc_url(home_url('/test-quiz/')) . '"',
-        'href="links.html"' => 'href="' . esc_url(home_url('/links/')) . '"',
+    $content = strtr(
+        $content,
+        array(
+            'src="assets/' => 'src="' . $asset_uri,
+            "src='assets/" => "src='" . $asset_uri,
+            'href="assets/' => 'href="' . $asset_uri,
+            "href='assets/" => "href='" . $asset_uri,
+            'href="/assets/' => 'href="' . $asset_uri,
+            "href='/assets/" => "href='" . $asset_uri,
+            'src="/assets/' => 'src="' . $asset_uri,
+            "src='/assets/" => "src='" . $asset_uri,
+            'href="index.html"' => 'href="' . esc_url(home_url('/')) . '"',
+            "href='index.html'" => "href='" . esc_url(home_url('/')) . "'",
+            'href="index.html#' => 'href="' . esc_url(home_url('/')) . '#',
+            "href='index.html#" => "href='" . esc_url(home_url('/')) . '#',
+        )
     );
 
-    $content = strtr($content, $replacements);
+    $map = cpp_courses_static_page_map();
+    foreach ($map as $slug => $html_page) {
+        $target_url = esc_url(home_url('/' . $slug . '/'));
+        $content = str_replace(
+            array(
+                'href="' . $html_page . '"',
+                "href='" . $html_page . "'",
+            ),
+            array(
+                'href="' . $target_url . '"',
+                "href='" . $target_url . "'",
+            ),
+            $content
+        );
+        $content = str_replace(
+            array(
+                'href="' . $html_page . '#',
+                "href='" . $html_page . '#',
+            ),
+            array(
+                'href="' . $target_url . '#',
+                "href='" . $target_url . '#',
+            ),
+            $content
+        );
+    }
+
     $content = preg_replace('/<script[^>]+src="\/assets\/js\/[^"]+"[^>]*><\/script>/i', '', $content);
     $content = preg_replace('/<script[^>]+type="module"[^>]*><\/script>/i', '', $content);
 
