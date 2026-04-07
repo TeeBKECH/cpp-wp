@@ -28,6 +28,7 @@ function cpp_courses_theme_setup() {
     register_nav_menus(
         array(
             'primary' => __('Primary Menu', 'cpp-courses-theme'),
+            'footer' => __('Footer Menu', 'cpp-courses-theme'),
         )
     );
 }
@@ -156,4 +157,18 @@ function cpp_courses_render_static_page($file_name) {
     $content = preg_replace('/<script[^>]+type="module"[^>]*><\/script>/i', '', $content);
 
     return $content;
+}
+
+/**
+ * Render only <main>...</main> from a static template.
+ *
+ * @param string $file_name
+ * @return string
+ */
+function cpp_courses_render_static_main($file_name) {
+    $html = cpp_courses_render_static_page($file_name);
+    if (preg_match('/<main\\b[^>]*>[\\s\\S]*?<\\/main>/i', $html, $m)) {
+        return $m[0];
+    }
+    return $html;
 }

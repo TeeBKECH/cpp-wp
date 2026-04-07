@@ -12,19 +12,14 @@ if (!defined('ABSPATH')) {
 
 get_header();
 
-$phone_display = function_exists('get_field') ? get_field('cpp_phone_display', 'option') : '';
-$phone_tel = function_exists('get_field') ? get_field('cpp_phone_tel', 'option') : '';
-$email = function_exists('get_field') ? get_field('cpp_email', 'option') : '';
-$address = function_exists('get_field') ? get_field('cpp_address', 'option') : '';
-$work_hours = function_exists('get_field') ? get_field('cpp_work_hours', 'option') : '';
-$weapons_hours = function_exists('get_field') ? get_field('cpp_weapons_hours', 'option') : '';
-$map_iframe = function_exists('get_field') ? get_field('cpp_map_iframe', 'option') : '';
-$cf7_shortcode = function_exists('get_field') ? get_field('cpp_cf7_shortcode', 'option') : '';
-
-if (!$phone_display) $phone_display = '+7 (495) 129-50-41';
-if (!$phone_tel) $phone_tel = '+74951295041';
-if (!$email) $email = 'info@cpp-globez.ru';
-if (!$address) $address = 'г. Мытищи, ул. Новослободская, вл. 1, стр. 1';
+$phone_display = cpp_courses_get_option('cpp_phone_display', '+7 (495) 129-50-41');
+$phone_tel = cpp_courses_get_option('cpp_phone_tel', '+74951295041');
+$email = cpp_courses_get_option('cpp_email', 'info@cpp-globez.ru');
+$address = cpp_courses_get_option('cpp_address', 'г. Мытищи, ул. Новослободская, вл. 1, стр. 1');
+$work_hours = cpp_courses_get_option('cpp_work_hours', '');
+$weapons_hours = cpp_courses_get_option('cpp_weapons_hours', '');
+$map_iframe = cpp_courses_get_option('cpp_map_iframe', '');
+$cf7_shortcode = cpp_courses_get_option('cpp_cf7_shortcode', '');
 
 ?>
 <main class="main main--contacts">

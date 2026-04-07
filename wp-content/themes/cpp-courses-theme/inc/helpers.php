@@ -46,3 +46,43 @@ function cpp_courses_image_field_url($field_value) {
     return '';
 }
 
+/**
+ * Render bottom navigation items from options (SCF repeater).
+ *
+ * Expected option field name: cpp_bottom_nav_items
+ * Row shape:
+ * - icon (image)
+ * - link (link)
+ * - label (text)
+ *
+ * @return void
+ */
+function cpp_courses_render_bottom_nav() {
+    if (!function_exists('have_rows') || !have_rows('cpp_bottom_nav_items', 'option')) {
+        return;
+    }
+
+    echo '<nav class="bottom-nav">';
+    while (have_rows('cpp_bottom_nav_items', 'option')) {
+        the_row();
+        $icon = get_sub_field('icon');
+        $link = get_sub_field('link');
+        $label = get_sub_field('label');
+
+        $url = is_array($link) && !empty($link['url']) ? $link['url'] : '#';
+        $title = is_array($link) && !empty($link['title']) ? $link['title'] : (string) $label;
+        $target = is_array($link) && !empty($link['target']) ? $link['target'] : '_self';
+        $icon_url = cpp_courses_image_field_url($icon);
+
+        echo '<a class="bottom-nav_item" href="' . esc_url($url) . '" target="' . esc_attr($target) . '">';
+        if ($icon_url) {
+            echo '<div class="bottom-nav_item-icon"><img src="' . esc_url($icon_url) . '" alt="' . esc_attr($title) . '" /></div>';
+        } else {
+            echo '<div class="bottom-nav_item-icon"></div>';
+        }
+        echo '<span class="bottom-nav_item-label">' . esc_html($label) . '</span>';
+        echo '</a>';
+    }
+    echo '</nav>';
+}
+
