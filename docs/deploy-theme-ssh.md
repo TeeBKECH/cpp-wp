@@ -6,7 +6,7 @@ This workflow deploys only theme files from:
 
 to the server path:
 
-`public_html/wp-content/themes/cpp-courses-theme/`
+`wp-content/themes/cpp-courses-theme/`
 
 ## 1) Generate an SSH key pair for GitHub Actions
 
