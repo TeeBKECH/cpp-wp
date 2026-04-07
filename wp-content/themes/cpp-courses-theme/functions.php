@@ -9,6 +9,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+require_once __DIR__ . '/inc/scf-options.php';
+require_once __DIR__ . '/inc/helpers.php';
+
 function cpp_courses_theme_setup() {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
