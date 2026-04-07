@@ -1,4 +1,4 @@
-name: Deploy WordPress Theme via FTP
+name: Deploy WordPress Theme via SSH
 
 on:
   push:
@@ -16,51 +16,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy theme to Timeweb FTP (attempt 1)
-        id: deploy_attempt_1
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp
-          port: ${{ secrets.FTP_PORT }}
-          local-dir: ./wp-content/themes/cpp-courses-theme/
-          server-dir: /public_html/wp-content/themes/cpp-courses-theme/
-          dangerous-clean-slate: false
-        continue-on-error: true
-
-      - name: Deploy theme to Timeweb FTP (attempt 2)
-        id: deploy_attempt_2
-        if: steps.deploy_attempt_1.outcome == 'failure'
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp
-          port: ${{ secrets.FTP_PORT }}
-          local-dir: ./wp-content/themes/cpp-courses-theme/
-          server-dir: /public_html/wp-content/themes/cpp-courses-theme/
-          dangerous-clean-slate: false
-        continue-on-error: true
-
-      - name: Deploy theme to Timeweb FTP (attempt 3)
-        id: deploy_attempt_3
-        if: steps.deploy_attempt_1.outcome == 'failure' && steps.deploy_attempt_2.outcome == 'failure'
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp
-          port: ${{ secrets.FTP_PORT }}
-          local-dir: ./wp-content/themes/cpp-courses-theme/
-          server-dir: /public_html/wp-content/themes/cpp-courses-theme/
-          dangerous-clean-slate: false
-
-      - name: Fail workflow if all deploy attempts failed
-        if: steps.deploy_attempt_1.outcome == 'failure' && steps.deploy_attempt_2.outcome == 'failure' && steps.deploy_attempt_3.outcome == 'failure'
+      - name: Setup SSH key
         run: |
-          echo "All FTP deploy attempts failed."
-          exit 1
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy theme via rsync over SSH
+        run: |
+          rsync -az --delete \
+            -e "ssh -p ${{ secrets.SSH_PORT }} -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=yes" \
+            ./wp-content/themes/cpp-courses-theme/ \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:public_html/wp-content/themes/cpp-courses-theme/
