@@ -1,0 +1,21 @@
+mixin Pagination({})
+  .pagination 
+    .pagination_more
+      +Button('загрузить еще', 'filled', 'lg')
+    ul.pagination_list
+      li.pagination_list_item
+        a.pagination_list_link.pagination_list_link--prev(href='#')
+          span.pagination_list_icon.pagination_list_icon--prev
+      li.pagination_list_item
+        span.pagination_list_current 1
+      li.pagination_list_item
+        a.pagination_list_link(href='#') 2
+      li.pagination_list_item
+        a.pagination_list_link(href='#') 3
+      li.pagination_list_item
+        a.pagination_list_link(href='#') 4
+      li.pagination_list_item
+        a.pagination_list_link(href='#') 5
+      li.pagination_list_item
+        a.pagination_list_link.pagination_list_link--next(href='#')
+          span.pagination_list_icon.pagination_list_icon--next

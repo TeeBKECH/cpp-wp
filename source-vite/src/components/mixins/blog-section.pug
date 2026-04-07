@@ -1,0 +1,29 @@
+//- Секция «Публикации» / «Другие публикации» / «Статьи» — переиспользуемая, контент разный на страницах.
+//- +BlogSection(sectionId, title, subtitle, items, buttonText, buttonHref?, buttonText?, pagination?, contentOnly?)
+//- contentOnly: true — только блок .blog (без section и container), когда секция уже есть на странице (например со своими крошками)
+//- Container, Button, BlogCard подключаются в layout
+mixin BlogSection(sectionId, title, subtitle, items, buttonText, buttonHref, buttonText, pagination, contentOnly)
+  - sectionId = sectionId || 'blog'
+  - buttonText = buttonText || 'Читать далее'
+  - pagination = pagination !== undefined ? pagination : 'arrows'
+  - contentOnly = contentOnly || false
+  if !contentOnly
+    section.section.section--blog(id=sectionId)
+      +Container(sectionId)
+        .blog.section_content
+          +SectionHeader(title, subtitle)(class=`section_header--${sectionId}`)
+          .blog_grid.blog_grid--swiper
+            each item in items
+              +BlogCard(item, linkText)
+          +SectionFooter(buttonHref, 'filled', buttonText)(class=`section_footer--${sectionId}`)
+            +SwiperNavigation('blog')
+                
+  else
+    .blog.section_content
+      +SectionHeader(title, subtitle)
+      .blog_grid
+        each item in items
+          +BlogCard(item, linkText)
+      if pagination
+        .blog_footer
+          +Pagination({})

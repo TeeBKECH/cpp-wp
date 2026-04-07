@@ -1,0 +1,65 @@
+//- @title: Ссылки
+//- @description: -
+//- @page_class: links
+extends ../layouts/default.pug
+
+block content
+  section.section.section--links
+    .container
+      .links.section_content
+        +SectionHeader('Прогресс верстки')
+        .links_items
+          +Link({
+            num: 1,
+            link: '/index.html',
+            ver: 100,
+            title: 'Главная'
+          })
+          +Link({
+            num: 2,
+            link: '/services.html',
+            ver: 100,
+            title: 'Наши услуги'
+          })
+          +Link({
+            num: 3,
+            link: '/service.html',
+            ver: 100,
+            title: 'Услуга детальная'
+          })
+          +Link({
+            num: 4,
+            link: '/articles.html',
+            ver: 100,
+            title: 'Статьи'
+          })
+          +Link({
+            num: 5,
+            link: '/article.html',
+            ver:  100,
+            title: 'Статья детальная'
+          })
+          +Link({
+            num: 6,
+            link: '/contacts.html',
+            ver: 100,
+            title: 'Контакты'
+          })
+          +Link({
+            num: 7,
+            link: '/edu-info.html',
+            ver: 100,
+            title: 'Сведения об образовательной организации'
+          })
+          +Link({
+            num: 8,
+            link: '/test-intro.html',
+            ver: 100,
+            title: 'Тест'
+          })
+          +Link({
+            num: 9,
+            link: '/test-quiz.html',
+            ver: 100,
+            title: 'Тест 2'
+          })

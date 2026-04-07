@@ -1,0 +1,42 @@
+// Цветовая схема CPP (по макету Figma)
+$color-heading: #213a59;
+$color-text: #3d5d84;
+$color-text-muted: #8599b1;
+$color-primary: #3d5d84;
+$color-cta-bg: #182a40;
+$color-bg-light: #f5f7f9;
+$color-partners-bg: #0d0d0d;
+$color-header-bg: #182a40;
+$color-white: #fff;
+$color-overlay: rgba(26, 26, 26, 0.68);
+$color-footer-bg: #142335;
+$color-footer-muted: #e3e5e7;
+$color-footer-link: #e3e5e7;
+$color-footer-border: rgba(227, 229, 231, 0.3);
+
+// Размеры контейнеров и отступов (по макету Figma: ширина контента 1160px)
+$container-width: 1200px;
+$container-padding: 20px;
+$section-padding-y: 80px;
+$spacing-unit: 40px;
+
+// Единые отступы секций по макету: блок заголовка и заголовок
+$section-header-mb: 40px;
+$section-title-mb: 24px;
+
+// Секция «Наши партнёры»: высота логотипов по макету (ширина — auto, пропорции сохраняются)
+$partners-logo-height: 160px;
+
+// Высота шапки задаётся через CSS-переменную --header-height (обновляется в JS, см. viewport-height.js)
+// Fallback для отступа main/intro до инициализации
+// Breakpoints для адаптивности
+$breakpoint-xs: 400px;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xl-2: 1400px;
+$breakpoint-xl-3: 1600px;
+
+// Шрифты
+$font-main: 'Roboto Flex', sans-serif;

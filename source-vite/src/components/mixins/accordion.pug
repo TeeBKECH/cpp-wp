@@ -1,0 +1,13 @@
+mixin AccordionItem(props)
+  - const { title = '', open = false } = props
+  .accordion_item(data-accordion class=open ? 'open' : '')&attributes(attributes)
+    .accordion_item_head(data-accordion-trigger)
+      .accordion_item_title!= title
+      .accordion_item_icon
+    .accordion_item_body
+      .accordion_item_content
+        if block
+          block
+        else
+          p Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Дал подпоясал всеми города буквенных букв продолжил парадигматическая наш, осталось оксмокс снова даль родного, всемогущая рот рыбного возвращайся за рекламных!
+          p Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Дал подпоясал всеми города буквенных букв продолжил парадигматическая наш, осталось оксмокс снова даль родного, всемогущая рот рыбного возвращайся за рекламных!

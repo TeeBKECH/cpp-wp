@@ -1,0 +1,15 @@
+//- CTA-секция «Написать нам» — переиспользуемая на других страницах.
+//- +CtaSection(sectionId?, title?, subtitle?)
+//- Текст и плейсхолдеры по макету 313-487.
+//- Container, Button, Checkbox подключаются в layout
+mixin CtaSection(props)
+  - let { sectionId, title, subtitle, mode = 'dark' } = props
+  - title = title || 'Написать нам'
+  - subtitle = subtitle || 'По телефону или по электронной почте заполните пожалуйста форму обратной связи. Сотрудник центра свяжется с Вами в ближайшее время.'
+  section.section.section--cta(class=`section--${mode}`)
+    +Container()
+      .cta.section_content.section_content--alt
+        +SectionHeader(title, subtitle, mode === 'dark')
+        .cta_form
+          +Form({mode})
+          

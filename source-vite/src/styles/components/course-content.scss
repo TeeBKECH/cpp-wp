@@ -1,0 +1,168 @@
+// Контент страницы курса: две колонки (основной текст + сайдбар «Содержание»), блок удостоверения, расписание.
+
+.course-content {
+  $course-content: &;
+
+  &_inner {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: $spacing-unit;
+    align-items: start;
+
+    @include respond-to(lg) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &_main {
+    min-width: 0;
+  }
+
+  &_section {
+    margin-bottom: 40px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &_section-title {
+    font-family: $font-main;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.3;
+    color: $color-heading;
+    margin: 0 0 16px;
+  }
+
+  &_section p {
+    font-family: $font-main;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    color: $color-text;
+    margin: 0 0 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &_section ul {
+    margin: 0 0 16px;
+    padding-left: 24px;
+    list-style: disc;
+  }
+
+  &_section li {
+    font-family: $font-main;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    color: $color-text;
+    margin-bottom: 6px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &_certificate {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: $spacing-unit;
+    align-items: start;
+    margin-bottom: 24px;
+
+    @include respond-to(md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &_certificate-text {
+    min-width: 0;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &_certificate-img {
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &_certificate-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    grid-column: 1 / -1;
+
+    .checkbox {
+      margin: 0;
+    }
+  }
+
+  &_schedule {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  &_sidebar {
+    position: sticky;
+    top: 24px;
+  }
+
+  &_nav {
+    background: $color-bg-light;
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  &_nav-title {
+    font-family: $font-main;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.3;
+    color: $color-heading;
+    margin: 0 0 16px;
+  }
+
+  &_nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &_nav-item {
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &_nav-link {
+    font-family: $font-main;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+    color: $color-primary;
+    text-decoration: none;
+
+    @include onlyDescHover {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

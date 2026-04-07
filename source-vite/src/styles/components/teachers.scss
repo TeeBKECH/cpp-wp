@@ -1,0 +1,54 @@
+$img: '@/assets/img';
+
+.teachers {
+  $teachers: &;
+
+  &_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $spacing-unit;
+    width: 100%;
+  }
+
+  &_card {
+    background: #f5f7f9;
+    border-radius: 16px;
+    overflow: hidden;
+
+    &_img-wrap {
+      width: 100%;
+      aspect-ratio: 260 / 290;
+      overflow: hidden;
+    }
+
+    &_img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+    }
+
+    &_content {
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &_name {
+      font-family: $font-main;
+      font-weight: 500;
+      font-size: 19px;
+      line-height: calc(24 / 19);
+      color: #043b7e;
+      margin-bottom: 8px;
+    }
+
+    &_role {
+      font-family: $font-main;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: calc(20 / 12);
+      color: $color-text;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+mixin SectionHeader(title, subtitle, alt)
+  if (title || subtitle)
+    .section_header(class=`${alt ? 'section_header--alt': ''}`)&attributes(attributes)
+      h2.section_title= title
+      if subtitle
+        p.section_subtitle= subtitle
+
+mixin SectionFooter(buttonHref, buttonType, buttonText)
+  - buttonText = buttonText || 'Подробнее'
+  .section_footer&attributes(attributes)
+    +Button(buttonText, 'filled', 'md')(href=buttonHref)
+    block

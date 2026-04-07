@@ -1,0 +1,12 @@
+//- Карточка курса/услуги. +CourseCard({ icon, title, text, link })
+//- Button подключается в layout
+mixin CourseCard(item)
+  article.courses_card
+    .courses_card_head
+      .courses_card_icon
+        img(src="assets/img/" + item.icon + ".svg", alt="", width="48", height="48")
+      h3.courses_card_title= item.title
+    .courses_card_content
+      p.courses_card_text= item.text
+    .courses_card_actions
+      +Button('Подробнее', 'outline', 'sm')(href=item.link)

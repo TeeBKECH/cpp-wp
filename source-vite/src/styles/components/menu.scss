@@ -1,0 +1,47 @@
+.menu {
+  $menu: &;
+
+  &_inner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    width: 100%;
+    padding: 40px 0;
+  }
+  &_col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &-title {
+      font-family: $font-main;
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 1;
+      color: #043b7e;
+    }
+    &-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    &-link {
+      font-family: $font-main;
+      color: #043b7e;
+    }
+  }
+  &--mobile {
+    display: flex;
+    flex-direction: column;
+
+    #{$menu}_item {
+      &_link {
+        display: flex;
+        padding: 24px 16px;
+        background: #101c2a;
+        border-bottom: 1px solid #182a40;
+        color: #fff;
+      }
+    }
+  }
+}

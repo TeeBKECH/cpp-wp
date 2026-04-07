@@ -1,0 +1,160 @@
+// Оверлей меню по design-context.json (313:915)
+$burger-overlay-bg: #ffffff;
+$burger-overlay-text: #000000;
+$burger-overlay-muted: #3d5d84;
+$burger-overlay-accent: #043b7e;
+$burger-overlay-divider: #b4b4b4;
+
+.burger-overlay {
+  padding-top: 40px;
+  padding-bottom: 80px;
+  background: $burger-overlay-bg;
+  color: $burger-overlay-text;
+
+  &_inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 32px;
+    align-items: start;
+
+    @include respond-to(lg) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &_menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  &_col {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 200px;
+  }
+
+  &_title {
+    font-family: $font-main;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.16px;
+    color: $burger-overlay-text;
+    margin: 0;
+  }
+
+  &_list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &_link {
+    font-family: $font-main;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 18px;
+    color: $burger-overlay-muted;
+    text-decoration: none;
+
+    @include onlyDescHover {
+      &:hover {
+        color: $burger-overlay-accent;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &_divider {
+    width: 1px;
+    min-height: 200px;
+    background: $burger-overlay-divider;
+
+    @include respond-to(lg) {
+      width: 100%;
+      min-height: 1px;
+    }
+  }
+
+  &_form-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 400px;
+  }
+
+  &_form-header {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &_form-title {
+    font-family: $font-main;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 18px;
+    color: $burger-overlay-text;
+    margin: 0;
+  }
+
+  &_form-subtitle {
+    font-family: $font-main;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.4;
+    color: $burger-overlay-muted;
+    margin: 0;
+  }
+
+  &_form {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  &_field {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &_label {
+    font-family: $font-main;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 12px;
+    color: $burger-overlay-text;
+  }
+
+  &_input,
+  &_textarea {
+    font-family: $font-main;
+    font-size: 14px;
+    padding: 18px 16px;
+    border: 1px solid $burger-overlay-divider;
+    border-radius: 4px;
+    background: $burger-overlay-bg;
+  }
+
+  &_textarea {
+    min-height: 110px;
+    resize: vertical;
+  }
+
+  &_agree {
+    .checkbox_text {
+      font-size: 13px;
+      line-height: 18px;
+    }
+  }
+
+  &_submit {
+    align-self: flex-start;
+  }
+}

@@ -1,0 +1,8 @@
+//- Кнопка-гамбургер (три линии). Стили в components/burger.scss.
+//- +Burger(ariaLabel?)
+//- По умолчанию aria-label="Открыть меню". Атрибуты (data-modal, class и т.д.) — через &attributes.
+mixin Burger(ariaLabel)
+  button.burger(type="button" aria-label=ariaLabel || "Открыть меню" aria-expanded="false")&attributes(attributes)
+    span.burger_line
+    span.burger_line
+    span.burger_line

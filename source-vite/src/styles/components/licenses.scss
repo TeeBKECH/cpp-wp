@@ -1,0 +1,69 @@
+// Блок «Лицензии»: заголовок и сетка карточек-превью (изображения лицензий).
+
+.licenses {
+  $licenses: &;
+
+  &_header {
+    margin-bottom: $section-header-mb;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #d1d8e0;
+  }
+
+  &_title {
+    font-family: $font-main;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 36 / 32;
+    color: $color-heading;
+    margin: 0;
+  }
+
+  &_list {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 24px;
+  }
+
+  &_item {
+    display: block;
+    text-decoration: none;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  &_item-img {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 160 / 220;
+    background: $color-bg-light;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .licenses_list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .licenses_list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}

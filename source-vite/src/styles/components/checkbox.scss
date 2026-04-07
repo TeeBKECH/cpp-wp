@@ -1,0 +1,98 @@
+// Кастомный чекбокс по макету 313-502: квадрат, скругление, белый фон, синяя обводка/тень, галочка при :checked.
+
+.checkbox {
+  $checkbox: &;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  font-family: $font-main;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: calc(18 / 12);
+
+  &_input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+
+    &:focus-visible + #{$checkbox}_box {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+    }
+
+    &:checked + #{$checkbox}_box {
+      border-color: $color-primary;
+      background: $color-white;
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+
+  &_box {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: $color-white;
+    border: 1px solid #cdd8e5;
+    position: relative;
+    transition:
+      border-color 0.2s,
+      background 0.2s;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 16px;
+      height: 16px;
+      background: center / contain no-repeat;
+      background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.1769 3.43904L14.6528 2.91968C14.4881 2.75635 14.2685 2.6665 14.0341 2.6665C13.7997 2.6665 13.58 2.75635 13.4153 2.91968L6.051 10.2174L2.78322 6.97896C2.61854 6.81589 2.39883 6.72591 2.16442 6.72591C1.93015 6.72591 1.71057 6.81589 1.54576 6.97896L1.02153 7.4982C0.856716 7.66178 0.766179 7.87963 0.766179 8.11167C0.766179 8.34383 0.856716 8.56155 1.02153 8.72488L4.88313 12.5514C4.89002 12.561 4.89731 12.57 4.90576 12.5783L5.42999 13.0892C5.59467 13.2518 5.81438 13.3332 6.05061 13.3332H6.05334C6.28788 13.3332 6.50759 13.2518 6.67201 13.0892L7.19637 12.5738C7.20482 12.5655 7.21198 12.5587 7.21627 12.5517L15.1767 4.66392C15.5182 4.32631 15.5182 3.77704 15.1769 3.43904Z' fill='%232F74C8'/%3E%3C/svg%3E");
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+  }
+
+  &_text {
+    flex: 1;
+    color: #fff;
+  }
+
+  &_link {
+    color: inherit;
+    text-decoration: underline !important;
+
+    @include onlyDescHover {
+      &:hover {
+        opacity: 0.85;
+      }
+    }
+  }
+
+  &--light {
+    #{$checkbox}_text {
+      color: #213a59;
+    }
+  }
+
+  &--option {
+    #{$checkbox}_text {
+      font-size: 16px;
+      color: #3d5d84;
+    }
+    #{$checkbox}_box {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+//- Секция «Другие услуги» — по аналогии с BlogSection, карточки через CourseCard, свайпер.
+//- +ServicesSection(sectionId, title, subtitle, items, buttonText, buttonHref, pagination?)
+//- items: [{ icon, title, text, link }] — как для CourseCard
+//- Container, Button, CourseCard, SectionHeader, SectionFooter, SwiperNavigation подключаются в layout
+mixin ServicesSection(sectionId, title, subtitle, items, buttonText, buttonHref, pagination)
+  - sectionId = sectionId || 'services'
+  - buttonText = buttonText || 'Все услуги'
+  - pagination = pagination !== undefined ? pagination : 'arrows'
+  section.section.section--services(id=sectionId)
+    +Container(sectionId)
+      .services.section_content
+        +SectionHeader(title, subtitle)(class=`section_header--${sectionId}`)
+        .services_grid.services_grid--swiper
+          each item in items
+            +CourseCard(item)
+        +SectionFooter(buttonHref, 'filled', buttonText)(class=`section_footer--${sectionId}`)
+          +SwiperNavigation('services')

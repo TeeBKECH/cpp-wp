@@ -1,0 +1,9 @@
+//- Кастомный чекбокс по макету 313-502: квадрат с скруглением, белый фон, синяя обводка, галочка при :checked.
+//- +Checkbox(id, name, required?)
+//- block — содержимое подписи (текст и/или ссылки).
+mixin Checkbox(id, name, required, mode)
+  label.checkbox(class=`checkbox--${mode}`)
+    input.checkbox_input(type="checkbox" id=id name=name required=required)
+    div.checkbox_box(aria-hidden="true")
+    div.checkbox_text
+      block

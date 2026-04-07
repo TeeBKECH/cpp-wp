@@ -1,0 +1,65 @@
+$img: '@/assets/img';
+
+.partners {
+  $partners: &;
+
+  // Лента: виден только «окно», контент двигается внутри
+  &_line {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  // Обёртка для анимации: два трека в ряд, сдвиг через JS (бесконечная прокрутка без рывков)
+  &_line-inner {
+    display: flex;
+    flex-wrap: nowrap;
+    width: max-content;
+    will-change: transform;
+  }
+
+  // Трек — горизонтальный ряд карточек; клон добавляется скриптом в &_line-inner
+  &_track {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+    width: max-content;
+  }
+
+  &_card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-width: 180px;
+    min-height: $partners-logo-height;
+    padding: 0 $spacing-unit;
+
+    @include respond-to(lg) {
+      min-height: 100px;
+      min-width: 140px;
+      padding: 0 24px;
+    }
+    @include respond-to(md) {
+      min-height: 100px;
+      min-width: unset;
+      padding: 0;
+    }
+
+    img,
+    svg {
+      width: auto;
+      max-width: 100%;
+      height: $partners-logo-height;
+      max-height: $partners-logo-height;
+      object-fit: contain;
+      object-position: center;
+      opacity: 0.85;
+
+      @include respond-to(lg) {
+        height: 100px;
+      }
+    }
+  }
+}

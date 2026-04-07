@@ -1,0 +1,45 @@
+// Страница теста с вопросом (макет 313-2943): заголовок, вопрос, варианты ответа (radio), кнопки.
+
+.test-quiz {
+  $test-quiz: &;
+
+  &_form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  &_question {
+  }
+
+  &_question-text {
+    font-family: $font-main;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.4;
+    color: $color-heading;
+    margin: 0;
+  }
+
+  &_options {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &_actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  &_footer {
+    padding-top: 120px;
+  }
+
+  &_link {
+    color: #3d5d84;
+    position: relative;
+  }
+}

@@ -1,0 +1,155 @@
+//- @title: Обучение охранников 4, 5 и 6 разрядов — ЦПП
+//- @description: Курс обучения частных охранников 4, 5 и 6 разрядов в ЦПП.
+//- @page_class: course
+extends ../layouts/default.pug
+
+block content
+  //- Страница курса по макету Figma 313-1694: хлебные крошки, герой, контент с сайдбаром, CTA, FAQ, Другие публикации, О нас, Преподаватели, Образование
+
+  //- Герой: хлебные крошки, заголовок, мета (дата, просмотры), описание
+  section.section.section--course
+    +Container()
+      +Breadcrumbs([{ text: 'Главная', href: 'index.html' }, { text: 'Услуги', href: 'services.html' }, { text: 'Обучение охранников 4, 5 и 6 разрядов', href: '#' }])
+      .course
+        .course_header
+          h1.course_title Обучение охранников 4, 5 и 6 разрядов
+          p.course_meta 21 марта 2024 | 1231 просмотр
+          p.course_desc Программа профессиональной подготовки частных охранников направлена на получение необходимых знаний и навыков для осуществления охранной деятельности. По окончании обучения и успешной сдаче квалификационного экзамена выдаётся удостоверение частного охранника установленного образца.
+
+  //- Контент: две колонки (основной текст + сайдбар «Содержание»)
+  section.section.section--course-content
+    +Container()
+      .course-content
+        .course-content_inner
+          .course-content_main
+            .course-content_section#goal
+              h2.course-content_section-title Цель курса
+              p Подготовка частных охранников к выполнению трудовых функций в соответствии с требованиями профессионального стандарта. Формирование знаний в области правового регулирования охранной деятельности, правил применения специальных средств и огнестрельного оружия, первой помощи и психологической подготовки.
+            .course-content_section#categories
+              h2.course-content_section-title Категории подготовки
+              ul
+                li Охранник 4 разряда — без права применения оружия и специальных средств
+                li Охранник 5 разряда — с правом применения специальных средств
+                li Охранник 6 разряда — с правом применения огнестрельного оружия и специальных средств
+            .course-content_section#disciplines
+              h2.course-content_section-title Основные дисциплины программы
+              ul
+                li Правовая подготовка
+                li Тактико-специальная подготовка
+                li Использование специальных средств
+                li Огневая подготовка (для 6 разряда)
+                li Первая помощь
+                li Психологическая подготовка
+            .course-content_section#practice
+              h2.course-content_section-title Практическая направленность
+              p Занятия включают отработку практических навыков: применение специальных средств, действия в экстремальных ситуациях, оказание первой помощи. Для охранников 6 разряда предусмотрена стрелковая подготовка.
+            .course-content_section#requirements
+              h2.course-content_section-title Квалификационные требования
+              p К обучению допускаются граждане РФ не моложе 18 лет, годные по состоянию здоровья к исполнению обязанностей частного охранника, прошедшие профессиональный отбор.
+            .course-content_section#documents
+              h2.course-content_section-title Документы для поступления
+              ul
+                li Паспорт гражданина РФ
+                li Медицинская справка по форме 002-О/у
+                li Фотографии 3×4 см
+                li Заявление и договор
+            .course-content_section#duration
+              h2.course-content_section-title Сроки обучения
+              p Продолжительность программы: 30 часов (переподготовка), 80 часов (5 разряд), 160 часов (6 разряд). Возможны различные форматы занятий в зависимости от набора группы.
+            .course-content_section.course-content_section--certificate#certificate
+              h2.course-content_section-title Получите профессию охранника с правом ношения оружия
+              .course-content_certificate
+                .course-content_certificate-text
+                  p По окончании обучения и успешной сдаче квалификационного экзамена выдаётся удостоверение частного охранника установленного образца с правом применения огнестрельного оружия и специальных средств (для 6 разряда).
+                .course-content_certificate-img
+                  img(src="assets/img/education.png", alt="Удостоверение частного охранника", width="200", height="140", loading="lazy")
+              .course-content_certificate-options
+                +Checkbox('cert-fast', 'cert-fast', false)
+                  | Ускоренная подготовка
+                +Checkbox('cert-retrain', 'cert-retrain', false)
+                  | Переподготовка
+                +Checkbox('cert-skills', 'cert-skills', false)
+                  | Развитие навыков
+            .course-content_section#schedule
+              h2.course-content_section-title Расписание занятий
+              .course-content_schedule
+                +Button('Расписание на Февраль', 'primary', 'md')(href="#")
+                +Button('Расписание занятий на 30 дней', 'outline', 'md')(href="#")
+                +Button('Подробное расписание на 90 дней', 'outline', 'md')(href="#")
+          aside.course-content_sidebar
+            .course-content_nav
+              h3.course-content_nav-title Содержание
+              ul.course-content_nav-list
+                li.course-content_nav-item: a.course-content_nav-link(href="#goal") Цель курса
+                li.course-content_nav-item: a.course-content_nav-link(href="#categories") Категории подготовки
+                li.course-content_nav-item: a.course-content_nav-link(href="#disciplines") Основные дисциплины программы
+                li.course-content_nav-item: a.course-content_nav-link(href="#practice") Практическая направленность
+                li.course-content_nav-item: a.course-content_nav-link(href="#requirements") Квалификационные требования
+                li.course-content_nav-item: a.course-content_nav-link(href="#documents") Документы для поступления
+                li.course-content_nav-item: a.course-content_nav-link(href="#duration") Сроки обучения
+                li.course-content_nav-item: a.course-content_nav-link(href="#certificate") Получите профессию охранника…
+                li.course-content_nav-item: a.course-content_nav-link(href="#schedule") Расписание занятий
+
+  //- CTA «Напишите нам» — форма (имя, телефон, сообщение, «Отправить сообщение»)
+  section.section.section--cta#cta
+    +Container()
+      .cta
+        .cta_header
+          h2.cta_title Напишите нам
+          p.cta_subtitle Оставьте заявку — мы ответим на вопросы и поможем подобрать подходящий курс.
+        .cta_inner
+          .cta_form
+            form(action="#" method="post")
+              .cta_form-row
+                .cta_field
+                  label(for="course-name") Ваше имя
+                  input#course-name(type="text" name="name" placeholder="Ваше имя...")
+                .cta_field
+                  label(for="course-phone") Номер телефона
+                  input#course-phone(type="tel" name="phone" placeholder="Номер телефона...")
+              .cta_field
+                label(for="course-message") Сообщение
+                textarea#course-message(name="message" rows="4" placeholder="Сообщение...")
+              .cta_agree
+                +Checkbox('course-agree', 'agree', true)
+                  | Я согласен на обработку персональных данных
+              button.cta_submit(type="submit") Отправить сообщение
+
+  //- FAQ
+  section.section.section--faq#faq
+    +Container()
+      .faq
+        .faq_header
+          h2.faq_title Часто задаваемые вопросы
+          p.faq_subtitle Самые популярные вопросы от наших клиентов
+        .faq_list
+          .faq_item.is-open
+            button.faq_question(type="button" data-faq-toggle) Какие сроки определения образовательной программы?
+            .faq_answer
+              p.faq_answer-inner Сроки зависят от выбранной программы: от 30 до 160 часов. Точные даты набора уточняйте у менеджера.
+          .faq_item
+            button.faq_question(type="button" data-faq-toggle) Дополнительно обучение по каким программам?
+            .faq_answer
+              p.faq_answer-inner Мы проводим обучение по программам переподготовки, повышения квалификации, подготовки охранников 4, 5 и 6 разряда, инкассаторов и другим направлениям.
+          .faq_item
+            button.faq_question(type="button" data-faq-toggle) Какие квалификационные требования для зачисления на обучение?
+            .faq_answer
+              p.faq_answer-inner К обучению допускаются граждане РФ не моложе 18 лет, годные по состоянию здоровья. Требуется паспорт и медицинская справка по форме 002-О/у.
+          .faq_item
+            button.faq_question(type="button" data-faq-toggle) При прохождении каких документов?
+            .faq_answer
+              p.faq_answer-inner Для поступления необходимы паспорт, медицинская справка 002-О/у, фотографии 3×4 см, заявление и договор.
+
+  //- Другие публикации (миксин)
+  - var relatedList = [{ img: 'post-1', date: '7 июня 2024', title: 'Центр профессиональной подготовки «Альфа-БРО»', desc: 'К своему 20-му юбилею ЦПП подошёл, имея репутацию высокопрофессионального и достойного партнёра.', link: 'articles.html' }, { img: 'post-2', date: '20 декабря 2025', title: 'Повышение квалификации руководящего состава', desc: 'К своему 20-му юбилею ЦПП подошёл, имея репутацию высокопрофессионального и достойного партнёра.', link: 'articles.html' }, { img: 'post-3', date: '19 декабря 2025', title: 'Новые программы для охранников 6 разряда', desc: 'К своему 20-му юбилею ЦПП подошёл, имея репутацию высокопрофессионального и достойного партнёра.', link: 'articles.html' }]
+  +BlogSection('related', 'Другие публикации', 'Новостная лента', relatedList, 'Все новости', 'articles.html', 'Подробнее', 'arrows')
+
+  //- О нас (миксин: контент short, ссылка на главную)
+  +AboutSection('about', 'О нас', 'short', 'index.html#about')
+
+  //- Преподавательский состав
+  - var teachersList = [{ img: 'teacher-1', name: 'Погорелов Михаил Иванович', role: 'Руководитель центра', extra: '' }, { img: 'teacher-2', name: 'Гончаров Александр Михайлович', role: 'Директор', extra: 'ЧОУ ДПО "ЦПП"' }, { img: 'teacher-3', name: 'Световеч Иван Иванович', role: 'Старший преподаватель', extra: '' }, { img: 'teacher-4', name: 'Шулаев Роман Михайлович', role: 'Старший преподаватель', extra: '' }]
+  +TeachersSection('teachers', 'Преподавательский состав', 'Сотрудники, которые Вас будут обучать', teachersList)
+
+  //- Образование (миксин: контент short)
+  +EducationSection('education', 'Образование', 'short')

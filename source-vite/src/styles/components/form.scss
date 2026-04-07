@@ -1,0 +1,84 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  $form: &;
+
+  &_fields {
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+
+    &_row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+
+      @include respond-to(md) {
+        grid-template-columns: 1fr;
+      }
+
+      &--alt {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+  &_field {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    label {
+      font-family: $font-main;
+      font-weight: 500;
+      font-size: 18px;
+      color: $color-white;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 18px 16px;
+      font-family: $font-main;
+      font-size: 16px;
+      color: $color-primary;
+      background: $color-white;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      outline: none;
+      border: none;
+      resize: none;
+
+      &::placeholder {
+        color: $color-text;
+      }
+    }
+
+    textarea {
+      min-height: 100px;
+    }
+
+    &_required {
+      color: #2f74c8;
+    }
+  }
+
+  &_agree {
+  }
+
+  &_submit {
+  }
+
+  &--light {
+    #{$form}_field {
+      label {
+        color: #213a59;
+      }
+
+      input,
+      textarea {
+        border: 1px solid #cdd8e5;
+      }
+    }
+  }
+}
