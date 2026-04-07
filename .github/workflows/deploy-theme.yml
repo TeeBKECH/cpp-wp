@@ -16,7 +16,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy theme to Timeweb FTP
+      - name: Deploy theme to Timeweb FTP (attempt 1)
+        id: deploy_attempt_1
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -27,3 +28,39 @@ jobs:
           local-dir: ./wp-content/themes/cpp-courses-theme/
           server-dir: /public_html/wp-content/themes/cpp-courses-theme/
           dangerous-clean-slate: false
+        continue-on-error: true
+
+      - name: Deploy theme to Timeweb FTP (attempt 2)
+        id: deploy_attempt_2
+        if: steps.deploy_attempt_1.outcome == 'failure'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: ${{ secrets.FTP_PORT }}
+          local-dir: ./wp-content/themes/cpp-courses-theme/
+          server-dir: /public_html/wp-content/themes/cpp-courses-theme/
+          dangerous-clean-slate: false
+        continue-on-error: true
+
+      - name: Deploy theme to Timeweb FTP (attempt 3)
+        id: deploy_attempt_3
+        if: steps.deploy_attempt_1.outcome == 'failure' && steps.deploy_attempt_2.outcome == 'failure'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: ${{ secrets.FTP_PORT }}
+          local-dir: ./wp-content/themes/cpp-courses-theme/
+          server-dir: /public_html/wp-content/themes/cpp-courses-theme/
+          dangerous-clean-slate: false
+
+      - name: Fail workflow if all deploy attempts failed
+        if: steps.deploy_attempt_1.outcome == 'failure' && steps.deploy_attempt_2.outcome == 'failure' && steps.deploy_attempt_3.outcome == 'failure'
+        run: |
+          echo "All FTP deploy attempts failed."
+          exit 1
