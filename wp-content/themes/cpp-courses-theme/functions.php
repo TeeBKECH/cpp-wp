@@ -12,6 +12,15 @@ if (!defined('ABSPATH')) {
 require_once __DIR__ . '/inc/scf-options.php';
 require_once __DIR__ . '/inc/helpers.php';
 
+add_filter('acf/settings/save_json', function ($path) {
+    return __DIR__ . '/acf-json';
+});
+
+add_filter('acf/settings/load_json', function ($paths) {
+    $paths[] = __DIR__ . '/acf-json';
+    return $paths;
+});
+
 function cpp_courses_theme_setup() {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');

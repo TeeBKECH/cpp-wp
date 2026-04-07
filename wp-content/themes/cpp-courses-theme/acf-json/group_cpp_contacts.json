@@ -1,0 +1,131 @@
+{
+  "key": "group_cpp_contacts",
+  "title": "Контакты (опции сайта)",
+  "fields": [
+    {
+      "key": "field_cpp_phone_display",
+      "label": "Телефон (для отображения)",
+      "name": "cpp_phone_display",
+      "type": "text",
+      "instructions": "Например: +7 (495) 129-50-41",
+      "required": 0,
+      "wrapper": { "width": "", "class": "", "id": "" },
+      "default_value": "",
+      "placeholder": "+7 (___) ___-__-__",
+      "prepend": "",
+      "append": "",
+      "maxlength": ""
+    },
+    {
+      "key": "field_cpp_phone_tel",
+      "label": "Телефон (для ссылки tel:)",
+      "name": "cpp_phone_tel",
+      "type": "text",
+      "instructions": "Только цифры и плюс. Например: +74951295041",
+      "required": 0,
+      "wrapper": { "width": "", "class": "", "id": "" },
+      "default_value": "",
+      "placeholder": "+7495...",
+      "prepend": "",
+      "append": "",
+      "maxlength": ""
+    },
+    {
+      "key": "field_cpp_email",
+      "label": "Email",
+      "name": "cpp_email",
+      "type": "email",
+      "instructions": "",
+      "required": 0,
+      "wrapper": { "width": "", "class": "", "id": "" },
+      "default_value": "",
+      "placeholder": "info@example.com",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_cpp_address",
+      "label": "Адрес",
+      "name": "cpp_address",
+      "type": "text",
+      "instructions": "",
+      "required": 0,
+      "wrapper": { "width": "", "class": "", "id": "" },
+      "default_value": "",
+      "placeholder": "",
+      "prepend": "",
+      "append": "",
+      "maxlength": ""
+    },
+    {
+      "key": "field_cpp_work_hours",
+      "label": "Режим работы",
+      "name": "cpp_work_hours",
+      "type": "text",
+      "instructions": "Например: Пн‑Пт с 10:00–18:00",
+      "required": 0,
+      "wrapper": { "width": "", "class": "", "id": "" },
+      "default_value": "",
+      "placeholder": "",
+      "prepend": "",
+      "append": "",
+      "maxlength": ""
+    },
+    {
+      "key": "field_cpp_weapons_hours",
+      "label": "Приём на гражданское оружие",
+      "name": "cpp_weapons_hours",
+      "type": "text",
+      "instructions": "",
+      "required": 0,
+      "wrapper": { "width": "", "class": "", "id": "" },
+      "default_value": "",
+      "placeholder": "",
+      "prepend": "",
+      "append": "",
+      "maxlength": ""
+    },
+    {
+      "key": "field_cpp_map_iframe",
+      "label": "Карта (iframe)",
+      "name": "cpp_map_iframe",
+      "type": "textarea",
+      "instructions": "Вставь iframe карты (например, Яндекс).",
+      "required": 0,
+      "wrapper": { "width": "", "class": "", "id": "" },
+      "default_value": "",
+      "placeholder": "<iframe ...></iframe>",
+      "maxlength": "",
+      "rows": 6,
+      "new_lines": ""
+    },
+    {
+      "key": "field_cpp_cf7_shortcode",
+      "label": "Contact Form 7 shortcode",
+      "name": "cpp_cf7_shortcode",
+      "type": "text",
+      "instructions": "Например: [contact-form-7 id=\"123\" title=\"Форма\"]",
+      "required": 0,
+      "wrapper": { "width": "", "class": "", "id": "" },
+      "default_value": "",
+      "placeholder": "[contact-form-7 ...]",
+      "prepend": "",
+      "append": "",
+      "maxlength": ""
+    }
+  ],
+  "location": [
+    [
+      { "param": "options_page", "operator": "==", "value": "cpp-site-contacts" }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": ""
+}
+

@@ -1,0 +1,80 @@
+{
+  "key": "group_cpp_branding",
+  "title": "CPP — Брендинг",
+  "fields": [
+    {
+      "key": "field_cpp_logo_primary",
+      "label": "Логотип (основной)",
+      "name": "cpp_logo_primary",
+      "type": "image",
+      "instructions": "Используется в шапке/подвале. Рекомендуется SVG или PNG.",
+      "required": 0,
+      "return_format": "array",
+      "preview_size": "medium",
+      "library": "all",
+      "wrapper": { "width": "50", "class": "", "id": "" }
+    },
+    {
+      "key": "field_cpp_logo_icon",
+      "label": "Иконка логотипа",
+      "name": "cpp_logo_icon",
+      "type": "image",
+      "instructions": "Маленькая иконка/знак (например рядом с текстом).",
+      "required": 0,
+      "return_format": "array",
+      "preview_size": "thumbnail",
+      "library": "all",
+      "wrapper": { "width": "50", "class": "", "id": "" }
+    },
+    {
+      "key": "field_cpp_favicon",
+      "label": "Favicon",
+      "name": "cpp_favicon",
+      "type": "image",
+      "instructions": "Если заполнено — можно использовать для <link rel=\"icon\"> (позже подключу в header).",
+      "required": 0,
+      "return_format": "array",
+      "preview_size": "thumbnail",
+      "library": "all",
+      "wrapper": { "width": "50", "class": "", "id": "" }
+    },
+    {
+      "key": "field_cpp_site_title_short",
+      "label": "Название (короткое)",
+      "name": "cpp_site_title_short",
+      "type": "text",
+      "instructions": "Например: «ЦПП». Используется в логотипе/шапке где нужен короткий вариант.",
+      "required": 0,
+      "default_value": "",
+      "wrapper": { "width": "50", "class": "", "id": "" }
+    },
+    {
+      "key": "field_cpp_site_title_full",
+      "label": "Название (полное)",
+      "name": "cpp_site_title_full",
+      "type": "text",
+      "instructions": "Например: «Центр Профессиональной Подготовки».",
+      "required": 0,
+      "default_value": "",
+      "wrapper": { "width": "50", "class": "", "id": "" }
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "options_page",
+        "operator": "==",
+        "value": "cpp-site-branding"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Опции брендинга/логотипов (SCF/ACF Local JSON)."
+}
+
