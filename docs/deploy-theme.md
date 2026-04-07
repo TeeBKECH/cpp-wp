@@ -17,6 +17,8 @@ Create the following secrets:
 - `FTP_PASSWORD` = your FTP password
 - `FTP_PORT` = `21`
 
+Important for this Timeweb account: FTP root is `wordpress_cpp`, so deploy path in workflow must start from `/public_html/...` (not `/wordpress_cpp/public_html/...`).
+
 ## 2) How deployment works
 
 Workflow file: `.github/workflows/deploy-theme.yml`

@@ -25,5 +25,5 @@ jobs:
           protocol: ftp
           port: ${{ secrets.FTP_PORT }}
           local-dir: ./wp-content/themes/cpp-courses-theme/
-          server-dir: /wordpress_cpp/public_html/wp-content/themes/cpp-courses-theme/
+          server-dir: /public_html/wp-content/themes/cpp-courses-theme/
           dangerous-clean-slate: false
