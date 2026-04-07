@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-$items = cpp_courses_get_option('cpp_bottom_nav_items', array());
+$items = cpp_courses_get_option('cpp_bottom_nav', array());
 if (empty($items) || !is_array($items)) {
     return;
 }
