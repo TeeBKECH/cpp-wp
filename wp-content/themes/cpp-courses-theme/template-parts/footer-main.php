@@ -24,9 +24,9 @@ $work_hours = cpp_courses_get_option('cpp_work_hours', '');
                     <?php if ($logo_icon) : ?>
                         <img class="footer_logo-icon" src="<?php echo esc_url($logo_icon); ?>" alt="<?php echo esc_attr($title_full); ?>" width="121" height="44" />
                     <?php endif; ?>
-                    <span class="footer_logo-text"><?php echo esc_html($title_full); ?></span>
+                    <span class="footer_logo-text"><?php echo wp_kses($title_full, array('br' => array(), 'strong' => array(), 'em' => array(), 'span' => array('class' => array()))); ?></span>
                 </div>
-                <p class="footer_copy">©<?php echo esc_html(date_i18n('Y')); ?> - <?php echo esc_html($title_full); ?></p>
+                <p class="footer_copy">©<?php echo esc_html(date_i18n('Y')); ?> - <?php echo wp_kses($title_full, array('br' => array(), 'strong' => array(), 'em' => array(), 'span' => array('class' => array()))); ?></p>
                 <ul class="footer_legal">
                     <li><a class="footer_link" href="<?php echo esc_url(home_url('/edu-info/')); ?>">Сведения об образовательной организации</a></li>
                     <li><a class="footer_link" href="#">Политика конфиденциальности</a></li>

@@ -1,0 +1,67 @@
+<?php
+/**
+ * Single template for articles CPT.
+ *
+ * @package CppCoursesTheme
+ */
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+get_header();
+
+if (have_posts()) :
+    while (have_posts()) :
+        the_post();
+        cpp_courses_increment_post_views(get_the_ID());
+        $views = cpp_courses_get_post_views(get_the_ID());
+        ?>
+        <main class="main main--article">
+            <section class="section section--page-intro">
+                <div class="container">
+                    <div class="page-intro">
+                        <nav class="breadcrumbs" aria-label="Хлебные крошки">
+                            <ol class="breadcrumbs_list">
+                                <li class="breadcrumbs_item">
+                                    <a class="breadcrumbs_link" href="<?php echo esc_url(home_url('/')); ?>">Главная</a>
+                                </li>
+                                <li class="breadcrumbs_item">
+                                    <span class="breadcrumbs_sep" aria-hidden="true">/</span>
+                                    <a class="breadcrumbs_link" href="<?php echo esc_url(get_post_type_archive_link('articles')); ?>">Статьи</a>
+                                </li>
+                                <li class="breadcrumbs_item">
+                                    <span class="breadcrumbs_sep" aria-hidden="true">/</span>
+                                    <span class="breadcrumbs_current" aria-current="page"><?php the_title(); ?></span>
+                                </li>
+                            </ol>
+                        </nav>
+                        <h1 class="page-intro_title"><?php the_title(); ?></h1>
+                        <div class="page-intro_info">
+                            <div class="page-intro_info-item">
+                                <span class="page-intro_info-item-text"><?php echo esc_html(get_the_date('j F Y')); ?></span>
+                            </div>
+                            <div class="page-intro_info-item">
+                                <span class="page-intro_info-item-icon"></span>
+                                <span class="page-intro_info-item-text"><?php echo esc_html(number_format_i18n($views)); ?></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section section--page-content">
+                <div class="container">
+                    <div class="page-content page-content--article">
+                        <div class="page-content_main">
+                            <?php the_content(); ?>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <?php
+    endwhile;
+endif;
+
+get_footer();
+

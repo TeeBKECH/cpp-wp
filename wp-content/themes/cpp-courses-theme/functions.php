@@ -28,6 +28,7 @@ function cpp_courses_theme_setup() {
     register_nav_menus(
         array(
             'primary' => __('Primary Menu', 'cpp-courses-theme'),
+            'mobile_primary' => __('Mobile Primary Menu', 'cpp-courses-theme'),
             'footer' => __('Footer Menu', 'cpp-courses-theme'),
         )
     );
@@ -83,6 +84,80 @@ function cpp_courses_enqueue_assets() {
     }
 }
 add_action('wp_enqueue_scripts', 'cpp_courses_enqueue_assets');
+
+/**
+ * Increase view counter for single articles posts.
+ *
+ * @return void
+ */
+function cpp_courses_track_article_views() {
+    if (!is_singular('articles') || is_admin()) {
+        return;
+    }
+
+    $post_id = get_queried_object_id();
+    if (!$post_id) {
+        return;
+    }
+
+    $meta_key = 'cpp_article_views';
+    $views = (int) get_post_meta($post_id, $meta_key, true);
+    update_post_meta($post_id, $meta_key, $views + 1);
+}
+add_action('template_redirect', 'cpp_courses_track_article_views');
+
+/**
+ * Render article card template.
+ *
+ * @param WP_Post $post
+ * @return string
+ */
+function cpp_courses_render_article_card($post) {
+    if (!$post instanceof WP_Post) {
+        return '';
+    }
+    ob_start();
+    get_template_part('template-parts/article-card', null, array('post' => $post));
+    return (string) ob_get_clean();
+}
+
+/**
+ * AJAX: load more articles cards.
+ *
+ * @return void
+ */
+function cpp_courses_ajax_load_more_articles() {
+    check_ajax_referer('cpp_articles_nonce', 'nonce');
+
+    $paged = isset($_POST['page']) ? max(1, (int) $_POST['page']) : 1;
+    $per_page = isset($_POST['per_page']) ? max(1, (int) $_POST['per_page']) : 9;
+
+    $query = new WP_Query(
+        array(
+            'post_type' => 'articles',
+            'post_status' => 'publish',
+            'paged' => $paged,
+            'posts_per_page' => $per_page,
+        )
+    );
+
+    $html = '';
+    if ($query->have_posts()) {
+        foreach ($query->posts as $article_post) {
+            $html .= cpp_courses_render_article_card($article_post);
+        }
+    }
+
+    wp_send_json_success(
+        array(
+            'html' => $html,
+            'has_more' => $paged < (int) $query->max_num_pages,
+            'next_page' => $paged + 1,
+        )
+    );
+}
+add_action('wp_ajax_cpp_load_more_articles', 'cpp_courses_ajax_load_more_articles');
+add_action('wp_ajax_nopriv_cpp_load_more_articles', 'cpp_courses_ajax_load_more_articles');
 
 /**
  * Render static build HTML content inside WordPress template.
