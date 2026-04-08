@@ -164,6 +164,29 @@ add_action('wp_ajax_cpp_load_more_articles', 'cpp_courses_ajax_load_more_article
 add_action('wp_ajax_nopriv_cpp_load_more_articles', 'cpp_courses_ajax_load_more_articles');
 
 /**
+ * Remove Yoast paged crumb on articles archive.
+ *
+ * @param array<int, array<string, mixed>> $crumbs
+ * @return array<int, array<string, mixed>>
+ */
+function cpp_courses_filter_yoast_breadcrumb_links($crumbs) {
+    if (!is_post_type_archive('articles') || empty($crumbs) || !is_array($crumbs)) {
+        return $crumbs;
+    }
+
+    $last_index = array_key_last($crumbs);
+    if ($last_index !== null && isset($crumbs[$last_index]['text']) && is_string($crumbs[$last_index]['text'])) {
+        if (preg_match('/^Страница\s+\d+$/u', trim($crumbs[$last_index]['text']))) {
+            unset($crumbs[$last_index]);
+            $crumbs = array_values($crumbs);
+        }
+    }
+
+    return $crumbs;
+}
+add_filter('wpseo_breadcrumb_links', 'cpp_courses_filter_yoast_breadcrumb_links');
+
+/**
  * Render static build HTML content inside WordPress template.
  *
  * @param string $file_name Static HTML filename located in theme root.
