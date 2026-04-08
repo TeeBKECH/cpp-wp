@@ -311,6 +311,35 @@ function cpp_courses_archive_query_page_to_paged($query) {
 add_action('pre_get_posts', 'cpp_courses_archive_query_page_to_paged');
 
 /**
+ * Canonicalize CPT archive pagination to ?page=N (no /page/N/; no duplicates).
+ *
+ * @return void
+ */
+function cpp_courses_canonicalize_archive_pagination() {
+    if (is_admin() || !is_post_type_archive()) {
+        return;
+    }
+
+    $paged = (int) get_query_var('paged');
+    $page_query = isset($_GET['page']) ? (int) $_GET['page'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+    // If WP parsed /page/N/ (paged), redirect to ?page=N.
+    if ($paged > 0) {
+        $target = cpp_courses_get_archive_page_url($paged);
+        wp_safe_redirect($target, 301);
+        exit;
+    }
+
+    // If query arg is present but invalid, normalize it away.
+    if ($page_query === 1) {
+        $target = cpp_courses_get_archive_page_url(1);
+        wp_safe_redirect($target, 301);
+        exit;
+    }
+}
+add_action('template_redirect', 'cpp_courses_canonicalize_archive_pagination', 1);
+
+/**
  * Use ?page=N for CPT archives instead of /page/N/.
  *
  * @param string $url

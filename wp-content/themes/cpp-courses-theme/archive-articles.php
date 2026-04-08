@@ -10,6 +10,20 @@ if (!defined('ABSPATH')) {
 
 get_header();
 $current_page = cpp_courses_get_current_archive_page();
+$base_url = get_post_type_archive_link('articles');
+$pagination_links = paginate_links(
+    array(
+        'base'      => trailingslashit((string) $base_url) . '%_%',
+        'format'    => '?page=%#%',
+        'type'      => 'array',
+        'current'   => $current_page,
+        'total'     => (int) $wp_query->max_num_pages,
+        'mid_size'  => 0,
+        'end_size'  => 3,
+        'prev_text' => '<span class="pagination_list_icon pagination_list_icon--prev"></span>',
+        'next_text' => '<span class="pagination_list_icon pagination_list_icon--next"></span>',
+    )
+);
 ?>
 <main class="main main--articles">
     <section class="section section--page-intro section--page-intro--alt">
@@ -44,7 +58,27 @@ $current_page = cpp_courses_get_current_archive_page();
                             </div>
                         <?php endif; ?>
 
-                        <?php echo cpp_courses_render_archive_pagination($current_page, (int) $wp_query->max_num_pages); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                        <?php if (!empty($pagination_links)) : ?>
+                            <ul class="pagination_list">
+                                <?php foreach ($pagination_links as $link) : ?>
+                                    <li class="pagination_list_item">
+                                        <?php
+                                        if (strpos($link, 'dots') !== false) {
+                                            echo '<span class="pagination_list_link dots">…</span>';
+                                        } elseif (strpos($link, 'current') !== false) {
+                                            $label = trim(wp_strip_all_tags($link));
+                                            echo '<span class="pagination_list_link pagination_list_current" aria-current="page">' . esc_html($label) . '</span>';
+                                        } else {
+                                            $link = str_replace('page-numbers', 'pagination_list_link', $link);
+                                            $link = str_replace('prev pagination_list_link', 'pagination_list_link pagination_list_link--prev', $link);
+                                            $link = str_replace('next pagination_list_link', 'pagination_list_link pagination_list_link--next', $link);
+                                            echo $link; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                                        }
+                                        ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
