@@ -12,7 +12,7 @@ get_header();
 $current_page = cpp_courses_get_current_archive_page();
 $base_url = get_post_type_archive_link('articles');
 $posts_per_page = max(1, (int) get_option('posts_per_page', 10));
-$initial_offset = $current_page * $posts_per_page;
+$initial_offset = ($current_page - 1) * $posts_per_page;
 $pagination_links = paginate_links(
     array(
         'base'      => trailingslashit((string) $base_url) . '%_%',

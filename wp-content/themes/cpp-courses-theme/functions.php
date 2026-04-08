@@ -272,7 +272,7 @@ function cpp_courses_ajax_load_more_articles() {
         $exclude_ids = array_filter(array_map('absint', preg_split('/\s*,\s*/', $raw)));
     }
 
-    // Prefer offset-based pagination to avoid duplicates on paged archives.
+    // Prefer offset-based pagination for "load more".
     $offset = isset($_POST['offset']) ? max(0, (int) $_POST['offset']) : null;
     $paged = isset($_POST['page']) ? max(1, (int) $_POST['page']) : 1;
 
@@ -283,7 +283,11 @@ function cpp_courses_ajax_load_more_articles() {
         'order' => 'DESC',
         'posts_per_page' => $per_page,
     );
-    if (!empty($exclude_ids)) {
+    // IMPORTANT:
+    // When using offset, do not apply post__not_in.
+    // Excluding IDs changes the effective dataset size and makes offset-based windows unstable,
+    // which can lead to apparent "reverse" ordering or jumping to very old posts first.
+    if ($offset === null && !empty($exclude_ids)) {
         $args['post__not_in'] = $exclude_ids;
     }
 
