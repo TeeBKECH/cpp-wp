@@ -119,25 +119,26 @@ function cpp_courses_get_compact_archive_pagination($current_page, $max_pages) {
         );
     }
 
-    $pages = array(1, $max_pages, $current_page - 1, $current_page, $current_page + 1);
-    $pages = array_filter(
-        array_unique($pages),
-        static function ($page) use ($max_pages) {
-            return $page >= 1 && $page <= $max_pages;
-        }
-    );
-    sort($pages);
+    $pages = array();
+    if ($max_pages <= 5) {
+        $pages = range(1, $max_pages);
+    } elseif ($current_page <= 3) {
+        $pages = array(1, 2, 3, 'dots', $max_pages);
+    } elseif ($current_page >= $max_pages - 2) {
+        $pages = array(1, 'dots', $max_pages - 2, $max_pages - 1, $max_pages);
+    } else {
+        $pages = array(1, 'dots', $current_page, 'dots', $max_pages);
+    }
 
-    $prev_page = null;
     foreach ($pages as $page_number) {
-        if ($prev_page !== null && $page_number - $prev_page > 1) {
+        if ($page_number === 'dots') {
             $links[] = array('type' => 'dots');
+            continue;
         }
         $links[] = array(
-            'type' => $page_number === $current_page ? 'current' : 'page',
-            'page' => $page_number,
+            'type' => (int) $page_number === $current_page ? 'current' : 'page',
+            'page' => (int) $page_number,
         );
-        $prev_page = $page_number;
     }
 
     if ($current_page < $max_pages) {
@@ -259,10 +260,14 @@ function cpp_courses_ajax_load_more_articles() {
     $paged = isset($_POST['page']) ? max(1, (int) $_POST['page']) : 1;
     $per_page = (int) get_option('posts_per_page', 10);
     $per_page = $per_page > 0 ? $per_page : 10;
+    $post_type = isset($_POST['post_type']) ? sanitize_key((string) $_POST['post_type']) : 'articles';
+    if (!$post_type) {
+        $post_type = 'articles';
+    }
 
     $query = new WP_Query(
         array(
-            'post_type' => 'articles',
+            'post_type' => $post_type,
             'post_status' => 'publish',
             'paged' => $paged,
             'posts_per_page' => $per_page,
@@ -286,6 +291,23 @@ function cpp_courses_ajax_load_more_articles() {
 }
 add_action('wp_ajax_cpp_load_more_articles', 'cpp_courses_ajax_load_more_articles');
 add_action('wp_ajax_nopriv_cpp_load_more_articles', 'cpp_courses_ajax_load_more_articles');
+
+/**
+ * Map ?page=N to WP paged for post type archives.
+ *
+ * @param WP_Query $query Query object.
+ * @return void
+ */
+function cpp_courses_archive_query_page_to_paged($query) {
+    if (is_admin() || !$query->is_main_query() || !$query->is_post_type_archive()) {
+        return;
+    }
+    $page_query = isset($_GET['page']) ? (int) $_GET['page'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+    if ($page_query > 1) {
+        $query->set('paged', $page_query);
+    }
+}
+add_action('pre_get_posts', 'cpp_courses_archive_query_page_to_paged');
 
 /**
  * Use ?page=N for CPT archives instead of /page/N/.
