@@ -86,6 +86,129 @@ function cpp_courses_enqueue_assets() {
 add_action('wp_enqueue_scripts', 'cpp_courses_enqueue_assets');
 
 /**
+ * Get current archive page from query var or ?page.
+ *
+ * @return int
+ */
+function cpp_courses_get_current_archive_page() {
+    $paged = (int) get_query_var('paged');
+    $page_query = isset($_GET['page']) ? (int) $_GET['page'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+    return max(1, $paged, $page_query);
+}
+
+/**
+ * Build compact archive pagination links using ?page=N.
+ *
+ * @param int $current_page Current page.
+ * @param int $max_pages Total pages.
+ * @return array<int, array<string, mixed>>
+ */
+function cpp_courses_get_compact_archive_pagination($current_page, $max_pages) {
+    $current_page = max(1, (int) $current_page);
+    $max_pages = max(1, (int) $max_pages);
+    if ($max_pages <= 1) {
+        return array();
+    }
+
+    $links = array();
+
+    if ($current_page > 1) {
+        $links[] = array(
+            'type' => 'prev',
+            'page' => $current_page - 1,
+        );
+    }
+
+    $pages = array(1, $max_pages, $current_page - 1, $current_page, $current_page + 1);
+    $pages = array_filter(
+        array_unique($pages),
+        static function ($page) use ($max_pages) {
+            return $page >= 1 && $page <= $max_pages;
+        }
+    );
+    sort($pages);
+
+    $prev_page = null;
+    foreach ($pages as $page_number) {
+        if ($prev_page !== null && $page_number - $prev_page > 1) {
+            $links[] = array('type' => 'dots');
+        }
+        $links[] = array(
+            'type' => $page_number === $current_page ? 'current' : 'page',
+            'page' => $page_number,
+        );
+        $prev_page = $page_number;
+    }
+
+    if ($current_page < $max_pages) {
+        $links[] = array(
+            'type' => 'next',
+            'page' => $current_page + 1,
+        );
+    }
+
+    return $links;
+}
+
+/**
+ * Build archive pagination URL via ?page=N.
+ *
+ * @param int $page_number
+ * @return string
+ */
+function cpp_courses_get_archive_page_url($page_number) {
+    $page_number = max(1, (int) $page_number);
+    $base_url = get_post_type_archive_link(get_post_type());
+    if (!$base_url) {
+        $base_url = home_url('/');
+    }
+    if ($page_number <= 1) {
+        return (string) $base_url;
+    }
+    return (string) add_query_arg('page', $page_number, $base_url);
+}
+
+/**
+ * Render reusable archive pagination markup.
+ *
+ * @param int $current_page
+ * @param int $max_pages
+ * @return string
+ */
+function cpp_courses_render_archive_pagination($current_page, $max_pages) {
+    $items = cpp_courses_get_compact_archive_pagination($current_page, $max_pages);
+    if (empty($items)) {
+        return '';
+    }
+
+    $html = '<ul class="pagination_list">';
+    foreach ($items as $item) {
+        $html .= '<li class="pagination_list_item">';
+        switch ($item['type']) {
+            case 'dots':
+                $html .= '<span class="pagination_list_link dots">…</span>';
+                break;
+            case 'current':
+                $html .= '<span class="pagination_list_link pagination_list_current" aria-current="page">' . esc_html((string) $item['page']) . '</span>';
+                break;
+            case 'prev':
+                $html .= '<a class="pagination_list_link pagination_list_link--prev" href="' . esc_url(cpp_courses_get_archive_page_url((int) $item['page'])) . '"><span class="pagination_list_icon pagination_list_icon--prev"></span></a>';
+                break;
+            case 'next':
+                $html .= '<a class="pagination_list_link pagination_list_link--next" href="' . esc_url(cpp_courses_get_archive_page_url((int) $item['page'])) . '"><span class="pagination_list_icon pagination_list_icon--next"></span></a>';
+                break;
+            default:
+                $html .= '<a class="pagination_list_link" href="' . esc_url(cpp_courses_get_archive_page_url((int) $item['page'])) . '">' . esc_html((string) $item['page']) . '</a>';
+                break;
+        }
+        $html .= '</li>';
+    }
+    $html .= '</ul>';
+
+    return $html;
+}
+
+/**
  * Increase view counter for single articles posts.
  *
  * @return void
@@ -134,7 +257,8 @@ function cpp_courses_ajax_load_more_articles() {
     check_ajax_referer('cpp_articles_nonce', 'nonce');
 
     $paged = isset($_POST['page']) ? max(1, (int) $_POST['page']) : 1;
-    $per_page = isset($_POST['per_page']) ? max(1, (int) $_POST['per_page']) : 9;
+    $per_page = (int) get_option('posts_per_page', 10);
+    $per_page = $per_page > 0 ? $per_page : 10;
 
     $query = new WP_Query(
         array(
@@ -162,6 +286,35 @@ function cpp_courses_ajax_load_more_articles() {
 }
 add_action('wp_ajax_cpp_load_more_articles', 'cpp_courses_ajax_load_more_articles');
 add_action('wp_ajax_nopriv_cpp_load_more_articles', 'cpp_courses_ajax_load_more_articles');
+
+/**
+ * Use ?page=N for CPT archives instead of /page/N/.
+ *
+ * @param string $url
+ * @param int    $page
+ * @return string
+ */
+function cpp_courses_archive_pagenum_link($url, $page) {
+    if (is_admin() || !is_post_type_archive()) {
+        return $url;
+    }
+    $post_type = get_query_var('post_type');
+    if (is_array($post_type)) {
+        $post_type = reset($post_type);
+    }
+    if (!$post_type) {
+        $post_type = get_post_type();
+    }
+    $archive_url = $post_type ? get_post_type_archive_link($post_type) : '';
+    if (!$archive_url) {
+        return $url;
+    }
+    if ((int) $page <= 1) {
+        return $archive_url;
+    }
+    return add_query_arg('page', (int) $page, $archive_url);
+}
+add_filter('get_pagenum_link', 'cpp_courses_archive_pagenum_link', 10, 2);
 
 /**
  * Remove Yoast paged crumb on articles archive.

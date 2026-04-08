@@ -9,23 +9,15 @@ if (!defined('ABSPATH')) {
 }
 
 get_header();
-$current_page = max(1, (int) get_query_var('paged'));
+$current_page = cpp_courses_get_archive_current_page();
+$base_archive_url = get_post_type_archive_link('articles');
+$posts_per_page = cpp_courses_get_archive_posts_per_page();
 ?>
 <main class="main main--articles">
     <section class="section section--page-intro section--page-intro--alt">
         <div class="container">
             <div class="page-intro">
-                <nav class="breadcrumbs" aria-label="Хлебные крошки">
-                    <ol class="breadcrumbs_list">
-                        <li class="breadcrumbs_item">
-                            <a class="breadcrumbs_link" href="<?php echo esc_url(home_url('/')); ?>">Главная</a>
-                        </li>
-                        <li class="breadcrumbs_item">
-                            <span class="breadcrumbs_sep" aria-hidden="true">/</span>
-                            <span class="breadcrumbs_current" aria-current="page">Статьи</span>
-                        </li>
-                    </ol>
-                </nav>
+                <?php get_template_part('template-parts/breadcrumbs'); ?>
                 <h1 class="page-intro_title"><?php post_type_archive_title(); ?></h1>
             </div>
         </div>
@@ -54,19 +46,8 @@ $current_page = max(1, (int) get_query_var('paged'));
                             </div>
                         <?php endif; ?>
 
-                        <?php
-                        $links = paginate_links(
-                            array(
-                                'type'      => 'array',
-                                'current'   => $current_page,
-                                'end_size'  => 0,
-                                'mid_size'  => 1,
-                                'prev_text' => '<span class="pagination_list_icon pagination_list_icon--prev"></span>',
-                                'next_text' => '<span class="pagination_list_icon pagination_list_icon--next"></span>',
-                            )
-                        );
-                        if (!empty($links)) :
-                            ?>
+                        <?php $links = cpp_courses_get_compact_pagination_links($wp_query, $base_archive_url, $current_page); ?>
+                        <?php if (!empty($links)) : ?>
                             <ul class="pagination_list">
                                 <?php foreach ($links as $link) : ?>
                                     <li class="pagination_list_item">
@@ -77,7 +58,7 @@ $current_page = max(1, (int) get_query_var('paged'));
                                             $current_label = trim(wp_strip_all_tags($link));
                                             echo '<span class="pagination_list_link pagination_list_current" aria-current="page">' . esc_html($current_label) . '</span>';
                                         } else {
-                                            $link = str_replace('page-numbers', 'pagination_list_link', $link);
+                                            $link = str_replace(array('page-numbers', 'next', 'prev'), array('pagination_list_link', 'next pagination_list_link', 'prev pagination_list_link'), $link);
                                             echo $link; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                         }
                                         ?>
@@ -117,7 +98,8 @@ document.addEventListener('DOMContentLoaded', function () {
       payload.append('action', 'cpp_load_more_articles');
       payload.append('nonce', button.dataset.nonce || '');
       payload.append('page', String(nextPage));
-      payload.append('per_page', '9');
+      payload.append('per_page', '<?php echo esc_js((string) $posts_per_page); ?>');
+      payload.append('archive_url', '<?php echo esc_url_raw($base_archive_url); ?>');
 
       const response = await fetch(button.dataset.ajaxUrl || '', {
         method: 'POST',

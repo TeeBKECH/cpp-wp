@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 }
 
 if (function_exists('yoast_breadcrumb')) {
-    yoast_breadcrumb('<nav class="breadcrumbs" aria-label="Хлебные крошки"><ol class="breadcrumbs_list"><li class="breadcrumbs_item">', '</li></ol></nav>');
+    yoast_breadcrumb('<nav class="breadcrumbs" aria-label="Хлебные крошки">', '</nav>');
 } else {
     ?>
     <nav class="breadcrumbs" aria-label="Хлебные крошки">
