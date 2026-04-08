@@ -285,6 +285,7 @@ function cpp_courses_ajax_load_more_articles() {
     $scan_offset = $requested_offset;
     $scan_limit = $per_page;
     $max_scan_attempts = 5;
+    $furthest_scanned_end = $requested_offset;
 
     $kept_posts = array();
     $seen_ids = array();
@@ -300,6 +301,8 @@ function cpp_courses_ajax_load_more_articles() {
             'no_found_rows' => false,
         );
         $query = new WP_Query($args);
+        $window_end = $scan_offset + (int) $query->post_count;
+        $furthest_scanned_end = max($furthest_scanned_end, $window_end);
 
         if (empty($query->posts)) {
             break;
@@ -324,7 +327,7 @@ function cpp_courses_ajax_load_more_articles() {
         }
 
         // Advance scanning window.
-        $scan_offset += (int) $query->post_count;
+        $scan_offset = $window_end;
         $scan_limit = $per_page; // next attempt scan at least one page size
     }
 
@@ -333,8 +336,8 @@ function cpp_courses_ajax_load_more_articles() {
         $html .= cpp_courses_render_article_card($article_post);
     }
 
-    // Next offset should continue after the furthest scanned point, not just the kept count.
-    $next_offset = max($requested_offset, $scan_offset);
+    // Next offset should continue after the furthest scanned point (even when we fill early).
+    $next_offset = $furthest_scanned_end;
     $has_more = true;
     if (isset($query) && $query instanceof WP_Query) {
         $has_more = $next_offset < (int) $query->found_posts;
