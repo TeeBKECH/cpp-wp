@@ -42,7 +42,7 @@ if (!defined('ABSPATH')) {
             <?php if ($logo_icon) : ?>
               <img class="header_logo-icon" src="<?php echo esc_url($logo_icon); ?>" alt="<?php echo esc_attr($title_short); ?>" width="121" height="44" />
             <?php endif; ?>
-            <span class="header_logo-text"><?php echo wp_kses(cpp_courses_format_rich_text($title_full), cpp_courses_allowed_inline_html()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+            <span class="header_logo-text"><?php echo wp_kses($title_full, array('br' => array(), 'strong' => array(), 'em' => array(), 'span' => array('class' => array()))); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
           </a>
 
           <div class="header_contacts">
