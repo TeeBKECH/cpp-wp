@@ -94,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let loading = false;
   const maxPages = parseInt(grid.dataset.maxPages || '1', 10);
+  const postType = grid.dataset.postType || 'articles';
 
   button.addEventListener('click', async function () {
     if (loading) return;
@@ -113,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
       payload.append('nonce', button.dataset.nonce || '');
       payload.append('page', String(nextPage));
       payload.append('per_page', '<?php echo esc_js((string) max(1, (int) get_option('posts_per_page', 10))); ?>');
+      payload.append('post_type', postType);
 
       const response = await fetch(button.dataset.ajaxUrl || '', {
         method: 'POST',

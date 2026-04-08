@@ -258,22 +258,33 @@ function cpp_courses_render_article_card($post) {
 function cpp_courses_ajax_load_more_articles() {
     check_ajax_referer('cpp_articles_nonce', 'nonce');
 
-    $paged = isset($_POST['page']) ? max(1, (int) $_POST['page']) : 1;
     $per_page = (int) get_option('posts_per_page', 10);
     $per_page = $per_page > 0 ? $per_page : 10;
+
     $post_type = isset($_POST['post_type']) ? sanitize_key((string) $_POST['post_type']) : 'articles';
     if (!$post_type) {
         $post_type = 'articles';
     }
 
-    $query = new WP_Query(
-        array(
-            'post_type' => $post_type,
-            'post_status' => 'publish',
-            'paged' => $paged,
-            'posts_per_page' => $per_page,
-        )
+    // Prefer offset-based pagination to avoid duplicates on paged archives.
+    $offset = isset($_POST['offset']) ? max(0, (int) $_POST['offset']) : null;
+    $paged = isset($_POST['page']) ? max(1, (int) $_POST['page']) : 1;
+
+    $args = array(
+        'post_type' => $post_type,
+        'post_status' => 'publish',
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'posts_per_page' => $per_page,
     );
+
+    if ($offset !== null) {
+        $args['offset'] = $offset;
+    } else {
+        $args['paged'] = $paged;
+    }
+
+    $query = new WP_Query($args);
 
     $html = '';
     if ($query->have_posts()) {
@@ -282,10 +293,15 @@ function cpp_courses_ajax_load_more_articles() {
         }
     }
 
+    $returned = (int) $query->post_count;
+    $total_found = (int) $query->found_posts;
+    $next_offset = ($offset !== null ? $offset : (($paged - 1) * $per_page)) + $returned;
+
     wp_send_json_success(
         array(
             'html' => $html,
-            'has_more' => $paged < (int) $query->max_num_pages,
+            'has_more' => $next_offset < $total_found,
+            'next_offset' => $next_offset,
             'next_page' => $paged + 1,
         )
     );
