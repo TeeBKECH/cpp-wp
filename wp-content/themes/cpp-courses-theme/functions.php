@@ -322,17 +322,22 @@ function cpp_courses_canonicalize_archive_pagination() {
 
     $paged = (int) get_query_var('paged');
     $page_query = isset($_GET['page']) ? (int) $_GET['page'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+    $request_uri = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : '';
 
-    // If WP parsed /page/N/ (paged), redirect to ?page=N.
-    if ($paged > 0) {
-        $target = cpp_courses_get_archive_page_url($paged);
-        wp_safe_redirect($target, 301);
-        exit;
+    // If query arg is present, treat it as canonical (avoid redirect loops).
+    if ($page_query > 0) {
+        // Normalize ?page=1 to canonical page 1 URL.
+        if ($page_query === 1) {
+            $target = cpp_courses_get_archive_page_url(1);
+            wp_safe_redirect($target, 301);
+            exit;
+        }
+        return;
     }
 
-    // If query arg is present but invalid, normalize it away.
-    if ($page_query === 1) {
-        $target = cpp_courses_get_archive_page_url(1);
+    // Redirect only when the request is actually /page/N/ style.
+    if ($paged > 1 && strpos($request_uri, '/page/') !== false) {
+        $target = cpp_courses_get_archive_page_url($paged);
         wp_safe_redirect($target, 301);
         exit;
     }
