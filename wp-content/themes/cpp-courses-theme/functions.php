@@ -11,6 +11,7 @@ if (!defined('ABSPATH')) {
 
 require_once __DIR__ . '/inc/scf-options.php';
 require_once __DIR__ . '/inc/helpers.php';
+require_once __DIR__ . '/inc/nav-walker.php';
 
 add_filter('acf/settings/save_json', function ($path) {
     return __DIR__ . '/acf-json';
