@@ -12,7 +12,8 @@ get_header();
 $current_page = cpp_courses_get_current_archive_page();
 $base_url = get_post_type_archive_link('articles');
 $posts_per_page = max(1, (int) get_option('posts_per_page', 10));
-$initial_offset = ($current_page - 1) * $posts_per_page;
+// Offset should start AFTER the posts already shown on the current page.
+$initial_offset = $current_page * $posts_per_page;
 $pagination_links = paginate_links(
     array(
         'base'      => trailingslashit((string) $base_url) . '%_%',
@@ -20,8 +21,8 @@ $pagination_links = paginate_links(
         'type'      => 'array',
         'current'   => $current_page,
         'total'     => (int) $wp_query->max_num_pages,
-        // Keep pagination compact: prev + 1 + current±1 + last + next (with dots).
-        'mid_size'  => 1,
+        // Keep pagination compact; final list is post-processed below to max 7 items.
+        'mid_size'  => 0,
         'end_size'  => 1,
         'prev_text' => '<span class="pagination_list_icon pagination_list_icon--prev"></span>',
         'next_text' => '<span class="pagination_list_icon pagination_list_icon--next"></span>',

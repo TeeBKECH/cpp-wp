@@ -276,44 +276,74 @@ function cpp_courses_ajax_load_more_articles() {
     $offset = isset($_POST['offset']) ? max(0, (int) $_POST['offset']) : null;
     $paged = isset($_POST['page']) ? max(1, (int) $_POST['page']) : 1;
 
-    $args = array(
-        'post_type' => $post_type,
-        'post_status' => 'publish',
-        'orderby' => 'date',
-        'order' => 'DESC',
-        'posts_per_page' => $per_page,
-    );
-    // IMPORTANT:
-    // When using offset, do not apply post__not_in.
-    // Excluding IDs changes the effective dataset size and makes offset-based windows unstable,
-    // which can lead to apparent "reverse" ordering or jumping to very old posts first.
-    if ($offset === null && !empty($exclude_ids)) {
-        $args['post__not_in'] = $exclude_ids;
-    }
+    // For stable ordering (DESC) and no duplicates we:
+    // - Query a window starting at $offset.
+    // - Filter out already-rendered IDs in PHP.
+    // - If filtering removed some items, we "top up" from further offsets until we fill $per_page
+    //   or exhaust results.
+    $requested_offset = $offset !== null ? $offset : (($paged - 1) * $per_page);
+    $scan_offset = $requested_offset;
+    $scan_limit = $per_page;
+    $max_scan_attempts = 5;
 
-    if ($offset !== null) {
-        $args['offset'] = $offset;
-    } else {
-        $args['paged'] = $paged;
-    }
+    $kept_posts = array();
+    $seen_ids = array();
 
-    $query = new WP_Query($args);
+    for ($attempt = 0; $attempt < $max_scan_attempts; $attempt++) {
+        $args = array(
+            'post_type' => $post_type,
+            'post_status' => 'publish',
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'posts_per_page' => $scan_limit,
+            'offset' => $scan_offset,
+            'no_found_rows' => false,
+        );
+        $query = new WP_Query($args);
+
+        if (empty($query->posts)) {
+            break;
+        }
+
+        foreach ($query->posts as $p) {
+            $pid = (int) $p->ID;
+            if ($pid <= 0) {
+                continue;
+            }
+            if (in_array($pid, $exclude_ids, true)) {
+                continue;
+            }
+            if (isset($seen_ids[$pid])) {
+                continue;
+            }
+            $seen_ids[$pid] = true;
+            $kept_posts[] = $p;
+            if (count($kept_posts) >= $per_page) {
+                break 2;
+            }
+        }
+
+        // Advance scanning window.
+        $scan_offset += (int) $query->post_count;
+        $scan_limit = $per_page; // next attempt scan at least one page size
+    }
 
     $html = '';
-    if ($query->have_posts()) {
-        foreach ($query->posts as $article_post) {
-            $html .= cpp_courses_render_article_card($article_post);
-        }
+    foreach ($kept_posts as $article_post) {
+        $html .= cpp_courses_render_article_card($article_post);
     }
 
-    $returned = (int) $query->post_count;
-    $total_found = (int) $query->found_posts;
-    $next_offset = ($offset !== null ? $offset : (($paged - 1) * $per_page)) + $returned;
+    // Next offset should continue after the furthest scanned point, not just the kept count.
+    $next_offset = max($requested_offset, $scan_offset);
+    $has_more = true;
+    if (isset($query) && $query instanceof WP_Query) {
+        $has_more = $next_offset < (int) $query->found_posts;
+    }
 
     wp_send_json_success(
         array(
             'html' => $html,
-            'has_more' => $next_offset < $total_found,
+            'has_more' => $has_more,
             'next_offset' => $next_offset,
             'next_page' => $paged + 1,
         )
