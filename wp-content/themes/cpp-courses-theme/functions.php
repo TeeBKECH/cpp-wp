@@ -337,7 +337,12 @@ function cpp_courses_ajax_load_more_articles() {
     }
 
     // Next offset should continue after the furthest scanned point (even when we fill early).
+    // Also ensure we advance by at least 1 from the original requested window to avoid returning the same first kept item
+    // when exclude_ids caused us to keep items from deeper offsets.
     $next_offset = $furthest_scanned_end;
+    if ($next_offset <= $requested_offset) {
+        $next_offset = $requested_offset + 1;
+    }
     $has_more = true;
     if (isset($query) && $query instanceof WP_Query) {
         $has_more = $next_offset < (int) $query->found_posts;
@@ -348,6 +353,7 @@ function cpp_courses_ajax_load_more_articles() {
             'html' => $html,
             'has_more' => $has_more,
             'next_offset' => $next_offset,
+            'appended_exclude_ids' => implode(',', array_unique(array_filter(array_merge($exclude_ids, array_map(static function ($p) { return (int) $p->ID; }, $kept_posts))))),
             'next_page' => $paged + 1,
         )
     );
