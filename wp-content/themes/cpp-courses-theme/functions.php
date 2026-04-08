@@ -116,9 +116,13 @@ function cpp_courses_render_article_card($post) {
     if (!$post instanceof WP_Post) {
         return '';
     }
+    $GLOBALS['post'] = $post;
+    setup_postdata($post);
     ob_start();
-    get_template_part('template-parts/article-card', null, array('post' => $post));
-    return (string) ob_get_clean();
+    get_template_part('template-parts/post-card', 'article', array('post' => $post));
+    $html = (string) ob_get_clean();
+    wp_reset_postdata();
+    return $html;
 }
 
 /**

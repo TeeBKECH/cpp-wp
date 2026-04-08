@@ -13,8 +13,7 @@ get_header();
 if (have_posts()) :
     while (have_posts()) :
         the_post();
-        cpp_courses_increment_post_views(get_the_ID());
-        $views = cpp_courses_get_post_views(get_the_ID());
+        $views = (int) get_post_meta(get_the_ID(), 'cpp_article_views', true);
         ?>
         <main class="main main--article">
             <section class="section section--page-intro">

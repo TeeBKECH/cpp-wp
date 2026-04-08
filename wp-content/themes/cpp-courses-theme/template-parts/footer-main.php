@@ -55,7 +55,7 @@ $work_hours = cpp_courses_get_option('cpp_work_hours', '');
                         <a class="footer_contacts-value wave-link" href="<?php echo esc_url(home_url('/contacts/#contacts')); ?>">Как добраться?</a>
                     </div>
                     <div class="footer_contacts-wrap">
-                        <a class="footer_contacts-label" href="<?php echo esc_attr($phone_tel); ?>"><?php echo esc_html($phone_display); ?></a>
+                        <a class="footer_contacts-label" href="tel:<?php echo esc_attr($phone_tel); ?>"><?php echo esc_html($phone_display); ?></a>
                         <p class="footer_contacts-value"><?php echo esc_html($work_hours); ?></p>
                     </div>
                     <div class="footer_contacts-wrap">
