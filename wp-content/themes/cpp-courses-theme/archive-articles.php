@@ -18,8 +18,9 @@ $pagination_links = paginate_links(
         'type'      => 'array',
         'current'   => $current_page,
         'total'     => (int) $wp_query->max_num_pages,
-        'mid_size'  => 0,
-        'end_size'  => 3,
+        // Keep pagination compact: prev + 1 + current±1 + last + next (with dots).
+        'mid_size'  => 1,
+        'end_size'  => 1,
         'prev_text' => '<span class="pagination_list_icon pagination_list_icon--prev"></span>',
         'next_text' => '<span class="pagination_list_icon pagination_list_icon--next"></span>',
     )
