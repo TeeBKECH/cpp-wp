@@ -19,7 +19,7 @@ $address = cpp_courses_get_option('cpp_address', 'г. Мытищи, ул. Нов
 $work_hours = cpp_courses_get_option('cpp_work_hours', '');
 $weapons_hours = cpp_courses_get_option('cpp_weapons_hours', '');
 $map_iframe = cpp_courses_get_option('cpp_map_iframe', '');
-$cf7_shortcode = cpp_courses_get_option('cpp_cf7_shortcode', '');
+$cf7_form_post = cpp_courses_get_option('cpp_cf7_form_post', null);
 
 ?>
 <main class="main main--contacts">
@@ -103,12 +103,18 @@ $cf7_shortcode = cpp_courses_get_option('cpp_cf7_shortcode', '');
                 </div>
                 <div class="cta_form">
                     <?php
+                    $cf7_shortcode = '';
+                    if (is_array($cf7_form_post) && !empty($cf7_form_post['ID'])) {
+                        $cf7_shortcode = '[contact-form-7 id="' . (int) $cf7_form_post['ID'] . '"]';
+                    } elseif (is_numeric($cf7_form_post)) {
+                        $cf7_shortcode = '[contact-form-7 id="' . (int) $cf7_form_post . '"]';
+                    }
                     if (!empty($cf7_shortcode)) {
-                        echo do_shortcode($cf7_shortcode);
+                        echo do_shortcode($cf7_shortcode); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     } else {
                         ?>
                         <div class="form form--light">
-                            <p>Добавь шорткод Contact Form 7 в опции сайта: `cpp_cf7_shortcode`.</p>
+                            <p>Выбери форму Contact Form 7 в опциях сайта: поле `cpp_cf7_form_post`.</p>
                         </div>
                         <?php
                     }

@@ -100,18 +100,19 @@
       "new_lines": ""
     },
     {
-      "key": "field_cpp_cf7_shortcode",
-      "label": "Contact Form 7 shortcode",
-      "name": "cpp_cf7_shortcode",
-      "type": "text",
-      "instructions": "Например: [contact-form-7 id=\"123\" title=\"Форма\"]",
+      "key": "field_cpp_cf7_form_post",
+      "label": "Форма Contact Form 7",
+      "name": "cpp_cf7_form_post",
+      "type": "post_object",
+      "instructions": "Выбери форму Contact Form 7 из списка.",
       "required": 0,
       "wrapper": { "width": "", "class": "", "id": "" },
-      "default_value": "",
-      "placeholder": "[contact-form-7 ...]",
-      "prepend": "",
-      "append": "",
-      "maxlength": ""
+      "post_type": ["wpcf7_contact_form"],
+      "taxonomy": "",
+      "allow_null": 1,
+      "multiple": 0,
+      "return_format": "id",
+      "ui": 1
     }
   ],
   "location": [
