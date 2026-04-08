@@ -311,6 +311,27 @@ function cpp_courses_archive_query_page_to_paged($query) {
 add_action('pre_get_posts', 'cpp_courses_archive_query_page_to_paged');
 
 /**
+ * Disable WordPress canonical redirects for CPT archives when using ?page=N pagination.
+ *
+ * WordPress core tends to canonicalize paged archives to /page/N/, which creates
+ * redirects like /articles/?page=2 -> /articles/page/2/?page=2.
+ *
+ * @param string|false $redirect_url
+ * @return string|false
+ */
+function cpp_courses_disable_canonical_for_query_page_archives($redirect_url) {
+    if (is_admin() || !is_post_type_archive()) {
+        return $redirect_url;
+    }
+    // When explicitly using ?page=, keep it canonical.
+    if (isset($_GET['page']) && (int) $_GET['page'] > 0) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        return false;
+    }
+    return $redirect_url;
+}
+add_filter('redirect_canonical', 'cpp_courses_disable_canonical_for_query_page_archives', 10, 1);
+
+/**
  * Canonicalize CPT archive pagination to ?page=N (no /page/N/; no duplicates).
  *
  * @return void
@@ -324,8 +345,13 @@ function cpp_courses_canonicalize_archive_pagination() {
     $page_query = isset($_GET['page']) ? (int) $_GET['page'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
     $request_uri = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : '';
 
-    // If query arg is present, treat it as canonical (avoid redirect loops).
+    // If query arg is present, it is canonical; just normalize /page/N/?page=N -> ?page=N.
     if ($page_query > 0) {
+        if (strpos($request_uri, '/page/') !== false) {
+            $target = cpp_courses_get_archive_page_url($page_query);
+            wp_safe_redirect($target, 301);
+            exit;
+        }
         // Normalize ?page=1 to canonical page 1 URL.
         if ($page_query === 1) {
             $target = cpp_courses_get_archive_page_url(1);
