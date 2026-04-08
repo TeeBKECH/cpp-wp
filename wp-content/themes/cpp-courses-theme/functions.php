@@ -68,6 +68,15 @@ function cpp_courses_enqueue_assets() {
             filemtime($css_files[0])
         );
     }
+    $theme_overrides = $theme_dir . '/assets/css/theme-overrides.css';
+    if (file_exists($theme_overrides)) {
+        wp_enqueue_style(
+            'cpp-courses-theme-overrides',
+            $theme_uri . '/assets/css/theme-overrides.css',
+            array('cpp-courses-app'),
+            filemtime($theme_overrides)
+        );
+    }
 
     $js_files = glob($theme_dir . '/assets/js/*.js');
     if (!empty($js_files)) {

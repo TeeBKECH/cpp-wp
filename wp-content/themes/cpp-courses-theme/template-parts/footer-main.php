@@ -34,14 +34,14 @@ $work_hours = cpp_courses_get_option('cpp_work_hours', '');
             </div>
 
             <div class="footer_col footer_col--nav">
-                <h3 class="footer_title">Навигация</h3>
+                <h3 class="footer_title">Курсы</h3>
                 <?php
                 wp_nav_menu(
                     array(
                         'theme_location' => 'footer',
                         'container'      => false,
                         'menu_class'     => 'footer_links',
-                        'fallback_cb'    => false,
+                        'fallback_cb'    => 'cpp_courses_footer_menu_fallback',
                     )
                 );
                 ?>

@@ -11,6 +11,20 @@ if (!defined('ABSPATH')) {
 }
 
 if (function_exists('yoast_breadcrumb')) {
-    yoast_breadcrumb('<nav class="breadcrumbs" aria-label="Хлебные крошки"><div class="breadcrumbs_list">', '</div></nav>');
+    yoast_breadcrumb('<nav class="breadcrumbs" aria-label="Хлебные крошки"><ol class="breadcrumbs_list"><li class="breadcrumbs_item">', '</li></ol></nav>');
+} else {
+    ?>
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <ol class="breadcrumbs_list">
+            <li class="breadcrumbs_item">
+                <a class="breadcrumbs_link" href="<?php echo esc_url(home_url('/')); ?>">Главная</a>
+            </li>
+            <li class="breadcrumbs_item">
+                <span class="breadcrumbs_sep" aria-hidden="true">/</span>
+                <span class="breadcrumbs_current" aria-current="page"><?php echo esc_html(get_the_title()); ?></span>
+            </li>
+        </ol>
+    </nav>
+    <?php
 }
 
