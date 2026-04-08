@@ -12,7 +12,7 @@ $logo_icon = cpp_courses_image_field_url(cpp_courses_get_option('cpp_logo_icon',
 $title_full = cpp_courses_get_option('cpp_site_title_full', 'Центр Профессиональной Подготовки');
 $email = cpp_courses_get_option('cpp_email', '');
 $phone_display = cpp_courses_get_option('cpp_phone_display', '');
-$phone_tel = cpp_courses_phone_href($phone_display);
+$phone_tel = cpp_courses_phone_to_tel($phone_display);
 $address = cpp_courses_get_option('cpp_address', '');
 $work_hours = cpp_courses_get_option('cpp_work_hours', '');
 ?>
