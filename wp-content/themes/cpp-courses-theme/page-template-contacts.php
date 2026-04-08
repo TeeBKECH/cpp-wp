@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 get_header();
 
 $phone_display = cpp_courses_get_option('cpp_phone_display', '+7 (495) 129-50-41');
-$phone_tel = cpp_courses_get_option('cpp_phone_tel', '+74951295041');
+$phone_tel = cpp_courses_phone_to_tel($phone_display);
 $email = cpp_courses_get_option('cpp_email', 'info@cpp-globez.ru');
 $address = cpp_courses_get_option('cpp_address', 'г. Мытищи, ул. Новослободская, вл. 1, стр. 1');
 $work_hours = cpp_courses_get_option('cpp_work_hours', '');

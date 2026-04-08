@@ -62,7 +62,7 @@ if (!defined('ABSPATH')) {
           </div>
 
           <div class="header_mobile">
-            <a class="header_mobile-phone" href="tel:<?php echo esc_attr(cpp_courses_get_option('cpp_phone_tel', '+74951295041')); ?>">
+            <a class="header_mobile-phone" href="tel:<?php echo esc_attr(cpp_courses_phone_href(cpp_courses_get_option('cpp_phone_display', '+7 (495) 129-50-41'))); ?>">
               <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/phone.svg'); ?>" alt="Телефон" />
             </a>
             <div class="header_mobile-menu">

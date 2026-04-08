@@ -114,7 +114,6 @@ function cpp_courses_filter_css_tag($tag, $handle) {
     $asset_base = trailingslashit(get_template_directory_uri()) . 'assets/';
     return str_replace('/assets/', $asset_base, $tag);
 }
-add_filter('style_loader_tag', 'cpp_courses_filter_css_tag', 10, 2);
 
 /**
  * Render static build HTML content inside WordPress template.

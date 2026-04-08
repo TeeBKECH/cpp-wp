@@ -27,6 +27,19 @@ function cpp_courses_get_option($field_name, $default = '') {
 }
 
 /**
+ * Normalize phone for tel: links.
+ *
+ * @param string $phone
+ * @return string
+ */
+function cpp_courses_phone_to_tel($phone) {
+    $phone = (string) $phone;
+    // Keep only digits and plus sign.
+    $phone = preg_replace('/[^0-9+]/', '', $phone);
+    return $phone ? $phone : '';
+}
+
+/**
  * Convert an attachment image field (id/array/url) to a URL.
  *
  * @param mixed $field_value

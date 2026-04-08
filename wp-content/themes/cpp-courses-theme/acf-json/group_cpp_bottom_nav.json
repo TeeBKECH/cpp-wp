@@ -38,13 +38,13 @@
           "wrapper": { "width": "30", "class": "", "id": "" }
         },
         {
-          "key": "field_cpp_bottom_nav_url",
+          "key": "field_cpp_bottom_nav_link",
           "label": "Ссылка",
-          "name": "url",
-          "type": "url",
-          "instructions": "Абсолютная или относительная ссылка (например: /contacts/).",
+          "name": "link",
+          "type": "link",
+          "instructions": "",
           "required": 1,
-          "default_value": "",
+          "return_format": "array",
           "wrapper": { "width": "50", "class": "", "id": "" }
         }
       ]

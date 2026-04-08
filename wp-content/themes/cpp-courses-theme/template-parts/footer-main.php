@@ -12,7 +12,7 @@ $logo_icon = cpp_courses_image_field_url(cpp_courses_get_option('cpp_logo_icon',
 $title_full = cpp_courses_get_option('cpp_site_title_full', 'Центр Профессиональной Подготовки');
 $email = cpp_courses_get_option('cpp_email', '');
 $phone_display = cpp_courses_get_option('cpp_phone_display', '');
-$phone_tel = cpp_courses_get_option('cpp_phone_tel', '');
+$phone_tel = cpp_courses_phone_href($phone_display);
 $address = cpp_courses_get_option('cpp_address', '');
 $work_hours = cpp_courses_get_option('cpp_work_hours', '');
 ?>
@@ -55,7 +55,7 @@ $work_hours = cpp_courses_get_option('cpp_work_hours', '');
                         <a class="footer_contacts-value wave-link" href="<?php echo esc_url(home_url('/contacts/#contacts')); ?>">Как добраться?</a>
                     </div>
                     <div class="footer_contacts-wrap">
-                        <a class="footer_contacts-label" href="tel:<?php echo esc_attr($phone_tel); ?>"><?php echo esc_html($phone_display); ?></a>
+                        <a class="footer_contacts-label" href="<?php echo esc_attr($phone_tel); ?>"><?php echo esc_html($phone_display); ?></a>
                         <p class="footer_contacts-value"><?php echo esc_html($work_hours); ?></p>
                     </div>
                     <div class="footer_contacts-wrap">

@@ -17,20 +17,6 @@
       "maxlength": ""
     },
     {
-      "key": "field_cpp_phone_tel",
-      "label": "Телефон (для ссылки tel:)",
-      "name": "cpp_phone_tel",
-      "type": "text",
-      "instructions": "Только цифры и плюс. Например: +74951295041",
-      "required": 0,
-      "wrapper": { "width": "", "class": "", "id": "" },
-      "default_value": "",
-      "placeholder": "+7495...",
-      "prepend": "",
-      "append": "",
-      "maxlength": ""
-    },
-    {
       "key": "field_cpp_email",
       "label": "Email",
       "name": "cpp_email",
