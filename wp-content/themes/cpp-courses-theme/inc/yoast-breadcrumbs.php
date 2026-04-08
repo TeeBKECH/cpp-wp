@@ -47,6 +47,7 @@ class Cpp_Courses_Yoast_Breadcrumbs_Adapter {
         add_filter('wpseo_breadcrumb_single_link', array($this, 'filter_single_link'), 10, 2);
         add_filter('wpseo_breadcrumb_output_wrapper', array($this, 'filter_output_wrapper'));
         add_filter('wpseo_breadcrumb_output', array($this, 'filter_output'));
+        add_filter('wpseo_breadcrumb_separator', array($this, 'filter_separator'));
 
         // Output without custom wrapper; Yoast will call our filters.
         yoast_breadcrumb();
@@ -54,6 +55,23 @@ class Cpp_Courses_Yoast_Breadcrumbs_Adapter {
         remove_filter('wpseo_breadcrumb_single_link', array($this, 'filter_single_link'), 10);
         remove_filter('wpseo_breadcrumb_output_wrapper', array($this, 'filter_output_wrapper'));
         remove_filter('wpseo_breadcrumb_output', array($this, 'filter_output'));
+        remove_filter('wpseo_breadcrumb_separator', array($this, 'filter_separator'));
+    }
+
+    /**
+     * Convert Yoast separator into our markup.
+     *
+     * Separator value remains editable in Yoast settings.
+     *
+     * @param string $separator
+     * @return string
+     */
+    public function filter_separator($separator) {
+        $sep = trim((string) $separator);
+        if ($sep === '') {
+            $sep = '/';
+        }
+        return '<span class="breadcrumbs_sep" aria-hidden="true">' . esc_html($sep) . '</span>';
     }
 
     /**
