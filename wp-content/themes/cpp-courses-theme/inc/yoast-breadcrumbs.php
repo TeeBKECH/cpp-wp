@@ -25,6 +25,8 @@ function cpp_courses_render_yoast_breadcrumbs() {
     $adapter->render();
 }
 
+add_action('cpp_courses_breadcrumbs', 'cpp_courses_render_yoast_breadcrumbs');
+
 /**
  * Adapter class based on wp-kama approach.
  *
@@ -104,4 +106,6 @@ class Cpp_Courses_Yoast_Breadcrumbs_Adapter {
         return '<li class="breadcrumbs_item">' . $inner . '</li>';
     }
 }
+
+add_action('cpp_courses_breadcrumbs', 'cpp_courses_render_yoast_breadcrumbs');
 
