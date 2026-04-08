@@ -71,12 +71,20 @@ function cpp_courses_image_field_url($field_value) {
  * @return void
  */
 function cpp_courses_render_bottom_nav() {
-    if (!function_exists('have_rows') || !have_rows('cpp_bottom_nav_items', 'option')) {
+    // Backward compat:
+    // - new: group_cpp_bottom_nav.json uses repeater field "cpp_bottom_nav"
+    // - old: group_cpp_bottom_nav_items used "cpp_bottom_nav_items"
+    $field_name = 'cpp_bottom_nav';
+    if (function_exists('have_rows') && have_rows('cpp_bottom_nav', 'option')) {
+        $field_name = 'cpp_bottom_nav';
+    } elseif (function_exists('have_rows') && have_rows('cpp_bottom_nav_items', 'option')) {
+        $field_name = 'cpp_bottom_nav_items';
+    } else {
         return;
     }
 
     echo '<nav class="bottom-nav">';
-    while (have_rows('cpp_bottom_nav_items', 'option')) {
+    while (have_rows($field_name, 'option')) {
         the_row();
         $icon = get_sub_field('icon');
         $link = get_sub_field('link');

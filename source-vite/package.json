@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:wp": "BUILD_TARGET=wp vite build",
     "preview": "vite preview --open",
     "figma:fetch": "node scripts/fetch-figma-design.mjs"
   },
@@ -14,9 +15,10 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "dotenv": "^16.4.5",
     "autoprefixer": "^10.4.21",
+    "dotenv": "^16.4.5",
     "fast-glob": "^3.3.3",
+    "postcss-url": "^10.1.3",
     "prettier": "^3.6.2",
     "pug": "^3.0.3",
     "sass": "^1.97.3",

@@ -10,6 +10,7 @@ import fg from 'fast-glob'
 import pug from 'pug'
 import prettier from 'prettier'
 import autoprefixer from 'autoprefixer'
+import postcssUrl from 'postcss-url'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 const SRC_DIR = path.resolve(process.cwd(), 'src')
@@ -325,6 +326,8 @@ function cssAliasPlugin() {
 
 export default defineConfig(({ mode }) => {
   const isProd = mode === 'production'
+  // WP build is enabled via env var so we can keep normal prod build intact.
+  const isWpBuild = process.env.BUILD_TARGET === 'wp'
 
   return {
     // Если используете public/assets — отключите плагин копирования ниже
@@ -345,6 +348,19 @@ export default defineConfig(({ mode }) => {
 
       cssAliasPlugin(),
 
+      // Patch bundled CSS URLs for WordPress theme deployment.
+      isWpBuild && {
+        name: 'wp-css-asset-path-fix',
+        generateBundle(options, bundle) {
+          for (const fileName of Object.keys(bundle)) {
+            const item = bundle[fileName]
+            if (item && item.type === 'asset' && fileName.endsWith('.css') && typeof item.source === 'string') {
+              item.source = item.source.replace(/url\((['"]?)\/assets\//g, 'url($1../')
+            }
+          }
+        },
+      },
+
       // Для старых браузеров можно раскомментировать:
       // legacy({
       //   targets: ['defaults', 'not IE 11'],
@@ -352,7 +368,7 @@ export default defineConfig(({ mode }) => {
     ],
 
     root: process.cwd(),
-    base: '/', // можно поменять при деплое на поддиректорию
+    base: isWpBuild ? './' : '/',
     publicDir: 'public', // кладите сюда только статические ассеты без обработки (например, public/assets)
 
     resolve: {
@@ -365,7 +381,21 @@ export default defineConfig(({ mode }) => {
     css: {
       devSourcemap: !isProd,
       postcss: {
-        plugins: [autoprefixer()],
+        plugins: [
+          autoprefixer(),
+          ...(isWpBuild
+            ? [
+                postcssUrl({
+                  url: (asset) => {
+                    if (asset.url && asset.url.startsWith('/assets/')) {
+                      return `/wp-content/themes/cpp-courses-theme/assets/${asset.url.replace(/^\/assets\//, '')}`
+                    }
+                    return asset.url
+                  },
+                }),
+              ]
+            : []),
+        ],
       },
       modules: {
         // Имена классов как в webpack-конфиге
@@ -403,15 +433,17 @@ export default defineConfig(({ mode }) => {
           app: MAIN_ENTRY,
         },
         output: {
-          entryFileNames: 'assets/js/[name].[hash].js',
-          chunkFileNames: 'assets/js/[name].[hash].js',
+          entryFileNames: isWpBuild ? 'assets/js/[name].js' : 'assets/js/[name].[hash].js',
+          chunkFileNames: isWpBuild ? 'assets/js/[name].js' : 'assets/js/[name].[hash].js',
           assetFileNames: (assetInfo) => {
             const ext = path.extname(assetInfo.name || '').toLowerCase()
-            if (ext === '.css') return 'assets/css/[name].[hash][extname]'
-            if (/\.(woff2?|ttf|eot|otf)$/.test(ext)) return 'assets/fonts/[name].[hash][extname]'
+            if (ext === '.css')
+              return isWpBuild ? 'assets/css/[name][extname]' : 'assets/css/[name].[hash][extname]'
+            if (/\.(woff2?|ttf|eot|otf)$/.test(ext))
+              return isWpBuild ? 'assets/fonts/[name][extname]' : 'assets/fonts/[name].[hash][extname]'
             if (/\.(png|jpe?g|webp|svg|gif|avif)$/.test(ext))
-              return 'assets/media/[name].[hash][extname]'
-            return 'assets/[name].[hash][extname]'
+              return isWpBuild ? 'assets/media/[name][extname]' : 'assets/media/[name].[hash][extname]'
+            return isWpBuild ? 'assets/[name][extname]' : 'assets/[name].[hash][extname]'
           },
         },
       },

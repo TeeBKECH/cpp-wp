@@ -68,15 +68,7 @@ function cpp_courses_enqueue_assets() {
             filemtime($css_files[0])
         );
     }
-    $theme_overrides = $theme_dir . '/assets/css/theme-overrides.css';
-    if (file_exists($theme_overrides)) {
-        wp_enqueue_style(
-            'cpp-courses-theme-overrides',
-            $theme_uri . '/assets/css/theme-overrides.css',
-            array('cpp-courses-app'),
-            filemtime($theme_overrides)
-        );
-    }
+    // theme-overrides.css was a temporary workaround; WP-specific build now produces correct URLs.
 
     $js_files = glob($theme_dir . '/assets/js/*.js');
     if (!empty($js_files)) {
@@ -91,29 +83,6 @@ function cpp_courses_enqueue_assets() {
     }
 }
 add_action('wp_enqueue_scripts', 'cpp_courses_enqueue_assets');
-
-/**
- * Fix absolute asset URLs inside bundled CSS (e.g. /assets/fonts/*).
- *
- * Vite bundle currently emits absolute paths for @font-face sources.
- * On WP these must point to the theme asset directory.
- *
- * @param string $tag
- * @param string $handle
- * @return string
- */
-function cpp_courses_filter_css_tag($tag, $handle) {
-    if ($handle !== 'cpp-courses-app') {
-        return $tag;
-    }
-
-    if (strpos($tag, '/assets/css/') === false) {
-        return $tag;
-    }
-
-    $asset_base = trailingslashit(get_template_directory_uri()) . 'assets/';
-    return str_replace('/assets/', $asset_base, $tag);
-}
 
 /**
  * Render static build HTML content inside WordPress template.
