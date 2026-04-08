@@ -377,6 +377,23 @@ function cpp_courses_archive_query_page_to_paged($query) {
 add_action('pre_get_posts', 'cpp_courses_archive_query_page_to_paged');
 
 /**
+ * Ensure CPT archives are ordered newest-to-oldest (DESC by date).
+ *
+ * Some environments/plugins can override archive ordering; "load more" relies on a stable ordering.
+ *
+ * @param WP_Query $query
+ * @return void
+ */
+function cpp_courses_force_archive_order_desc($query) {
+    if (is_admin() || !$query->is_main_query() || !$query->is_post_type_archive()) {
+        return;
+    }
+    $query->set('orderby', 'date');
+    $query->set('order', 'DESC');
+}
+add_action('pre_get_posts', 'cpp_courses_force_archive_order_desc', 20);
+
+/**
  * Disable WordPress canonical redirects for CPT archives when using ?page=N pagination.
  *
  * WordPress core tends to canonicalize paged archives to /page/N/, which creates
