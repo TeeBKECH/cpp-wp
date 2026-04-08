@@ -33,7 +33,7 @@ if (!defined('ABSPATH')) {
                     </div>
                     <div class="footer_contacts-wrap">
                         <?php $phone_display = cpp_courses_get_option('cpp_phone_display', ''); ?>
-                        <a class="footer_contacts-label" href="tel:<?php echo esc_attr(cpp_courses_normalize_phone_for_tel($phone_display)); ?>">
+                        <a class="footer_contacts-label" href="tel:<?php echo esc_attr(cpp_courses_phone_to_tel($phone_display)); ?>">
                             <?php echo esc_html($phone_display); ?>
                         </a>
                         <p class="footer_contacts-value"><?php echo esc_html(cpp_courses_get_option('cpp_work_hours', '')); ?></p>
