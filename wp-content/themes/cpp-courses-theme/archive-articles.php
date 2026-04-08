@@ -11,6 +11,8 @@ if (!defined('ABSPATH')) {
 get_header();
 $current_page = cpp_courses_get_current_archive_page();
 $base_url = get_post_type_archive_link('articles');
+$posts_per_page = max(1, (int) get_option('posts_per_page', 10));
+$initial_offset = $current_page * $posts_per_page;
 $pagination_links = paginate_links(
     array(
         'base'      => trailingslashit((string) $base_url) . '%_%',
@@ -41,9 +43,11 @@ $pagination_links = paginate_links(
             <div class="blog section_content">
                 <div class="blog_grid" id="articles-grid" data-page="<?php echo esc_attr((string) $current_page); ?>" data-max-pages="<?php echo esc_attr((string) $wp_query->max_num_pages); ?>">
                     <?php
+                    $rendered_ids = array();
                     if (have_posts()) {
                         while (have_posts()) {
                             the_post();
+                            $rendered_ids[] = (int) get_the_ID();
                             get_template_part('template-parts/post-card', 'article');
                         }
                     }
@@ -53,7 +57,16 @@ $pagination_links = paginate_links(
                     <div class="pagination">
                         <?php if ((int) $wp_query->max_num_pages > 1) : ?>
                             <div class="pagination_more">
-                                <button class="button button--filled button--lg" type="button" id="articles-load-more" data-nonce="<?php echo esc_attr(wp_create_nonce('cpp_articles_nonce')); ?>" data-ajax-url="<?php echo esc_url(admin_url('admin-ajax.php')); ?>">
+                                <button
+                                    class="button button--filled button--lg"
+                                    type="button"
+                                    id="articles-load-more"
+                                    data-nonce="<?php echo esc_attr(wp_create_nonce('cpp_articles_nonce')); ?>"
+                                    data-ajax-url="<?php echo esc_url(admin_url('admin-ajax.php')); ?>"
+                                    data-exclude-ids="<?php echo esc_attr(implode(',', array_unique(array_filter($rendered_ids)))); ?>"
+                                    data-offset="<?php echo esc_attr((string) $initial_offset); ?>"
+                                    data-post-type="articles"
+                                >
                                     <span class="button_text">загрузить еще</span>
                                 </button>
                             </div>
@@ -93,28 +106,20 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!grid || !button) return;
 
   let loading = false;
-  const maxPages = parseInt(grid.dataset.maxPages || '1', 10);
-  const postType = grid.dataset.postType || 'articles';
+  const postType = button.dataset.postType || 'articles';
 
   button.addEventListener('click', async function () {
     if (loading) return;
-    const currentPage = parseInt(grid.dataset.page || '1', 10);
-    if (currentPage >= maxPages) {
-      button.style.display = 'none';
-      return;
-    }
-
     loading = true;
     button.disabled = true;
-    const nextPage = currentPage + 1;
 
     try {
       const payload = new URLSearchParams();
       payload.append('action', 'cpp_load_more_articles');
       payload.append('nonce', button.dataset.nonce || '');
-      payload.append('page', String(nextPage));
-      payload.append('per_page', '<?php echo esc_js((string) max(1, (int) get_option('posts_per_page', 10))); ?>');
       payload.append('post_type', postType);
+      payload.append('offset', button.dataset.offset || '0');
+      payload.append('exclude_ids', button.dataset.excludeIds || '');
 
       const response = await fetch(button.dataset.ajaxUrl || '', {
         method: 'POST',
@@ -127,7 +132,12 @@ document.addEventListener('DOMContentLoaded', function () {
       if (data.data && data.data.html) {
         grid.insertAdjacentHTML('beforeend', data.data.html);
       }
-      grid.dataset.page = String(nextPage);
+      if (data.data && typeof data.data.next_offset !== 'undefined') {
+        button.dataset.offset = String(data.data.next_offset);
+      }
+      if (data.data && data.data.appended_exclude_ids) {
+        button.dataset.excludeIds = String(data.data.appended_exclude_ids);
+      }
       if (!data.data || !data.data.has_more) {
         button.style.display = 'none';
       }

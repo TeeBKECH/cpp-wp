@@ -266,6 +266,12 @@ function cpp_courses_ajax_load_more_articles() {
         $post_type = 'articles';
     }
 
+    $exclude_ids = array();
+    if (isset($_POST['exclude_ids'])) {
+        $raw = (string) wp_unslash($_POST['exclude_ids']);
+        $exclude_ids = array_filter(array_map('absint', preg_split('/\s*,\s*/', $raw)));
+    }
+
     // Prefer offset-based pagination to avoid duplicates on paged archives.
     $offset = isset($_POST['offset']) ? max(0, (int) $_POST['offset']) : null;
     $paged = isset($_POST['page']) ? max(1, (int) $_POST['page']) : 1;
@@ -277,6 +283,9 @@ function cpp_courses_ajax_load_more_articles() {
         'order' => 'DESC',
         'posts_per_page' => $per_page,
     );
+    if (!empty($exclude_ids)) {
+        $args['post__not_in'] = $exclude_ids;
+    }
 
     if ($offset !== null) {
         $args['offset'] = $offset;
