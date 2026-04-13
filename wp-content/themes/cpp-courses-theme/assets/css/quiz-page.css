@@ -1,0 +1,19 @@
+/* QUIZ page template: progress + buttons layout (theme add-on; main styles from Vite build). */
+
+.test-quiz_actions {
+  flex-wrap: wrap;
+}
+
+.test-quiz_progress {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-heading, #1a1a1a);
+}
+
+.test-quiz_actions-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}

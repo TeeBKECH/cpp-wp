@@ -32,6 +32,8 @@ if (!defined('ABSPATH')) {
 $page_class = 'default';
 if (is_front_page()) {
     $page_class = 'index';
+} elseif (is_page_template('page-quiz.php')) {
+    $page_class = 'test-intro';
 } elseif (is_page()) {
     $page_class = get_post_field('post_name', get_post());
 } elseif (is_post_type_archive('services')) {

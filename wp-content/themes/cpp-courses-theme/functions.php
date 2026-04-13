@@ -16,6 +16,8 @@ require_once __DIR__ . '/inc/yoast-breadcrumbs.php';
 require_once __DIR__ . '/inc/archive-load-more.php';
 require_once __DIR__ . '/inc/education-archive.php';
 require_once __DIR__ . '/inc/acf-register-education-group.php';
+require_once __DIR__ . '/inc/acf-register-quiz-groups.php';
+require_once __DIR__ . '/inc/quiz-ajax.php';
 
 add_filter('acf/settings/save_json', function ($path) {
     return __DIR__ . '/acf-json';
@@ -126,6 +128,28 @@ function cpp_courses_enqueue_assets() {
     }
 }
 add_action('wp_enqueue_scripts', 'cpp_courses_enqueue_assets');
+
+/**
+ * Extra styles for QUIZ page template (progress + action buttons row).
+ *
+ * @return void
+ */
+function cpp_courses_enqueue_quiz_page_assets() {
+    if (!is_page_template('page-quiz.php')) {
+        return;
+    }
+    $path = get_template_directory() . '/assets/css/quiz-page.css';
+    if (!is_readable($path)) {
+        return;
+    }
+    wp_enqueue_style(
+        'cpp-quiz-page',
+        get_template_directory_uri() . '/assets/css/quiz-page.css',
+        array('cpp-courses-app'),
+        filemtime($path)
+    );
+}
+add_action('wp_enqueue_scripts', 'cpp_courses_enqueue_quiz_page_assets', 20);
 
 /**
  * Get current archive page from query var or ?page.
