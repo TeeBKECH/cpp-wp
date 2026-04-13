@@ -15,6 +15,10 @@ $phone_display = cpp_courses_get_option('cpp_phone_display', '');
 $phone_tel = cpp_courses_phone_to_tel($phone_display);
 $address = cpp_courses_get_option('cpp_address', '');
 $work_hours = cpp_courses_get_option('cpp_work_hours', '');
+$education_archive = get_post_type_archive_link('education');
+if (!$education_archive) {
+    $education_archive = home_url('/education/');
+}
 ?>
 <footer class="footer">
     <div class="container">
@@ -28,7 +32,7 @@ $work_hours = cpp_courses_get_option('cpp_work_hours', '');
                 </div>
                 <p class="footer_copy">©<?php echo esc_html(date_i18n('Y')); ?> - <?php echo wp_kses_post($title_full); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
                 <ul class="footer_legal">
-                    <li><a class="footer_link" href="<?php echo esc_url(home_url('/edu-info/')); ?>">Сведения об образовательной организации</a></li>
+                    <li><a class="footer_link" href="<?php echo esc_url($education_archive); ?>">Сведения об образовательной организации</a></li>
                     <li><a class="footer_link" href="#">Политика конфиденциальности</a></li>
                 </ul>
             </div>

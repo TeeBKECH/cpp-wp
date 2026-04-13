@@ -39,6 +39,9 @@ if (function_exists('get_field')) {
     $intro_raw = get_field('cpp_edu_archive_intro', 'option');
     $intro = is_string($intro_raw) ? trim($intro_raw) : '';
 }
+if ($intro === '') {
+    $intro = 'ЧОУ ДПО «Центр профессиональной подготовки» проводит обучение частных охранников 4-го, 5-го и 6-го разрядов в соответствии с приказом ФСВНГ РФ № 396 от 30 ноября 2019 года и требованиями законодательства Российской Федерации. Программа разработана и утверждена в Росгвардии, что гарантирует её соответствие профессиональным стандартам.';
+}
 
 $terms_for_tabs = get_terms(
     array(
@@ -53,16 +56,14 @@ $terms_for_tabs = get_terms(
             <div class="page-intro">
                 <?php get_template_part('template-parts/breadcrumbs'); ?>
                 <h1 class="page-intro_title"><?php post_type_archive_title(); ?></h1>
-                <?php if ($intro !== '') : ?>
-                    <p class="page-intro_desc"><?php echo nl2br(esc_html($intro)); ?></p>
-                <?php endif; ?>
+                <p class="page-intro_desc"><?php echo nl2br(esc_html($intro)); ?></p>
                 <?php if (!is_wp_error($terms_for_tabs) && !empty($terms_for_tabs)) : ?>
                     <div class="page-intro_tabs">
                         <?php
                         $all_url = remove_query_arg('filter', $archive_url);
                         $all_active = ($filter_slug === '');
                         ?>
-                        <a class="button button--<?php echo $all_active ? 'filled' : 'outline'; ?> button--sm" href="<?php echo esc_url($all_url); ?>"<?php echo $all_active ? ' aria-current="page"' : ''; ?>>
+                        <a class="button button--outline button--sm" href="<?php echo esc_url($all_url); ?>"<?php echo $all_active ? ' aria-current="page"' : ''; ?>>
                             <span class="button_text"><?php esc_html_e('Все', 'cpp-courses-theme'); ?></span>
                         </a>
                         <?php foreach ($terms_for_tabs as $tab_term) : ?>
@@ -73,7 +74,7 @@ $terms_for_tabs = get_terms(
                             $tab_url = add_query_arg('filter', $tab_term->slug, $archive_url);
                             $tab_active = ($filter_slug === $tab_term->slug);
                             ?>
-                            <a class="button button--<?php echo $tab_active ? 'filled' : 'outline'; ?> button--sm" href="<?php echo esc_url($tab_url); ?>"<?php echo $tab_active ? ' aria-current="page"' : ''; ?>>
+                            <a class="button button--outline button--sm" href="<?php echo esc_url($tab_url); ?>"<?php echo $tab_active ? ' aria-current="page"' : ''; ?>>
                                 <span class="button_text"><?php echo esc_html($tab_term->name); ?></span>
                             </a>
                         <?php endforeach; ?>

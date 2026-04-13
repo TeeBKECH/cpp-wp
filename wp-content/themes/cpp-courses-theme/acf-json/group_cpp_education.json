@@ -1,6 +1,6 @@
 {
   "key": "group_cpp_education",
-  "title": "CPP — Сведения об образовании (запись)",
+  "title": "Сведения об образовании (запись)",
   "fields": [
     {
       "key": "field_cpp_edu_tab_archive",
@@ -15,7 +15,7 @@
       "name": "cpp_edu_display_type",
       "type": "select",
       "instructions": "Приказы — скачивание PDF; доступная среда — переход на страницу; лицензии — одно фото на запись, открытие в галерее Fancybox.",
-      "required": 1,
+      "required": 0,
       "choices": {
         "download": "Скачать файл (PDF)",
         "link": "Ссылка на детальную страницу",
@@ -92,7 +92,7 @@
       "label": "Текст под заголовком",
       "name": "cpp_edu_intro_text",
       "type": "textarea",
-      "instructions": "Обычный текст. Если пусто — используется отрывок записи.",
+      "instructions": "Обычный текст (не редактор). Если пусто — берётся отрывок записи.",
       "rows": 5
     },
     {
@@ -124,7 +124,8 @@
       "label": "Ссылка кнопки",
       "name": "cpp_edu_cta_url",
       "type": "url",
-      "instructions": "Полный URL. Если пусто — модальное окно с Contact Form 7 из настроек сайта.",
+      "instructions": "Полный URL. Если пусто — модальное окно с Contact Form 7 из настроек сайта (опции).",
+      "required": 0,
       "conditional_logic": [
         [
           {
@@ -230,6 +231,5 @@
   "instruction_placement": "label",
   "hide_on_screen": "",
   "active": true,
-  "description": "Тип записи и таксономия задаются в SCF. Local JSON для синхронизации.",
-  "modified": 1775683200
+  "description": "Тип записи education и таксономия education_cats — в SCF. Поля подгружаются из темы (acf_add_local_field_group)."
 }

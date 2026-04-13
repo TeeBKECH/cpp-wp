@@ -15,6 +15,7 @@ require_once __DIR__ . '/inc/nav-walker.php';
 require_once __DIR__ . '/inc/yoast-breadcrumbs.php';
 require_once __DIR__ . '/inc/archive-load-more.php';
 require_once __DIR__ . '/inc/education-archive.php';
+require_once __DIR__ . '/inc/acf-register-education-group.php';
 
 add_filter('acf/settings/save_json', function ($path) {
     return __DIR__ . '/acf-json';
@@ -58,6 +59,43 @@ function cpp_courses_static_page_map() {
         'links' => 'links.html',
     );
 }
+
+/**
+ * Static HTML template filename for a page slug (see cpp_courses_static_page_map).
+ *
+ * @param int $post_id Page ID.
+ * @return string Filename or empty string.
+ */
+function cpp_courses_get_static_template_for_post($post_id) {
+    $post_id = (int) $post_id;
+    if ($post_id < 1) {
+        return '';
+    }
+    $slug = get_post_field('post_name', $post_id);
+    if (!is_string($slug) || $slug === '') {
+        return '';
+    }
+    $map = cpp_courses_static_page_map();
+    return isset($map[ $slug ]) ? (string) $map[ $slug ] : '';
+}
+
+/**
+ * Old static URL /edu-info/ → CPT archive /education/ (theme template archive-education.php).
+ *
+ * @return void
+ */
+function cpp_courses_redirect_edu_info_page_to_education_archive() {
+    if (is_admin() || !is_page('edu-info')) {
+        return;
+    }
+    $archive = get_post_type_archive_link('education');
+    if (!$archive) {
+        return;
+    }
+    wp_safe_redirect($archive, 301);
+    exit;
+}
+add_action('template_redirect', 'cpp_courses_redirect_edu_info_page_to_education_archive', 1);
 
 function cpp_courses_enqueue_assets() {
     $theme_uri = get_template_directory_uri();

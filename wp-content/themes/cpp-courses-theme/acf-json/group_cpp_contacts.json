@@ -99,6 +99,18 @@
       "multiple": 0,
       "return_format": "id",
       "ui": 1
+    },
+    {
+      "key": "field_cpp_edu_archive_intro",
+      "label": "Текст под заголовком (архив «Сведения об образовании»)",
+      "name": "cpp_edu_archive_intro",
+      "type": "textarea",
+      "instructions": "Показывается на странице архива типа education (/education/). Переносы строк сохраняются.",
+      "required": 0,
+      "wrapper": { "width": "", "class": "", "id": "" },
+      "default_value": "",
+      "rows": 6,
+      "new_lines": ""
     }
   ],
   "location": [

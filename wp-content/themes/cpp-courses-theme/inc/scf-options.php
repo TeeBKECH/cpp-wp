@@ -43,14 +43,5 @@ add_action('acf/init', function () {
             'menu_slug'   => 'cpp-site-branding',
         )
     );
-
-    acf_add_options_sub_page(
-        array(
-            'page_title'  => 'Архив «Сведения об образовании»',
-            'menu_title'  => 'Архив: сведения об образовании',
-            'parent_slug' => 'cpp-site-settings',
-            'menu_slug'   => 'cpp-site-education-archive',
-        )
-    );
 });
 
