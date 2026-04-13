@@ -72,7 +72,7 @@ $has_quiz = count($question_ids) > 0;
                 </div>
 
                 <?php if ($has_quiz) : ?>
-                    <div class="test-quiz" id="cpp-quiz-stage" hidden>
+                    <div class="test-quiz cpp-quiz-panel cpp-quiz-panel--hidden" id="cpp-quiz-stage" hidden>
                         <form class="test-quiz_form" id="cpp-quiz-form" action="#" method="get" onsubmit="return false;">
                             <div class="test-quiz_question" id="cpp-quiz-question-wrap">
                                 <div class="test-quiz_question-text entry-content" id="cpp-quiz-question-body"></div>
@@ -97,7 +97,7 @@ $has_quiz = count($question_ids) > 0;
     </section>
 
     <?php if ($has_quiz) : ?>
-        <section class="section section--test-quiz" id="cpp-quiz-results-section" hidden>
+        <section class="section section--test-quiz cpp-quiz-panel cpp-quiz-panel--hidden" id="cpp-quiz-results-section" hidden>
             <div class="container">
                 <div class="test-quiz">
                     <div class="page-intro" style="margin-bottom: 1.5rem;">
@@ -106,6 +106,7 @@ $has_quiz = count($question_ids) > 0;
                             <p class="page-intro_desc"><?php echo nl2br(esc_html($results_text)); ?></p>
                         <?php endif; ?>
                         <p class="page-intro_desc" id="cpp-quiz-results-score"></p>
+                        <ol class="cpp-quiz-review" id="cpp-quiz-review" aria-label="<?php echo esc_attr__('Разбор ответов', 'cpp-courses-theme'); ?>"></ol>
                     </div>
                     <?php if ($cf7_html !== '') : ?>
                         <div class="test-quiz_form cpp-quiz-results-form">
@@ -128,10 +129,11 @@ $has_quiz = count($question_ids) > 0;
     pageId: <?php echo (int) $page_id; ?>,
     ajaxUrl: <?php echo wp_json_encode($ajax_url); ?>,
     nonce: <?php echo wp_json_encode($nonce); ?>,
-    storageKey: 'cpp_quiz_<?php echo (int) $page_id; ?>_v1',
+    storageKey: 'cpp_quiz_<?php echo (int) $page_id; ?>_v2',
     totalHint: <?php echo (int) count($question_ids); ?>,
     labelNext: <?php echo wp_json_encode(__('Далее →', 'cpp-courses-theme'), JSON_UNESCAPED_UNICODE); ?>,
-    labelFinish: <?php echo wp_json_encode(__('Показать результаты', 'cpp-courses-theme'), JSON_UNESCAPED_UNICODE); ?>
+    labelFinish: <?php echo wp_json_encode(__('Показать результаты', 'cpp-courses-theme'), JSON_UNESCAPED_UNICODE); ?>,
+    labelYourAnswer: <?php echo wp_json_encode(__('Ваш ответ:', 'cpp-courses-theme'), JSON_UNESCAPED_UNICODE); ?>
   };
 
   const main = document.getElementById('cpp-quiz-main');
@@ -149,15 +151,28 @@ $has_quiz = count($question_ids) > 0;
   const primaryLabel = document.getElementById('cpp-quiz-primary-label');
   const progressEl = document.getElementById('cpp-quiz-progress');
   const scoreEl = document.getElementById('cpp-quiz-results-score');
+  const reviewEl = document.getElementById('cpp-quiz-review');
 
   if (!main || !stage || !form || !qBody || !opts || !primaryBtn || !primaryLabel) return;
+
+  function setPanelHidden(el, hidden) {
+    if (!el) return;
+    if (hidden) {
+      el.hidden = true;
+      el.classList.add('cpp-quiz-panel--hidden');
+    } else {
+      el.hidden = false;
+      el.classList.remove('cpp-quiz-panel--hidden');
+    }
+  }
 
   let state = {
     started: false,
     index: 0,
     total: cfg.totalHint || 0,
     correctKey: [],
-    userAnswers: []
+    userAnswers: [],
+    snapshots: []
   };
 
   function loadState() {
@@ -171,6 +186,7 @@ $has_quiz = count($question_ids) > 0;
         state.correctKey = Array.isArray(o.correctKey) ? o.correctKey : [];
         state.userAnswers = Array.isArray(o.userAnswers) ? o.userAnswers : [];
         state.total = typeof o.total === 'number' ? o.total : state.total;
+        state.snapshots = Array.isArray(o.snapshots) ? o.snapshots : [];
       }
     } catch (e) {}
   }
@@ -184,7 +200,8 @@ $has_quiz = count($question_ids) > 0;
           index: state.index,
           total: state.total,
           correctKey: state.correctKey,
-          userAnswers: state.userAnswers
+          userAnswers: state.userAnswers,
+          snapshots: state.snapshots
         })
       );
     } catch (e) {}
@@ -278,6 +295,14 @@ $has_quiz = count($question_ids) > 0;
       return a - b;
     });
     state.total = data.total;
+    state.snapshots[data.index] = {
+      question_html: data.question_html || '',
+      answers: (data.answers || []).map(function (a) {
+        return { i: a.i, text: a.text };
+      }),
+      correct_indices: (data.correct_indices || []).slice(),
+      input_type: data.input_type
+    };
     updatePrimaryButton();
     saveState();
   }
@@ -330,20 +355,67 @@ $has_quiz = count($question_ids) > 0;
     setPagePhase('intro');
     if (introText) introText.hidden = false;
     if (introActions) introActions.hidden = false;
-    if (stage) stage.hidden = true;
+    setPanelHidden(stage, true);
     if (introFooter) introFooter.hidden = false;
     if (introSec) introSec.hidden = false;
-    if (resSec) resSec.hidden = true;
+    setPanelHidden(resSec, true);
+    if (reviewEl) reviewEl.innerHTML = '';
   }
 
   function showQuiz() {
     setPagePhase('quiz');
     if (introText) introText.hidden = true;
     if (introActions) introActions.hidden = true;
-    if (stage) stage.hidden = false;
+    setPanelHidden(stage, false);
     if (introFooter) introFooter.hidden = true;
     if (introSec) introSec.hidden = false;
-    if (resSec) resSec.hidden = true;
+    setPanelHidden(resSec, true);
+  }
+
+  function renderResultsReview() {
+    if (!reviewEl) return;
+    reviewEl.innerHTML = '';
+    for (let i = 0; i < state.total; i++) {
+      const snap = state.snapshots[i];
+      const key = Array.isArray(state.correctKey[i]) ? state.correctKey[i] : [];
+      const user = Array.isArray(state.userAnswers[i]) ? state.userAnswers[i] : [];
+      const ks = key.slice().map(String).sort();
+      const us = user.slice().map(String).sort();
+      const ok = arraysEqual(ks, us);
+
+      const texts = [];
+      if (snap && Array.isArray(snap.answers)) {
+        user.forEach(function (ui) {
+          const found = snap.answers.find(function (a) {
+            return String(a.i) === String(ui);
+          });
+          texts.push(found && found.text ? String(found.text) : String(ui));
+        });
+      }
+      const lineText = texts.length ? texts.join(' / ') : '—';
+
+      const li = document.createElement('li');
+      li.className = 'cpp-quiz-review__item';
+
+      const qWrap = document.createElement('div');
+      qWrap.className = 'cpp-quiz-review__question entry-content';
+      qWrap.innerHTML = snap && snap.question_html ? snap.question_html : '';
+
+      const p = document.createElement('p');
+      p.className = 'cpp-quiz-review__answer-line';
+      const lab = document.createElement('span');
+      lab.className = 'cpp-quiz-review__label';
+      lab.textContent = cfg.labelYourAnswer + ' ';
+      const val = document.createElement('span');
+      val.className = ok ? 'cpp-quiz-review__value--ok' : 'cpp-quiz-review__value--bad';
+      val.textContent = lineText;
+      p.appendChild(lab);
+      p.appendChild(val);
+
+      li.appendChild(qWrap);
+      li.appendChild(p);
+      reviewEl.appendChild(li);
+    }
   }
 
   function showResults() {
@@ -367,9 +439,10 @@ $has_quiz = count($question_ids) > 0;
         ' ' +
         state.total;
     }
+    renderResultsReview();
     setPagePhase('results');
     if (introSec) introSec.hidden = true;
-    if (resSec) resSec.hidden = false;
+    setPanelHidden(resSec, false);
     try {
       localStorage.removeItem(cfg.storageKey);
     } catch (e) {}
@@ -401,7 +474,8 @@ $has_quiz = count($question_ids) > 0;
         index: 0,
         total: cfg.totalHint,
         correctKey: [],
-        userAnswers: []
+        userAnswers: [],
+        snapshots: []
       };
       saveState();
       showQuiz();
