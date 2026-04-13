@@ -3,7 +3,9 @@ name: Deploy WordPress Theme via SSH
 on:
   push:
     branches:
+      # Merge feature work into one of these (or add your branch) so rsync runs.
       - cursor/development-environment-setup-8ef2
+      - cursor/education-theme-templates-78a1
     paths:
       - "wp-content/themes/cpp-courses-theme/**"
       - ".github/workflows/deploy-theme.yml"
