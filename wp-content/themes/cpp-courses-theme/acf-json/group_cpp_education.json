@@ -1,6 +1,6 @@
 {
   "key": "group_cpp_education",
-  "title": "Сведения об образовании",
+  "title": "CPP — Сведения об образовании (запись)",
   "fields": [
     {
       "key": "field_cpp_edu_tab_archive",
@@ -230,5 +230,6 @@
   "instruction_placement": "label",
   "hide_on_screen": "",
   "active": true,
-  "description": "Тип записи и таксономия задаются в SCF. Local JSON для синхронизации."
+  "description": "Тип записи и таксономия задаются в SCF. Local JSON для синхронизации.",
+  "modified": 1775683200
 }

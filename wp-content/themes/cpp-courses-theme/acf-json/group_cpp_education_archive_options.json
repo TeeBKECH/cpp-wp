@@ -1,6 +1,6 @@
 {
   "key": "group_cpp_education_archive_options",
-  "title": "Архив «Сведения об образовании»",
+  "title": "CPP — Архив: сведения об образовании (опции)",
   "fields": [
     {
       "key": "field_cpp_edu_archive_intro",
@@ -27,5 +27,6 @@
   "instruction_placement": "label",
   "hide_on_screen": "",
   "active": true,
-  "description": ""
+  "description": "Текст под заголовком на архиве /education/.",
+  "modified": 1775683200
 }
