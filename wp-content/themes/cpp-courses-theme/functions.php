@@ -18,6 +18,7 @@ require_once __DIR__ . '/inc/education-archive.php';
 require_once __DIR__ . '/inc/acf-register-education-group.php';
 require_once __DIR__ . '/inc/acf-register-quiz-groups.php';
 require_once __DIR__ . '/inc/quiz-ajax.php';
+require_once __DIR__ . '/inc/disable-search.php';
 
 add_filter('acf/settings/save_json', function ($path) {
     return __DIR__ . '/acf-json';

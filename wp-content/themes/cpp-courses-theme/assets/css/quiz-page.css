@@ -5,6 +5,10 @@
   display: none !important;
 }
 
+.section.section--test-intro.cpp-quiz-panel {
+  padding-bottom: 60px;
+}
+
 .cpp-quiz-review {
   list-style: decimal;
   margin: 1.5rem 0 0;
