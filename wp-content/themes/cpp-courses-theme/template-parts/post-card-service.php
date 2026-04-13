@@ -22,7 +22,7 @@ if ($icon_url === '') {
 
 $card_text = '';
 if (function_exists('get_field')) {
-    $card_text = (string) get_field('cpp_svc_card_text');
+    $card_text = trim((string) get_field('cpp_svc_card_text'));
 }
 if ($card_text === '') {
     $card_text = get_the_excerpt();

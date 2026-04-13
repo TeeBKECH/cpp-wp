@@ -18,21 +18,22 @@ if (!have_posts()) {
 while (have_posts()) :
     the_post();
 
-    $intro_wysiwyg = function_exists('get_field') ? get_field('cpp_svc_intro_text') : '';
-    $show_cta = function_exists('get_field') && (bool) get_field('cpp_svc_show_cta');
-    $cta_label = function_exists('get_field') ? (string) get_field('cpp_svc_cta_label') : 'Оставить заявку';
-    $cta_anchor = function_exists('get_field') ? (string) get_field('cpp_svc_cta_anchor') : '#cta';
-    if ($cta_anchor === '') {
-        $cta_anchor = '#cta';
+    $intro_raw = function_exists('get_field') ? get_field('cpp_svc_intro_text') : '';
+    $intro_raw = is_string($intro_raw) ? trim($intro_raw) : '';
+    if ($intro_raw === '') {
+        $intro_raw = get_the_excerpt();
     }
 
-    $gallery = function_exists('get_field') ? get_field('cpp_svc_gallery') : null;
-    $certificates = function_exists('get_field') ? get_field('cpp_svc_certificates') : null;
-    $schedule = function_exists('get_field') ? get_field('cpp_svc_schedule') : null;
+    $show_cta = function_exists('get_field') && (bool) get_field('cpp_svc_show_cta');
+    $cta_label = function_exists('get_field') ? (string) get_field('cpp_svc_cta_label') : 'Оставить заявку';
+    if ($cta_label === '') {
+        $cta_label = 'Оставить заявку';
+    }
+    $cta_url = function_exists('get_field') ? trim((string) get_field('cpp_svc_cta_url')) : '';
+
     $faq_title = function_exists('get_field') ? (string) get_field('cpp_svc_faq_title') : 'Часто задаваемые вопросы';
     $faq_subtitle = function_exists('get_field') ? (string) get_field('cpp_svc_faq_subtitle') : '';
     $faq_items = function_exists('get_field') ? get_field('cpp_svc_faq_items') : null;
-    $toc_items = function_exists('get_field') ? get_field('cpp_svc_toc_items') : null;
     $rel_title = function_exists('get_field') ? (string) get_field('cpp_svc_related_title') : 'Другие услуги';
     $rel_subtitle = function_exists('get_field') ? (string) get_field('cpp_svc_related_subtitle') : '';
     $rel_count = function_exists('get_field') ? (int) get_field('cpp_svc_related_count') : 3;
@@ -41,6 +42,13 @@ while (have_posts()) :
     }
     if ($rel_count > 12) {
         $rel_count = 12;
+    }
+
+    $cf7_form_post = cpp_courses_get_option('cpp_cf7_form_post', null);
+    $fancy_id = 'cpp-svc-cta-form-' . get_the_ID();
+    $cf7_html = '';
+    if (!empty($cf7_form_post)) {
+        $cf7_html = do_shortcode('[contact-form-7 id="' . (int) $cf7_form_post . '"]');
     }
 
     $related = new WP_Query(
@@ -60,14 +68,35 @@ while (have_posts()) :
                 <div class="page-intro">
                     <?php get_template_part('template-parts/breadcrumbs'); ?>
                     <h1 class="page-intro_title"><?php the_title(); ?></h1>
-                    <?php if (!empty($intro_wysiwyg)) : ?>
-                        <div class="page-intro_desc"><?php echo wp_kses_post($intro_wysiwyg); ?></div>
+                    <?php if ($intro_raw !== '') : ?>
+                        <p class="page-intro_desc"><?php echo nl2br(esc_html($intro_raw)); ?></p>
                     <?php endif; ?>
                     <?php if ($show_cta) : ?>
                         <div class="page-intro_actions">
-                            <a class="button button--filled button--sm" href="<?php echo esc_url($cta_anchor); ?>">
-                                <span class="button_text"><?php echo esc_html($cta_label); ?></span>
-                            </a>
+                            <?php if ($cta_url !== '' && filter_var($cta_url, FILTER_VALIDATE_URL)) : ?>
+                                <a class="button button--filled button--sm" href="<?php echo esc_url($cta_url); ?>">
+                                    <span class="button_text"><?php echo esc_html($cta_label); ?></span>
+                                </a>
+                            <?php else : ?>
+                                <?php if ($cf7_html !== '') : ?>
+                                    <div id="<?php echo esc_attr($fancy_id); ?>" class="cpp-svc-cta-fancybox-inline" style="display:none;width:100%;max-width:520px;">
+                                        <?php echo $cf7_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                                    </div>
+                                    <a
+                                        class="button button--filled button--sm"
+                                        href="#"
+                                        data-fancybox="service-cta"
+                                        data-src="#<?php echo esc_attr($fancy_id); ?>"
+                                        data-type="inline"
+                                    >
+                                        <span class="button_text"><?php echo esc_html($cta_label); ?></span>
+                                    </a>
+                                <?php else : ?>
+                                    <a class="button button--filled button--sm" href="<?php echo esc_url(home_url('/contacts/#contacts')); ?>">
+                                        <span class="button_text"><?php echo esc_html($cta_label); ?></span>
+                                    </a>
+                                <?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -78,128 +107,8 @@ while (have_posts()) :
             <div class="container">
                 <div class="page-content">
                     <div class="page-content_main">
-                        <?php if (!empty($gallery) && is_array($gallery)) : ?>
-                            <div class="page-content_gallery">
-                                <div class="gallery gallery--service">
-                                    <div class="gallery_items">
-                                        <?php foreach ($gallery as $row) : ?>
-                                            <?php
-                                            $img = isset($row['image']) ? $row['image'] : null;
-                                            $img_url = cpp_courses_image_field_url($img);
-                                            if ($img_url === '') {
-                                                continue;
-                                            }
-                                            ?>
-                                            <div class="gallery_item" data-fancybox="gallery-service-<?php the_ID(); ?>" data-src="<?php echo esc_url($img_url); ?>">
-                                                <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>" loading="lazy" />
-                                            </div>
-                                        <?php endforeach; ?>
-                                    </div>
-                                    <div class="gallery_nav">
-                                        <nav class="swiper_navigation swiper_navigation--gallery">
-                                            <button class="swiper_navigation-btn swiper_navigation-btn--prev" type="button" aria-label="Назад"></button>
-                                            <div class="swiper_navigation-pages"></div>
-                                            <button class="swiper_navigation-btn swiper_navigation-btn--next" type="button" aria-label="Вперёд"></button>
-                                        </nav>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-
                         <?php the_content(); ?>
-
-                        <?php if (!empty($certificates) && is_array($certificates)) : ?>
-                            <?php foreach ($certificates as $cert) : ?>
-                                <?php
-                                $c_title = isset($cert['title']) ? (string) $cert['title'] : '';
-                                $c_content = isset($cert['content']) ? $cert['content'] : '';
-                                $c_files = isset($cert['files']) && is_array($cert['files']) ? $cert['files'] : array();
-                                $c_preview = isset($cert['preview']) ? $cert['preview'] : null;
-                                $preview_url = cpp_courses_image_field_url($c_preview);
-                                ?>
-                                <div class="page-content_section page-content_section--certificate">
-                                    <?php if ($c_title !== '') : ?>
-                                        <div class="section_header">
-                                            <h2 class="section_title"><?php echo esc_html($c_title); ?></h2>
-                                        </div>
-                                    <?php endif; ?>
-                                    <div class="page-content_certificate">
-                                        <?php if (!empty($c_content)) : ?>
-                                            <div class="page-content_certificate-text">
-                                                <?php echo wp_kses_post($c_content); ?>
-                                            </div>
-                                        <?php endif; ?>
-                                        <?php if (!empty($c_files)) : ?>
-                                            <div class="page-content_certificate-options">
-                                                <?php foreach ($c_files as $frow) : ?>
-                                                    <?php
-                                                    $flabel = isset($frow['label']) ? (string) $frow['label'] : '';
-                                                    $furl = isset($frow['file']) ? (string) $frow['file'] : '';
-                                                    if ($flabel === '' || $furl === '') {
-                                                        continue;
-                                                    }
-                                                    ?>
-                                                    <a class="button button--icon button--sm" href="<?php echo esc_url($furl); ?>" download>
-                                                        <div class="button_icon button_icon--download" aria-hidden="true"></div>
-                                                        <span class="button_text"><?php echo esc_html($flabel); ?></span>
-                                                    </a>
-                                                <?php endforeach; ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-                                    <?php if ($preview_url !== '') : ?>
-                                        <div class="page-content_certificate-img" data-fancybox="preview-service-<?php the_ID(); ?>" data-src="<?php echo esc_url($preview_url); ?>">
-                                            <img src="<?php echo esc_url($preview_url); ?>" alt="<?php echo esc_attr($c_title ?: get_the_title()); ?>" loading="lazy" />
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-
-                        <?php if (!empty($schedule) && is_array($schedule)) : ?>
-                            <div class="page-content_section">
-                                <div class="section_header">
-                                    <h2 class="section_title">Расписание занятий</h2>
-                                </div>
-                                <div class="page-content_schedule">
-                                    <?php foreach ($schedule as $srow) : ?>
-                                        <?php
-                                        $slabel = isset($srow['label']) ? (string) $srow['label'] : '';
-                                        $sfile = isset($srow['file']) ? (string) $srow['file'] : '';
-                                        if ($slabel === '' || $sfile === '') {
-                                            continue;
-                                        }
-                                        ?>
-                                        <a class="button button--icon button--sm" href="<?php echo esc_url($sfile); ?>" download>
-                                            <div class="button_icon button_icon--download" aria-hidden="true"></div>
-                                            <span class="button_text"><?php echo esc_html($slabel); ?></span>
-                                        </a>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
-                        <?php endif; ?>
                     </div>
-
-                    <?php if (!empty($toc_items) && is_array($toc_items)) : ?>
-                        <div class="page-content_sidebar">
-                            <div class="widget">
-                                <div class="widget_title">Содержание:</div>
-                                <ul class="toc-list" id="toc-list-service">
-                                    <?php foreach ($toc_items as $trow) : ?>
-                                        <?php
-                                        $tl = isset($trow['label']) ? (string) $trow['label'] : '';
-                                        $ta = isset($trow['anchor']) ? (string) $trow['anchor'] : '';
-                                        if ($tl === '' || $ta === '') {
-                                            continue;
-                                        }
-                                        $href = '#' . ltrim($ta, '#');
-                                        ?>
-                                        <li><a href="<?php echo esc_url($href); ?>"><?php echo esc_html($tl); ?></a></li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                        </div>
-                    <?php endif; ?>
                 </div>
             </div>
         </section>
