@@ -1,0 +1,234 @@
+{
+  "key": "group_cpp_education",
+  "title": "Сведения об образовании",
+  "fields": [
+    {
+      "key": "field_cpp_edu_tab_archive",
+      "label": "Архив (карточка)",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_edu_display_type",
+      "label": "Тип карточки на архиве",
+      "name": "cpp_edu_display_type",
+      "type": "select",
+      "instructions": "Приказы — скачивание PDF; доступная среда — переход на страницу; лицензии — одно фото на запись, открытие в галерее Fancybox.",
+      "required": 1,
+      "choices": {
+        "download": "Скачать файл (PDF)",
+        "link": "Ссылка на детальную страницу",
+        "gallery": "Фото в галерее"
+      },
+      "default_value": "link",
+      "return_format": "value",
+      "multiple": 0,
+      "allow_null": 0,
+      "ui": 1
+    },
+    {
+      "key": "field_cpp_edu_pdf",
+      "label": "Файл для скачивания",
+      "name": "cpp_edu_pdf",
+      "type": "file",
+      "instructions": "Для типа «Скачать файл».",
+      "required": 0,
+      "return_format": "array",
+      "library": "all",
+      "mime_types": "pdf",
+      "conditional_logic": [
+        [
+          {
+            "field": "field_cpp_edu_display_type",
+            "operator": "==",
+            "value": "download"
+          }
+        ]
+      ]
+    },
+    {
+      "key": "field_cpp_edu_download_label",
+      "label": "Текст кнопки скачивания",
+      "name": "cpp_edu_download_label",
+      "type": "text",
+      "default_value": "Скачать",
+      "conditional_logic": [
+        [
+          {
+            "field": "field_cpp_edu_display_type",
+            "operator": "==",
+            "value": "download"
+          }
+        ]
+      ]
+    },
+    {
+      "key": "field_cpp_edu_link_label",
+      "label": "Текст кнопки перехода",
+      "name": "cpp_edu_link_label",
+      "type": "text",
+      "default_value": "Перейти",
+      "instructions": "Для типа «Ссылка на детальную страницу».",
+      "conditional_logic": [
+        [
+          {
+            "field": "field_cpp_edu_display_type",
+            "operator": "==",
+            "value": "link"
+          }
+        ]
+      ]
+    },
+    {
+      "key": "field_cpp_edu_tab_single",
+      "label": "Детальная страница",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_edu_intro_text",
+      "label": "Текст под заголовком",
+      "name": "cpp_edu_intro_text",
+      "type": "textarea",
+      "instructions": "Обычный текст. Если пусто — используется отрывок записи.",
+      "rows": 5
+    },
+    {
+      "key": "field_cpp_edu_show_cta",
+      "label": "Показать кнопку в интро",
+      "name": "cpp_edu_show_cta",
+      "type": "true_false",
+      "ui": 1,
+      "default_value": 0
+    },
+    {
+      "key": "field_cpp_edu_cta_label",
+      "label": "Текст кнопки",
+      "name": "cpp_edu_cta_label",
+      "type": "text",
+      "default_value": "Оставить заявку",
+      "conditional_logic": [
+        [
+          {
+            "field": "field_cpp_edu_show_cta",
+            "operator": "==",
+            "value": "1"
+          }
+        ]
+      ]
+    },
+    {
+      "key": "field_cpp_edu_cta_url",
+      "label": "Ссылка кнопки",
+      "name": "cpp_edu_cta_url",
+      "type": "url",
+      "instructions": "Полный URL. Если пусто — модальное окно с Contact Form 7 из настроек сайта.",
+      "conditional_logic": [
+        [
+          {
+            "field": "field_cpp_edu_show_cta",
+            "operator": "==",
+            "value": "1"
+          }
+        ]
+      ]
+    },
+    {
+      "key": "field_cpp_edu_tab_faq",
+      "label": "FAQ",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_edu_faq_title",
+      "label": "Заголовок блока",
+      "name": "cpp_edu_faq_title",
+      "type": "text",
+      "default_value": "Часто задаваемые вопросы"
+    },
+    {
+      "key": "field_cpp_edu_faq_subtitle",
+      "label": "Подзаголовок",
+      "name": "cpp_edu_faq_subtitle",
+      "type": "text",
+      "default_value": ""
+    },
+    {
+      "key": "field_cpp_edu_faq_items",
+      "label": "Вопросы",
+      "name": "cpp_edu_faq_items",
+      "type": "repeater",
+      "layout": "row",
+      "button_label": "Добавить вопрос",
+      "sub_fields": [
+        {
+          "key": "field_cpp_edu_faq_q",
+          "label": "Вопрос",
+          "name": "question",
+          "type": "text",
+          "required": 1
+        },
+        {
+          "key": "field_cpp_edu_faq_a",
+          "label": "Ответ",
+          "name": "answer",
+          "type": "wysiwyg",
+          "tabs": "all",
+          "toolbar": "basic",
+          "media_upload": 0
+        }
+      ]
+    },
+    {
+      "key": "field_cpp_edu_tab_related",
+      "label": "Другие материалы",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_edu_related_title",
+      "label": "Заголовок",
+      "name": "cpp_edu_related_title",
+      "type": "text",
+      "default_value": "Другие материалы"
+    },
+    {
+      "key": "field_cpp_edu_related_subtitle",
+      "label": "Подзаголовок",
+      "name": "cpp_edu_related_subtitle",
+      "type": "text",
+      "default_value": ""
+    },
+    {
+      "key": "field_cpp_edu_related_count",
+      "label": "Количество карточек",
+      "name": "cpp_edu_related_count",
+      "type": "number",
+      "default_value": 3,
+      "min": 1,
+      "max": 12,
+      "step": 1
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "education"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Тип записи и таксономия задаются в SCF. Local JSON для синхронизации."
+}

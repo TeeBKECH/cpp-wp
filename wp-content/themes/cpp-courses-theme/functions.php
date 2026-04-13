@@ -14,6 +14,7 @@ require_once __DIR__ . '/inc/helpers.php';
 require_once __DIR__ . '/inc/nav-walker.php';
 require_once __DIR__ . '/inc/yoast-breadcrumbs.php';
 require_once __DIR__ . '/inc/archive-load-more.php';
+require_once __DIR__ . '/inc/education-archive.php';
 
 add_filter('acf/settings/save_json', function ($path) {
     return __DIR__ . '/acf-json';
@@ -363,7 +364,7 @@ add_filter('get_pagenum_link', 'cpp_courses_archive_pagenum_link', 10, 2);
  * @return array<int, array<string, mixed>>
  */
 function cpp_courses_filter_yoast_breadcrumb_links($crumbs) {
-    if ((!is_post_type_archive('articles') && !is_post_type_archive('services')) || empty($crumbs) || !is_array($crumbs)) {
+    if ((!is_post_type_archive('articles') && !is_post_type_archive('services') && !is_post_type_archive('education')) || empty($crumbs) || !is_array($crumbs)) {
         return $crumbs;
     }
 

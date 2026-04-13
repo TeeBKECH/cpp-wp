@@ -42,6 +42,10 @@ if (is_front_page()) {
     $page_class = 'articles';
 } elseif (is_singular('articles')) {
     $page_class = 'article';
+} elseif (is_post_type_archive('education')) {
+    $page_class = 'edu-info';
+} elseif (is_singular('education')) {
+    $page_class = 'edu-info';
 }
 ?>
 <div class="page <?php echo esc_attr('page--' . $page_class); ?>">
