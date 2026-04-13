@@ -19,6 +19,8 @@ require_once __DIR__ . '/inc/acf-register-education-group.php';
 require_once __DIR__ . '/inc/acf-register-quiz-groups.php';
 require_once __DIR__ . '/inc/quiz-ajax.php';
 require_once __DIR__ . '/inc/disable-search.php';
+require_once __DIR__ . '/inc/front-page-helpers.php';
+require_once __DIR__ . '/inc/acf-register-home-groups.php';
 
 add_filter('acf/settings/save_json', function ($path) {
     return __DIR__ . '/acf-json';
@@ -134,6 +136,28 @@ function cpp_courses_enqueue_404_assets() {
     );
 }
 add_action('wp_enqueue_scripts', 'cpp_courses_enqueue_404_assets', 20);
+
+/**
+ * Front page: intro video background helper styles.
+ *
+ * @return void
+ */
+function cpp_courses_enqueue_home_assets() {
+    if (!is_front_page()) {
+        return;
+    }
+    $path = get_template_directory() . '/assets/css/home-page.css';
+    if (!is_readable($path)) {
+        return;
+    }
+    wp_enqueue_style(
+        'cpp-home-page',
+        get_template_directory_uri() . '/assets/css/home-page.css',
+        array('cpp-courses-app'),
+        filemtime($path)
+    );
+}
+add_action('wp_enqueue_scripts', 'cpp_courses_enqueue_home_assets', 20);
 
 /**
  * Get current archive page from query var or ?page.

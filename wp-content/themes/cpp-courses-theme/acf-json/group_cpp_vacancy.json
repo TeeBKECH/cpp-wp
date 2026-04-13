@@ -1,0 +1,51 @@
+{
+  "key": "group_cpp_vacancy",
+  "title": "Вакансия (карточка)",
+  "fields": [
+    {
+      "key": "field_cpp_vac_icon",
+      "label": "Иконка",
+      "name": "vacancy_icon",
+      "type": "image",
+      "return_format": "array",
+      "preview_size": "thumbnail",
+      "library": "all"
+    },
+    {
+      "key": "field_cpp_vac_pay_line",
+      "label": "Строка об оплате (первая в списке)",
+      "name": "vacancy_pay_line",
+      "type": "text",
+      "default_value": ""
+    },
+    {
+      "key": "field_cpp_vac_bullets",
+      "label": "Пункты списка",
+      "name": "vacancy_bullets",
+      "type": "repeater",
+      "layout": "table",
+      "button_label": "Пункт",
+      "sub_fields": [
+        {
+          "key": "field_cpp_vac_bullet_text",
+          "label": "Текст",
+          "name": "text",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "key": "field_cpp_vac_apply_url",
+      "label": "Ссылка «Откликнуться»",
+      "name": "vacancy_apply_url",
+      "type": "url",
+      "instructions": "Если пусто — якорь #contacts или страница контактов."
+    }
+  ],
+  "location": [[{ "param": "post_type", "operator": "==", "value": "vacancy" }]],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "active": true
+}

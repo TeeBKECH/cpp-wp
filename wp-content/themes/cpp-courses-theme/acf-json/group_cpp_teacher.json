@@ -1,0 +1,25 @@
+{
+  "key": "group_cpp_teacher",
+  "title": "Преподаватель (карточка)",
+  "fields": [
+    {
+      "key": "field_cpp_teacher_role",
+      "label": "Должность / первая строка",
+      "name": "teacher_role",
+      "type": "text"
+    },
+    {
+      "key": "field_cpp_teacher_extra",
+      "label": "Доп. строка (организация, телефон)",
+      "name": "teacher_extra",
+      "type": "text"
+    }
+  ],
+  "location": [[{ "param": "post_type", "operator": "==", "value": "teachers" }]],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "active": true
+}
