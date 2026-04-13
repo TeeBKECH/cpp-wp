@@ -62,11 +62,12 @@ $pagination_links = paginate_links(
                                     class="button button--filled button--lg"
                                     type="button"
                                     id="articles-load-more"
-                                    data-nonce="<?php echo esc_attr(wp_create_nonce('cpp_articles_nonce')); ?>"
+                                    data-nonce="<?php echo esc_attr(wp_create_nonce('cpp_archive_load_more_nonce')); ?>"
                                     data-ajax-url="<?php echo esc_url(admin_url('admin-ajax.php')); ?>"
                                     data-exclude-ids="<?php echo esc_attr(implode(',', array_unique(array_filter($rendered_ids)))); ?>"
                                     data-offset="<?php echo esc_attr((string) $initial_offset); ?>"
                                     data-post-type="articles"
+                                    data-render-part="article"
                                 >
                                     <span class="button_text">загрузить еще</span>
                                 </button>
@@ -108,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let loading = false;
   const postType = button.dataset.postType || 'articles';
+  const renderPart = button.dataset.renderPart || 'article';
 
   button.addEventListener('click', async function () {
     if (loading) return;
@@ -116,11 +118,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     try {
       const payload = new URLSearchParams();
-      payload.append('action', 'cpp_load_more_articles');
+      payload.append('action', 'cpp_load_more_posts');
       payload.append('nonce', button.dataset.nonce || '');
       payload.append('post_type', postType);
+      payload.append('render_part', renderPart);
       payload.append('offset', button.dataset.offset || '0');
       payload.append('exclude_ids', button.dataset.excludeIds || '');
+      payload.append('window_size', String(grid.querySelectorAll('.blog_card').length || <?php echo (int) $posts_per_page; ?>));
 
       const response = await fetch(button.dataset.ajaxUrl || '', {
         method: 'POST',

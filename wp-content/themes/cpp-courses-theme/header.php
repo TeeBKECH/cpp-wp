@@ -28,7 +28,23 @@ if (!defined('ABSPATH')) {
 <?php get_template_part('template-parts/bottom-nav'); ?>
 <?php get_template_part('template-parts/scroll-to-top'); ?>
 
-<div class="page <?php echo esc_attr('page--' . (is_front_page() ? 'index' : (is_page() ? get_post_field('post_name', get_post()) : 'default'))); ?>">
+<?php
+$page_class = 'default';
+if (is_front_page()) {
+    $page_class = 'index';
+} elseif (is_page()) {
+    $page_class = get_post_field('post_name', get_post());
+} elseif (is_post_type_archive('services')) {
+    $page_class = 'services';
+} elseif (is_singular('services')) {
+    $page_class = 'service';
+} elseif (is_post_type_archive('articles')) {
+    $page_class = 'articles';
+} elseif (is_singular('articles')) {
+    $page_class = 'article';
+}
+?>
+<div class="page <?php echo esc_attr('page--' . $page_class); ?>">
   <header class="header">
     <div class="header_top">
       <div class="container container--header">

@@ -1,0 +1,357 @@
+{
+  "key": "group_cpp_service",
+  "title": "Услуга (детальная)",
+  "fields": [
+    {
+      "key": "field_cpp_svc_tab_card",
+      "label": "Карточка (архив)",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_svc_card_icon",
+      "label": "Иконка в списке",
+      "name": "cpp_svc_card_icon",
+      "type": "image",
+      "instructions": "SVG или PNG ~48×48. Если пусто — миниатюра записи или заглушка.",
+      "required": 0,
+      "return_format": "array",
+      "preview_size": "thumbnail",
+      "library": "all"
+    },
+    {
+      "key": "field_cpp_svc_card_text",
+      "label": "Текст в карточке",
+      "name": "cpp_svc_card_text",
+      "type": "textarea",
+      "instructions": "Краткое описание под заголовком. Если пусто — используется отрывок записи.",
+      "rows": 4
+    },
+    {
+      "key": "field_cpp_svc_tab_intro",
+      "label": "Интро",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_svc_intro_text",
+      "label": "Текст под заголовком",
+      "name": "cpp_svc_intro_text",
+      "type": "wysiwyg",
+      "instructions": "Выводится как блок page-intro_desc (до основного контента).",
+      "tabs": "all",
+      "toolbar": "basic",
+      "media_upload": 0
+    },
+    {
+      "key": "field_cpp_svc_show_cta",
+      "label": "Показать кнопку в интро",
+      "name": "cpp_svc_show_cta",
+      "type": "true_false",
+      "ui": 1,
+      "default_value": 0
+    },
+    {
+      "key": "field_cpp_svc_cta_label",
+      "label": "Текст кнопки",
+      "name": "cpp_svc_cta_label",
+      "type": "text",
+      "default_value": "Оставить заявку",
+      "conditional_logic": [
+        [
+          {
+            "field": "field_cpp_svc_show_cta",
+            "operator": "==",
+            "value": "1"
+          }
+        ]
+      ]
+    },
+    {
+      "key": "field_cpp_svc_cta_anchor",
+      "label": "Якорь (href)",
+      "name": "cpp_svc_cta_anchor",
+      "type": "text",
+      "default_value": "#cta",
+      "instructions": "Например #cta или полный URL.",
+      "conditional_logic": [
+        [
+          {
+            "field": "field_cpp_svc_show_cta",
+            "operator": "==",
+            "value": "1"
+          }
+        ]
+      ]
+    },
+    {
+      "key": "field_cpp_svc_tab_content",
+      "label": "Контент (редактор)",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_svc_content_note",
+      "label": "",
+      "name": "",
+      "type": "message",
+      "message": "Основной текст услуги заполняется в стандартном редакторе записи (Gutenberg). Он выводится внутри page-content_main.",
+      "new_lines": "wpautop"
+    },
+    {
+      "key": "field_cpp_svc_tab_gallery",
+      "label": "Галерея",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_svc_gallery",
+      "label": "Изображения галереи",
+      "name": "cpp_svc_gallery",
+      "type": "repeater",
+      "layout": "row",
+      "button_label": "Добавить слайд",
+      "sub_fields": [
+        {
+          "key": "field_cpp_svc_gallery_image",
+          "label": "Изображение",
+          "name": "image",
+          "type": "image",
+          "return_format": "array",
+          "preview_size": "medium",
+          "library": "all",
+          "required": 1
+        }
+      ]
+    },
+    {
+      "key": "field_cpp_svc_tab_certificate",
+      "label": "Сертификат / документы",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_svc_certificates",
+      "label": "Блоки",
+      "name": "cpp_svc_certificates",
+      "type": "repeater",
+      "layout": "block",
+      "button_label": "Добавить блок",
+      "sub_fields": [
+        {
+          "key": "field_cpp_svc_cert_title",
+          "label": "Заголовок секции",
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "key": "field_cpp_svc_cert_content",
+          "label": "Текст",
+          "name": "content",
+          "type": "wysiwyg",
+          "tabs": "all",
+          "toolbar": "basic",
+          "media_upload": 0
+        },
+        {
+          "key": "field_cpp_svc_cert_files",
+          "label": "Файлы для скачивания",
+          "name": "files",
+          "type": "repeater",
+          "layout": "table",
+          "button_label": "Файл",
+          "sub_fields": [
+            {
+              "key": "field_cpp_svc_cert_file_label",
+              "label": "Подпись кнопки",
+              "name": "label",
+              "type": "text",
+              "required": 1
+            },
+            {
+              "key": "field_cpp_svc_cert_file",
+              "label": "Файл",
+              "name": "file",
+              "type": "file",
+              "return_format": "url",
+              "required": 1
+            }
+          ]
+        },
+        {
+          "key": "field_cpp_svc_cert_preview",
+          "label": "Превью (изображение справа)",
+          "name": "preview",
+          "type": "image",
+          "return_format": "array",
+          "preview_size": "medium",
+          "library": "all"
+        }
+      ]
+    },
+    {
+      "key": "field_cpp_svc_tab_schedule",
+      "label": "Расписание",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_svc_schedule",
+      "label": "Кнопки расписания",
+      "name": "cpp_svc_schedule",
+      "type": "repeater",
+      "layout": "table",
+      "button_label": "Добавить",
+      "sub_fields": [
+        {
+          "key": "field_cpp_svc_sched_label",
+          "label": "Текст кнопки",
+          "name": "label",
+          "type": "text",
+          "required": 1
+        },
+        {
+          "key": "field_cpp_svc_sched_file",
+          "label": "Файл",
+          "name": "file",
+          "type": "file",
+          "return_format": "url",
+          "required": 1
+        }
+      ]
+    },
+    {
+      "key": "field_cpp_svc_tab_faq",
+      "label": "FAQ",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_svc_faq_title",
+      "label": "Заголовок блока",
+      "name": "cpp_svc_faq_title",
+      "type": "text",
+      "default_value": "Часто задаваемые вопросы"
+    },
+    {
+      "key": "field_cpp_svc_faq_subtitle",
+      "label": "Подзаголовок",
+      "name": "cpp_svc_faq_subtitle",
+      "type": "text",
+      "default_value": "Самые популярные вопросы от наших клиентов"
+    },
+    {
+      "key": "field_cpp_svc_faq_items",
+      "label": "Вопросы",
+      "name": "cpp_svc_faq_items",
+      "type": "repeater",
+      "layout": "row",
+      "button_label": "Добавить вопрос",
+      "sub_fields": [
+        {
+          "key": "field_cpp_svc_faq_q",
+          "label": "Вопрос",
+          "name": "question",
+          "type": "text",
+          "required": 1
+        },
+        {
+          "key": "field_cpp_svc_faq_a",
+          "label": "Ответ",
+          "name": "answer",
+          "type": "wysiwyg",
+          "tabs": "all",
+          "toolbar": "basic",
+          "media_upload": 0
+        }
+      ]
+    },
+    {
+      "key": "field_cpp_svc_tab_toc",
+      "label": "Содержание (sidebar)",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_svc_toc_items",
+      "label": "Пункты содержания",
+      "name": "cpp_svc_toc_items",
+      "type": "repeater",
+      "layout": "table",
+      "button_label": "Пункт",
+      "instructions": "Якорь без # — должен совпадать с id заголовка в контенте (если используете якоря).",
+      "sub_fields": [
+        {
+          "key": "field_cpp_svc_toc_label",
+          "label": "Текст",
+          "name": "label",
+          "type": "text",
+          "required": 1
+        },
+        {
+          "key": "field_cpp_svc_toc_anchor",
+          "label": "Якорь",
+          "name": "anchor",
+          "type": "text",
+          "required": 1
+        }
+      ]
+    },
+    {
+      "key": "field_cpp_svc_tab_related",
+      "label": "Другие услуги",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_svc_related_title",
+      "label": "Заголовок",
+      "name": "cpp_svc_related_title",
+      "type": "text",
+      "default_value": "Другие услуги"
+    },
+    {
+      "key": "field_cpp_svc_related_subtitle",
+      "label": "Подзаголовок",
+      "name": "cpp_svc_related_subtitle",
+      "type": "text",
+      "default_value": "Смежные направления обучения"
+    },
+    {
+      "key": "field_cpp_svc_related_count",
+      "label": "Количество карточек",
+      "name": "cpp_svc_related_count",
+      "type": "number",
+      "default_value": 3,
+      "min": 1,
+      "max": 12,
+      "step": 1
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "services"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Поля SCF для типа записи services. Синхронизация через Local JSON."
+}
