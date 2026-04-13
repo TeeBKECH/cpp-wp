@@ -20,10 +20,14 @@ endwhile;
 
 $page_id = get_queried_object_id();
 $question_ids = function_exists('cpp_quiz_get_ordered_question_ids') ? cpp_quiz_get_ordered_question_ids($page_id) : array();
-$ros_link = function_exists('get_field') ? get_field('quiz_rosvgard_link', $page_id) : null;
-$ros_url = is_array($ros_link) && !empty($ros_link['url']) ? (string) $ros_link['url'] : '';
-$ros_title = is_array($ros_link) && !empty($ros_link['title']) ? (string) $ros_link['title'] : __('Перечень вопросов Росгвардии', 'cpp-courses-theme');
-$ros_target = is_array($ros_link) && !empty($ros_link['target']) ? (string) $ros_link['target'] : '_self';
+$extra_link = function_exists('get_field') ? get_field('quiz_rosvgard_link', $page_id) : null;
+$extra_url = is_array($extra_link) && !empty($extra_link['url']) ? (string) $extra_link['url'] : '';
+$extra_title = is_array($extra_link) && !empty($extra_link['title']) ? (string) $extra_link['title'] : '';
+if ($extra_title === '' && $extra_url !== '') {
+    $extra_title = $extra_url;
+}
+
+$extra_target = is_array($extra_link) && !empty($extra_link['target']) ? (string) $extra_link['target'] : '_self';
 
 $results_title = function_exists('get_field') ? (string) get_field('quiz_results_title', $page_id) : '';
 if ($results_title === '') {
@@ -42,7 +46,7 @@ $ajax_url = admin_url('admin-ajax.php');
 $has_quiz = count($question_ids) > 0;
 ?>
 <main class="main main--test-intro" id="cpp-quiz-main" data-phase="intro">
-    <section class="section section--page-intro">
+    <section class="section section--page-intro" id="cpp-quiz-page-intro">
         <div class="container">
             <div class="page-intro">
                 <?php get_template_part('template-parts/breadcrumbs'); ?>
@@ -54,10 +58,10 @@ $has_quiz = count($question_ids) > 0;
     <section class="section section--test-intro" id="cpp-quiz-intro-section">
         <div class="container">
             <div class="test-intro">
-                <div class="test-intro_text entry-content">
+                <div class="test-intro_text entry-content" id="cpp-quiz-intro-text">
                     <?php the_content(); ?>
                 </div>
-                <div class="test-intro_actions">
+                <div class="test-intro_actions" id="cpp-quiz-intro-actions">
                     <?php if ($has_quiz) : ?>
                         <button type="button" class="button button--filled button--lg" id="cpp-quiz-start">
                             <span class="button_text"><?php esc_html_e('Приступить →', 'cpp-courses-theme'); ?></span>
@@ -66,45 +70,33 @@ $has_quiz = count($question_ids) > 0;
                         <p class="page-intro_desc"><?php esc_html_e('Вопросы для теста не выбраны. Укажите их в полях страницы.', 'cpp-courses-theme'); ?></p>
                     <?php endif; ?>
                 </div>
+
+                <?php if ($has_quiz) : ?>
+                    <div class="test-quiz" id="cpp-quiz-stage" hidden>
+                        <form class="test-quiz_form" id="cpp-quiz-form" action="#" method="get" onsubmit="return false;">
+                            <div class="test-quiz_question" id="cpp-quiz-question-wrap">
+                                <div class="test-quiz_question-text entry-content" id="cpp-quiz-question-body"></div>
+                            </div>
+                            <div class="test-quiz_options" id="cpp-quiz-options"></div>
+                            <div class="test-quiz_actions">
+                                <span class="test-quiz_progress" id="cpp-quiz-progress" aria-live="polite"></span>
+                                <button class="button button--filled button--md" type="button" id="cpp-quiz-primary">
+                                    <span class="button_text" id="cpp-quiz-primary-label"><?php esc_html_e('Далее →', 'cpp-courses-theme'); ?></span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                <?php endif; ?>
             </div>
-            <?php if ($ros_url !== '') : ?>
-                <div class="test-intro_footer">
-                    <a class="test-intro_link wave-link" href="<?php echo esc_url($ros_url); ?>" target="<?php echo esc_attr($ros_target); ?>"><?php echo esc_html($ros_title); ?></a>
+            <?php if ($extra_url !== '') : ?>
+                <div class="test-intro_footer" id="cpp-quiz-intro-footer">
+                    <a class="test-intro_link wave-link" href="<?php echo esc_url($extra_url); ?>" target="<?php echo esc_attr($extra_target); ?>"><?php echo esc_html($extra_title); ?></a>
                 </div>
             <?php endif; ?>
         </div>
     </section>
 
     <?php if ($has_quiz) : ?>
-        <section class="section section--test-quiz" id="cpp-quiz-play-section" hidden>
-            <div class="container">
-                <div class="test-quiz">
-                    <form class="test-quiz_form" id="cpp-quiz-form" action="#" method="get" onsubmit="return false;">
-                        <div class="test-quiz_question" id="cpp-quiz-question-wrap">
-                            <div class="test-quiz_question-text entry-content" id="cpp-quiz-question-body"></div>
-                        </div>
-                        <div class="test-quiz_options" id="cpp-quiz-options"></div>
-                        <div class="test-quiz_actions">
-                            <span class="test-quiz_progress" id="cpp-quiz-progress" aria-live="polite"></span>
-                            <div class="test-quiz_actions-buttons">
-                                <button class="button button--filled button--md" type="button" id="cpp-quiz-next">
-                                    <span class="button_text"><?php esc_html_e('Далее →', 'cpp-courses-theme'); ?></span>
-                                </button>
-                                <button class="button button--primary button--md" type="button" id="cpp-quiz-finish" hidden>
-                                    <span class="button_text"><?php esc_html_e('Показать результаты', 'cpp-courses-theme'); ?></span>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <?php if ($ros_url !== '') : ?>
-                        <div class="test-quiz_footer">
-                            <a class="test-quiz_link wave-link" href="<?php echo esc_url($ros_url); ?>" target="<?php echo esc_attr($ros_target); ?>"><?php echo esc_html($ros_title); ?></a>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </section>
-
         <section class="section section--test-quiz" id="cpp-quiz-results-section" hidden>
             <div class="container">
                 <div class="test-quiz">
@@ -120,9 +112,9 @@ $has_quiz = count($question_ids) > 0;
                             <?php echo $cf7_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                         </div>
                     <?php endif; ?>
-                    <?php if ($ros_url !== '') : ?>
+                    <?php if ($extra_url !== '') : ?>
                         <div class="test-quiz_footer">
-                            <a class="test-quiz_link wave-link" href="<?php echo esc_url($ros_url); ?>" target="<?php echo esc_attr($ros_target); ?>"><?php echo esc_html($ros_title); ?></a>
+                            <a class="test-quiz_link wave-link" href="<?php echo esc_url($extra_url); ?>" target="<?php echo esc_attr($extra_target); ?>"><?php echo esc_html($extra_title); ?></a>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -137,23 +129,28 @@ $has_quiz = count($question_ids) > 0;
     ajaxUrl: <?php echo wp_json_encode($ajax_url); ?>,
     nonce: <?php echo wp_json_encode($nonce); ?>,
     storageKey: 'cpp_quiz_<?php echo (int) $page_id; ?>_v1',
-    totalHint: <?php echo (int) count($question_ids); ?>
+    totalHint: <?php echo (int) count($question_ids); ?>,
+    labelNext: <?php echo wp_json_encode(__('Далее →', 'cpp-courses-theme'), JSON_UNESCAPED_UNICODE); ?>,
+    labelFinish: <?php echo wp_json_encode(__('Показать результаты', 'cpp-courses-theme'), JSON_UNESCAPED_UNICODE); ?>
   };
 
   const main = document.getElementById('cpp-quiz-main');
   const introSec = document.getElementById('cpp-quiz-intro-section');
-  const playSec = document.getElementById('cpp-quiz-play-section');
+  const introText = document.getElementById('cpp-quiz-intro-text');
+  const introActions = document.getElementById('cpp-quiz-intro-actions');
+  const introFooter = document.getElementById('cpp-quiz-intro-footer');
+  const stage = document.getElementById('cpp-quiz-stage');
   const resSec = document.getElementById('cpp-quiz-results-section');
   const startBtn = document.getElementById('cpp-quiz-start');
   const form = document.getElementById('cpp-quiz-form');
   const qBody = document.getElementById('cpp-quiz-question-body');
   const opts = document.getElementById('cpp-quiz-options');
-  const nextBtn = document.getElementById('cpp-quiz-next');
-  const finishBtn = document.getElementById('cpp-quiz-finish');
+  const primaryBtn = document.getElementById('cpp-quiz-primary');
+  const primaryLabel = document.getElementById('cpp-quiz-primary-label');
   const progressEl = document.getElementById('cpp-quiz-progress');
   const scoreEl = document.getElementById('cpp-quiz-results-score');
 
-  if (!main || !form || !qBody || !opts || !nextBtn || !finishBtn) return;
+  if (!main || !stage || !form || !qBody || !opts || !primaryBtn || !primaryLabel) return;
 
   let state = {
     started: false,
@@ -214,10 +211,11 @@ $has_quiz = count($question_ids) > 0;
     progressEl.textContent = cur + '/' + t;
   }
 
-  function setButtonsForStep() {
+  function updatePrimaryButton() {
     const last = state.total > 0 && state.index >= state.total - 1;
-    nextBtn.hidden = last;
-    finishBtn.hidden = !last;
+    primaryLabel.textContent = last ? cfg.labelFinish : cfg.labelNext;
+    primaryBtn.classList.toggle('button--primary', last);
+    primaryBtn.classList.toggle('button--filled', !last);
     renderProgress();
   }
 
@@ -242,7 +240,6 @@ $has_quiz = count($question_ids) > 0;
           : Array.isArray(saved) && saved.map(String).indexOf(String(i)) !== -1;
 
       if (type === 'radio') {
-        const id = name + '_' + i;
         const lab = document.createElement('label');
         lab.className = 'radio';
         lab.innerHTML =
@@ -259,7 +256,6 @@ $has_quiz = count($question_ids) > 0;
           '</span></span>';
         opts.appendChild(lab);
       } else {
-        const id = name + '_' + i;
         const lab = document.createElement('label');
         lab.className = 'checkbox checkbox--option';
         lab.innerHTML =
@@ -282,7 +278,7 @@ $has_quiz = count($question_ids) > 0;
       return a - b;
     });
     state.total = data.total;
-    setButtonsForStep();
+    updatePrimaryButton();
     saveState();
   }
 
@@ -332,15 +328,21 @@ $has_quiz = count($question_ids) > 0;
 
   function showIntro() {
     setPagePhase('intro');
+    if (introText) introText.hidden = false;
+    if (introActions) introActions.hidden = false;
+    if (stage) stage.hidden = true;
+    if (introFooter) introFooter.hidden = false;
     if (introSec) introSec.hidden = false;
-    if (playSec) playSec.hidden = true;
     if (resSec) resSec.hidden = true;
   }
 
-  function showPlay() {
+  function showQuiz() {
     setPagePhase('quiz');
-    if (introSec) introSec.hidden = true;
-    if (playSec) playSec.hidden = false;
+    if (introText) introText.hidden = true;
+    if (introActions) introActions.hidden = true;
+    if (stage) stage.hidden = false;
+    if (introFooter) introFooter.hidden = true;
+    if (introSec) introSec.hidden = false;
     if (resSec) resSec.hidden = true;
   }
 
@@ -367,14 +369,21 @@ $has_quiz = count($question_ids) > 0;
     }
     setPagePhase('results');
     if (introSec) introSec.hidden = true;
-    if (playSec) playSec.hidden = true;
     if (resSec) resSec.hidden = false;
     try {
       localStorage.removeItem(cfg.storageKey);
     } catch (e) {}
   }
 
-  function goNext() {
+  function onPrimaryClick() {
+    const last = state.total > 0 && state.index >= state.total - 1;
+    if (last) {
+      const sel = readCurrentSelection();
+      state.userAnswers[state.index] = sel;
+      saveState();
+      showResults();
+      return;
+    }
     const sel = readCurrentSelection();
     state.userAnswers[state.index] = sel;
     saveState();
@@ -395,25 +404,16 @@ $has_quiz = count($question_ids) > 0;
         userAnswers: []
       };
       saveState();
-      showPlay();
+      showQuiz();
       fetchQuestion(0).then(renderQuestion);
     });
 
-  nextBtn.addEventListener('click', function () {
-    goNext();
-  });
-
-  finishBtn.addEventListener('click', function () {
-    const sel = readCurrentSelection();
-    state.userAnswers[state.index] = sel;
-    saveState();
-    showResults();
-  });
+  primaryBtn.addEventListener('click', onPrimaryClick);
 
   loadState();
   const maxIdx = (state.total || cfg.totalHint) - 1;
   if (state.started && cfg.totalHint > 0 && state.index >= 0 && state.index <= maxIdx) {
-    showPlay();
+    showQuiz();
     fetchQuestion(state.index).then(renderQuestion).catch(showIntro);
   }
 })();

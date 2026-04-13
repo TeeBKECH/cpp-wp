@@ -18,9 +18,10 @@
     },
     {
       "key": "field_cpp_quiz_rosvgard_link",
-      "label": "Ссылка «Перечень вопросов Росгвардии»",
+      "label": "Ссылка на другой квиз",
       "name": "quiz_rosvgard_link",
       "type": "link",
+      "instructions": "URL и текст ссылки (поле «Заголовок» в редакторе ссылки) выводятся в подвале блока.",
       "return_format": "array"
     },
     {
