@@ -44,45 +44,6 @@ function cpp_courses_theme_setup() {
 add_action('after_setup_theme', 'cpp_courses_theme_setup');
 
 /**
- * Get static HTML file mapping by page slug.
- *
- * @return array<string, string>
- */
-function cpp_courses_static_page_map() {
-    return array(
-        'services' => 'services.html',
-        'service' => 'service.html',
-        'course' => 'course.html',
-        'articles' => 'articles.html',
-        'article' => 'article.html',
-        'contacts' => 'contacts.html',
-        'edu-info' => 'edu-info.html',
-        'test-intro' => 'test-intro.html',
-        'test-quiz' => 'test-quiz.html',
-        'links' => 'links.html',
-    );
-}
-
-/**
- * Static HTML template filename for a page slug (see cpp_courses_static_page_map).
- *
- * @param int $post_id Page ID.
- * @return string Filename or empty string.
- */
-function cpp_courses_get_static_template_for_post($post_id) {
-    $post_id = (int) $post_id;
-    if ($post_id < 1) {
-        return '';
-    }
-    $slug = get_post_field('post_name', $post_id);
-    if (!is_string($slug) || $slug === '') {
-        return '';
-    }
-    $map = cpp_courses_static_page_map();
-    return isset($map[ $slug ]) ? (string) $map[ $slug ] : '';
-}
-
-/**
  * Old static URL /edu-info/ → CPT archive /education/ (theme template archive-education.php).
  *
  * @return void
@@ -151,6 +112,28 @@ function cpp_courses_enqueue_quiz_page_assets() {
     );
 }
 add_action('wp_enqueue_scripts', 'cpp_courses_enqueue_quiz_page_assets', 20);
+
+/**
+ * 404 page layout tweaks (single CTA, spacing).
+ *
+ * @return void
+ */
+function cpp_courses_enqueue_404_assets() {
+    if (!is_404()) {
+        return;
+    }
+    $path = get_template_directory() . '/assets/css/page-404.css';
+    if (!is_readable($path)) {
+        return;
+    }
+    wp_enqueue_style(
+        'cpp-page-404',
+        get_template_directory_uri() . '/assets/css/page-404.css',
+        array('cpp-courses-app'),
+        filemtime($path)
+    );
+}
+add_action('wp_enqueue_scripts', 'cpp_courses_enqueue_404_assets', 20);
 
 /**
  * Get current archive page from query var or ?page.
@@ -444,6 +427,28 @@ function cpp_courses_filter_yoast_breadcrumb_links($crumbs) {
 add_filter('wpseo_breadcrumb_links', 'cpp_courses_filter_yoast_breadcrumb_links');
 
 /**
+ * Yoast: 404 breadcrumb trail (Главная / Страница не найдена).
+ *
+ * @param array<int, array<string, mixed>> $crumbs
+ * @return array<int, array<string, mixed>>
+ */
+function cpp_courses_yoast_breadcrumb_links_404($crumbs) {
+    if (!is_404()) {
+        return $crumbs;
+    }
+    return array(
+        array(
+            'url' => home_url('/'),
+            'text' => __('Главная', 'cpp-courses-theme'),
+        ),
+        array(
+            'text' => __('Страница не найдена', 'cpp-courses-theme'),
+        ),
+    );
+}
+add_filter('wpseo_breadcrumb_links', 'cpp_courses_yoast_breadcrumb_links_404', 20);
+
+/**
  * Render static build HTML content inside WordPress template.
  *
  * @param string $file_name Static HTML filename located in theme root.
@@ -485,33 +490,6 @@ function cpp_courses_render_static_page($file_name) {
             "href='index.html#" => "href='" . esc_url(home_url('/')) . '#',
         )
     );
-
-    $map = cpp_courses_static_page_map();
-    foreach ($map as $slug => $html_page) {
-        $target_url = esc_url(home_url('/' . $slug . '/'));
-        $content = str_replace(
-            array(
-                'href="' . $html_page . '"',
-                "href='" . $html_page . "'",
-            ),
-            array(
-                'href="' . $target_url . '"',
-                "href='" . $target_url . "'",
-            ),
-            $content
-        );
-        $content = str_replace(
-            array(
-                'href="' . $html_page . '#',
-                "href='" . $html_page . '#',
-            ),
-            array(
-                'href="' . $target_url . '#',
-                "href='" . $target_url . '#',
-            ),
-            $content
-        );
-    }
 
     $content = preg_replace('/<script[^>]+src="\/assets\/js\/[^"]+"[^>]*><\/script>/i', '', $content);
     $content = preg_replace('/<script[^>]+type="module"[^>]*><\/script>/i', '', $content);

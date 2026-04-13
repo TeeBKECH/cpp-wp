@@ -1,6 +1,6 @@
 <?php
 /**
- * Default page template: static HTML map or service-style layout (intro + content).
+ * Default page template: intro + Gutenberg content (same structure as service single).
  *
  * @package CppCoursesTheme
  */
@@ -10,15 +10,6 @@ if (!defined('ABSPATH')) {
 }
 
 get_header();
-
-$page_id = get_queried_object_id();
-$mapped_template = cpp_courses_get_static_template_for_post($page_id);
-
-if (!empty($mapped_template)) {
-    echo cpp_courses_render_static_page($mapped_template);
-    get_footer();
-    return;
-}
 
 if (!have_posts()) {
     get_footer();

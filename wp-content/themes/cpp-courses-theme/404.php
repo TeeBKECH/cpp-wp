@@ -1,49 +1,29 @@
 <?php
 /**
- * 404 template.
+ * 404 template (same shell as default pages / service single).
  *
  * @package CppCoursesTheme
  */
+
 if (!defined('ABSPATH')) {
     exit;
 }
 
 get_header();
 ?>
-<main class="main main--404">
-    <section class="section section--page-intro section--page-intro--alt">
+<main class="main main--service main--404">
+    <section class="section section--page-intro">
         <div class="container">
             <div class="page-intro">
                 <?php get_template_part('template-parts/breadcrumbs'); ?>
-                <h1 class="page-intro_title">Страница не найдена</h1>
-                <p class="page-intro_desc">Кажется, такой страницы нет или она была перемещена.</p>
-                <div class="page-intro_info">
-                    <div class="page-intro_info-item">
-                        <span class="page-intro_info-item-text">Ошибка 404</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section section--page-content">
-        <div class="container">
-            <div class="page-content">
-                <div class="page-content_main">
-                    <div class="section_header">
-                        <h2 class="section_title">Куда перейти?</h2>
-                    </div>
-                    <div class="page-content_section">
-                        <a class="button button--filled button--md" href="<?php echo esc_url(home_url('/')); ?>">
-                            <span class="button_text">На главную</span>
-                        </a>
-                        <a class="button button--filled button--md" href="<?php echo esc_url(home_url('/articles/')); ?>">
-                            <span class="button_text">Статьи</span>
-                        </a>
-                        <a class="button button--filled button--md" href="<?php echo esc_url(home_url('/contacts/')); ?>">
-                            <span class="button_text">Контакты</span>
-                        </a>
-                    </div>
+                <h1 class="page-intro_title"><?php esc_html_e('Страница не найдена', 'cpp-courses-theme'); ?></h1>
+                <p class="page-intro_desc">
+                    <?php esc_html_e('Такой страницы нет или адрес изменился. Проверьте ссылку или вернитесь на главную.', 'cpp-courses-theme'); ?>
+                </p>
+                <div class="cpp-404-actions">
+                    <a class="button button--filled button--lg" href="<?php echo esc_url(home_url('/')); ?>">
+                        <span class="button_text"><?php esc_html_e('На главную', 'cpp-courses-theme'); ?></span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -51,4 +31,3 @@ get_header();
 </main>
 <?php
 get_footer();
-
