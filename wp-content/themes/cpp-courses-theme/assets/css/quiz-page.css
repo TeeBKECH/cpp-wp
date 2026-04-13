@@ -44,6 +44,10 @@
   font-weight: 600;
 }
 
+.cpp-quiz-results-actions {
+  margin-top: 1.75rem;
+}
+
 .test-quiz_actions {
   flex-wrap: wrap;
 }
