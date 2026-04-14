@@ -115,6 +115,7 @@ $has_quiz = count($question_ids) > 0;
                     </div>
                     <?php if ($cf7_html !== '') : ?>
                         <div class="test-quiz_form cpp-quiz-results-form">
+                            <h3 class="cpp-quiz-results-form_title"><?php esc_html_e('Оставить заявку', 'cpp-courses-theme'); ?></h3>
                             <?php echo $cf7_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                         </div>
                     <?php endif; ?>

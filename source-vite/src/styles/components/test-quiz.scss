@@ -9,6 +9,29 @@
     gap: 32px;
   }
 
+  // CF7 после результатов квиза: тёмная панель как у лид-модалки
+  .cpp-quiz-results-form {
+    background: #28405d;
+    padding: 20px;
+    border-radius: 16px;
+    max-width: 700px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 24px;
+
+    &_title {
+      margin: 0;
+      padding: 0;
+      font-family: $font-main;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 1.25;
+      color: #fff;
+      text-align: center;
+    }
+  }
+
   &_question {
   }
 
