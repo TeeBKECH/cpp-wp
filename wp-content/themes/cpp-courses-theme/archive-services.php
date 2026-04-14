@@ -96,6 +96,14 @@ $pagination_links = paginate_links(
             </div>
         </div>
     </section>
+
+    <?php get_template_part('template-parts/section', 'cta-block'); ?>
+
+    <?php get_template_part('template-parts/section-about-from-front'); ?>
+
+    <?php get_template_part('template-parts/section-teachers-static'); ?>
+
+    <?php get_template_part('template-parts/section-seo-text-option'); ?>
 </main>
 <script>
 document.addEventListener('DOMContentLoaded', function () {

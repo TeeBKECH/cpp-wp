@@ -25,23 +25,18 @@ while (have_posts()) :
     }
 
     $show_cta = function_exists('get_field') && (bool) get_field('cpp_svc_show_cta');
-    $cta_label = function_exists('get_field') ? (string) get_field('cpp_svc_cta_label') : 'Оставить заявку';
+    $cta_label = function_exists('get_field') ? (string) get_field('cpp_svc_cta_label') : '';
     if ($cta_label === '') {
-        $cta_label = 'Оставить заявку';
+        $cta_label = __('Оставить заявку', 'cpp-courses-theme');
     }
-    $cta_url = function_exists('get_field') ? trim((string) get_field('cpp_svc_cta_url')) : '';
-
-    $faq_title = function_exists('get_field') ? (string) get_field('cpp_svc_faq_title') : 'Часто задаваемые вопросы';
-    $faq_subtitle = function_exists('get_field') ? (string) get_field('cpp_svc_faq_subtitle') : '';
-    $faq_items = function_exists('get_field') ? get_field('cpp_svc_faq_items') : null;
-    $rel_title = function_exists('get_field') ? (string) get_field('cpp_svc_related_title') : 'Другие услуги';
-    $rel_subtitle = function_exists('get_field') ? (string) get_field('cpp_svc_related_subtitle') : '';
-    $rel_count = function_exists('get_field') ? (int) get_field('cpp_svc_related_count') : 3;
-    if ($rel_count < 1) {
-        $rel_count = 3;
-    }
-    if ($rel_count > 12) {
-        $rel_count = 12;
+    $cta_link = function_exists('get_field') ? get_field('cpp_svc_cta_url') : null;
+    $cta_external = '';
+    $cta_target = '_self';
+    if (is_array($cta_link) && !empty($cta_link['url'])) {
+        $cta_external = trim((string) $cta_link['url']);
+        if (!empty($cta_link['target'])) {
+            $cta_target = (string) $cta_link['target'];
+        }
     }
 
     $cf7_form_post = cpp_courses_get_option('cpp_cf7_form_post', null);
@@ -50,17 +45,6 @@ while (have_posts()) :
     if (!empty($cf7_form_post)) {
         $cf7_html = do_shortcode('[contact-form-7 id="' . (int) $cf7_form_post . '"]');
     }
-
-    $related = new WP_Query(
-        array(
-            'post_type' => 'services',
-            'post_status' => 'publish',
-            'posts_per_page' => $rel_count,
-            'post__not_in' => array(get_the_ID()),
-            'orderby' => 'date',
-            'order' => 'DESC',
-        )
-    );
     ?>
     <main class="main main--service">
         <section class="section section--page-intro">
@@ -73,29 +57,27 @@ while (have_posts()) :
                     <?php endif; ?>
                     <?php if ($show_cta) : ?>
                         <div class="page-intro_actions">
-                            <?php if ($cta_url !== '' && filter_var($cta_url, FILTER_VALIDATE_URL)) : ?>
-                                <a class="button button--filled button--sm" href="<?php echo esc_url($cta_url); ?>">
+                            <?php if ($cta_external !== '') : ?>
+                                <a class="button button--filled button--sm" href="<?php echo esc_url($cta_external); ?>" target="<?php echo esc_attr($cta_target); ?>">
                                     <span class="button_text"><?php echo esc_html($cta_label); ?></span>
                                 </a>
+                            <?php elseif ($cf7_html !== '') : ?>
+                                <div id="<?php echo esc_attr($fancy_id); ?>" class="cpp-svc-cta-fancybox-inline" style="display:none;width:100%;max-width:520px;">
+                                    <?php echo $cf7_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                                </div>
+                                <button
+                                    type="button"
+                                    class="button button--filled button--sm"
+                                    data-fancybox="service-cta-<?php echo (int) get_the_ID(); ?>"
+                                    data-src="#<?php echo esc_attr($fancy_id); ?>"
+                                    data-type="inline"
+                                >
+                                    <span class="button_text"><?php echo esc_html($cta_label); ?></span>
+                                </button>
                             <?php else : ?>
-                                <?php if ($cf7_html !== '') : ?>
-                                    <div id="<?php echo esc_attr($fancy_id); ?>" class="cpp-svc-cta-fancybox-inline" style="display:none;width:100%;max-width:520px;">
-                                        <?php echo $cf7_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                                    </div>
-                                    <a
-                                        class="button button--filled button--sm"
-                                        href="#"
-                                        data-fancybox="service-cta"
-                                        data-src="#<?php echo esc_attr($fancy_id); ?>"
-                                        data-type="inline"
-                                    >
-                                        <span class="button_text"><?php echo esc_html($cta_label); ?></span>
-                                    </a>
-                                <?php else : ?>
-                                    <a class="button button--filled button--sm" href="<?php echo esc_url(home_url('/contacts/#contacts')); ?>">
-                                        <span class="button_text"><?php echo esc_html($cta_label); ?></span>
-                                    </a>
-                                <?php endif; ?>
+                                <a class="button button--filled button--sm" href="<?php echo esc_url(home_url('/contacts/#contacts')); ?>">
+                                    <span class="button_text"><?php echo esc_html($cta_label); ?></span>
+                                </a>
                             <?php endif; ?>
                         </div>
                     <?php endif; ?>
@@ -113,69 +95,17 @@ while (have_posts()) :
             </div>
         </section>
 
-        <?php if (!empty($faq_items) && is_array($faq_items)) : ?>
-            <section class="section section--faq">
-                <div class="container">
-                    <div class="faq section_content">
-                        <div class="section_header">
-                            <h2 class="section_title"><?php echo esc_html($faq_title); ?></h2>
-                            <?php if ($faq_subtitle !== '') : ?>
-                                <p class="section_subtitle"><?php echo esc_html($faq_subtitle); ?></p>
-                            <?php endif; ?>
-                        </div>
-                        <div class="faq_list">
-                            <?php
-                            $fi = 0;
-                            foreach ($faq_items as $fitem) :
-                                $q = isset($fitem['question']) ? (string) $fitem['question'] : '';
-                                $a = isset($fitem['answer']) ? $fitem['answer'] : '';
-                                if ($q === '') {
-                                    continue;
-                                }
-                                $open = (0 === $fi) ? ' open' : '';
-                                $fi++;
-                                ?>
-                                <div class="accordion_item<?php echo esc_attr($open); ?>" data-accordion="data-accordion">
-                                    <div class="accordion_item_head" data-accordion-trigger="data-accordion-trigger">
-                                        <div class="accordion_item_title"><?php echo esc_html($q); ?></div>
-                                        <div class="accordion_item_icon"></div>
-                                    </div>
-                                    <div class="accordion_item_body">
-                                        <div class="accordion_item_content">
-                                            <?php echo wp_kses_post($a); ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        <?php endif; ?>
+        <?php get_template_part('template-parts/section', 'cta-block'); ?>
 
-        <?php if ($related->have_posts()) : ?>
-            <section class="section section--services" id="other-services">
-                <div class="container container--other-services">
-                    <div class="services section_content">
-                        <div class="section_header section_header--other-services">
-                            <h2 class="section_title"><?php echo esc_html($rel_title); ?></h2>
-                            <?php if ($rel_subtitle !== '') : ?>
-                                <p class="section_subtitle"><?php echo esc_html($rel_subtitle); ?></p>
-                            <?php endif; ?>
-                        </div>
-                        <div class="services_grid services_grid--swiper">
-                            <?php
-                            while ($related->have_posts()) :
-                                $related->the_post();
-                                get_template_part('template-parts/post-card', 'service');
-                            endwhile;
-                            wp_reset_postdata();
-                            ?>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        <?php endif; ?>
+        <?php get_template_part('template-parts/section-service-faq'); ?>
+
+        <?php get_template_part('template-parts/section-related-services-single', null, array('exclude' => (int) get_the_ID())); ?>
+
+        <?php get_template_part('template-parts/section-about-from-front'); ?>
+
+        <?php get_template_part('template-parts/section-teachers-static'); ?>
+
+        <?php get_template_part('template-parts/section-education-from-front'); ?>
     </main>
     <?php
 endwhile;

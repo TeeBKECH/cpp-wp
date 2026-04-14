@@ -1,0 +1,37 @@
+{
+  "key": "group_cpp_services_archive",
+  "title": "CPP — Архив «Услуги»",
+  "fields": [
+    {
+      "key": "field_cpp_services_archive_seo_title",
+      "label": "Заголовок SEO-блока",
+      "name": "cpp_services_archive_seo_title",
+      "type": "text",
+      "instructions": "Необязательно. Если пусто — блок без отдельного H2.",
+      "default_value": ""
+    },
+    {
+      "key": "field_cpp_services_archive_seo_content",
+      "label": "Текст SEO (нижний блок на архиве услуг)",
+      "name": "cpp_services_archive_seo_content",
+      "type": "wysiwyg",
+      "tabs": "all",
+      "toolbar": "basic",
+      "media_upload": 1
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "options_page",
+        "operator": "==",
+        "value": "cpp-site-archives"
+      }
+    ]
+  ],
+  "menu_order": 5,
+  "position": "normal",
+  "style": "default",
+  "active": true,
+  "modified": 1744615200
+}

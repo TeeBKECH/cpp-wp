@@ -43,5 +43,14 @@ add_action('acf/init', function () {
             'menu_slug'   => 'cpp-site-branding',
         )
     );
+
+    acf_add_options_sub_page(
+        array(
+            'page_title'  => 'Архивы и разделы',
+            'menu_title'  => 'Архивы',
+            'parent_slug' => 'cpp-site-settings',
+            'menu_slug'   => 'cpp-site-archives',
+        )
+    );
 });
 
