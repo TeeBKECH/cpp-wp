@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $img: '@/assets/img';
 
 .about {
@@ -33,6 +35,35 @@ $img: '@/assets/img';
       @include respond-to(lg) {
         font-size: 16px;
       }
+    }
+  }
+
+  // «Читать далее» (truncateText на мобильных)
+  &_read-more {
+    align-self: flex-start;
+    margin-top: 4px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: $font-main;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.3;
+    color: #043b7e;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease, opacity 0.2s ease;
+
+    @include onlyDescHover {
+      &:hover {
+        color: color.adjust(#043b7e, $lightness: -8%);
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid color.adjust(#043b7e, $lightness: 15%);
+      outline-offset: 2px;
     }
   }
 

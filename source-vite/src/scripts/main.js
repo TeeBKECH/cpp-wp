@@ -8,6 +8,7 @@ import { initPhoneMasks } from '@/scripts/components/phone-mask.js'
 import { buildToc } from '@/scripts/components/toc.js'
 import { initModalSystem, registerModal } from '@/scripts/components/modal.js'
 import { initCf7FormToasts } from '@/scripts/components/cf7-toast.js'
+import { truncateText } from '@/scripts/utils/truncText.js'
 import { attachScrollVisibility } from '@/scripts/utils/scroll-visibility.js'
 
 import {
@@ -347,17 +348,23 @@ document.addEventListener('DOMContentLoaded', (e) => {
   initModalSystem()
   initCf7FormToasts()
   // Регистрируем модалки
-  const burgerBtn = document.querySelector('.burger, [data-modal="mobile-menu"]')
+  const burgerMobile = document.querySelector('.burger--mobile[data-modal="mobile-menu"]')
+  const burgerBig = document.querySelector('.burger--big[data-modal="big-menu"]')
+  function setBurgerOpen(btn, open) {
+    if (!btn) return
+    btn.classList.toggle('active', open)
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false')
+  }
   registerModal('mobile-menu', {
     closeOnBackdrop: true,
     closeOnEscape: true,
     exclusive: true,
     onOpen: (modal) => {
-      if (burgerBtn) burgerBtn.classList.add('active')
+      setBurgerOpen(burgerMobile, true)
       if (header) header.classList.add('menu-open')
     },
     onClose: (modal) => {
-      if (burgerBtn) burgerBtn.classList.remove('active')
+      setBurgerOpen(burgerMobile, false)
       if (header) header.classList.remove('menu-open')
       // Закрываем все подменю при закрытии модалки
       modal.querySelectorAll('.menu_item.is-open').forEach((item) => {
@@ -379,6 +386,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
     closeOnEscape: true,
     exclusive: true,
     onOpen: async (modal) => {
+      setBurgerOpen(burgerBig, true)
       // Инициализируем функционал обновления поля контакта при открытии модалки
       const form = modal.querySelector('form')
       if (form) {
@@ -388,7 +396,16 @@ document.addEventListener('DOMContentLoaded', (e) => {
         }, 100)
       }
     },
-    // onClose: (modal) => burger.classList.remove('active'),
+    onClose: () => {
+      setBurgerOpen(burgerBig, false)
+    },
+  })
+
+  truncateText('.about_text--truncatable', 220, {
+    breakpoint: '(max-width: 991px)',
+    showText: 'Читать далее',
+    hideText: 'Скрыть',
+    btnClass: 'about_read-more',
   })
 
   /*

@@ -61,7 +61,7 @@ class Cpp_Courses_Big_Menu_Column_Walker extends Walker_Nav_Menu {
         }
         $url = !empty($item->url) ? esc_url($item->url) : '#';
         $title = apply_filters('the_title', $item->title, $item->ID);
-        $output .= '<li><a class="menu_col-link" href="' . $url . '">' . esc_html($title) . '</a></li>';
+        $output .= '<li><a class="menu_col-link wave-link wave-link--hover" href="' . $url . '">' . esc_html($title) . '</a></li>';
     }
 
     public function end_el(&$output, $item, $depth = 0, $args = null) {

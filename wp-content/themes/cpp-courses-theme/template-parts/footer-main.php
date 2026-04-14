@@ -70,6 +70,7 @@ $privacy_url = $privacy_page ? get_permalink($privacy_page) : home_url('/privacy
                         <a class="footer_contacts-value wave-link" href="mailto:<?php echo esc_attr($email); ?>">Написать письмо</a>
                     </div>
                 </div>
+                <a class="footer_seogravity" href="https://seo-gravity.ru/" target="_blank"><?php esc_html_e('Создание и продвижение – SEOGRAVITY', 'cpp-courses-theme'); ?></a>
             </div>
         </div>
     </div>

@@ -180,16 +180,8 @@ export function closeAllModals(exceptModalId = null) {
   })
 }
 
-// Обновление скролла body
-export function updateBodyScroll() {
-  const hasOpenModals = Array.from(modalState.values()).some((isOpen) => isOpen)
-
-  if (hasOpenModals) {
-    document.body.style.overflow = 'hidden'
-  } else {
-    document.body.style.overflow = ''
-  }
-}
+// Не трогаем overflow у html/body — иначе исчезновение скроллбара даёт скачок ширины.
+export function updateBodyScroll() {}
 
 // Фокус на первом инпуте
 export function focusFirstInput(modalElement) {

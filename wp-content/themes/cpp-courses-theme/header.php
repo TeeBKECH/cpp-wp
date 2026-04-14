@@ -88,7 +88,7 @@ if (is_front_page()) {
               <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/phone.svg'); ?>" alt="Телефон" />
             </a>
             <div class="header_mobile-menu">
-              <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" data-modal="mobile-menu">
+              <button class="burger burger--mobile" type="button" aria-label="Открыть меню" aria-expanded="false" data-modal="mobile-menu">
                 <span class="burger_line"></span>
                 <span class="burger_line"></span>
                 <span class="burger_line"></span>
@@ -101,7 +101,7 @@ if (is_front_page()) {
 
     <div class="header_bottom">
       <div class="container">
-        <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" data-modal="big-menu">
+        <button class="burger burger--big" type="button" aria-label="Открыть меню" aria-expanded="false" data-modal="big-menu">
           <span class="burger_line"></span>
           <span class="burger_line"></span>
           <span class="burger_line"></span>

@@ -142,7 +142,8 @@
   }
 
   &--mobile {
-    z-index: 350;
+    // Выше нижнего таб-бара (.bottom-nav z-index 400)
+    z-index: 450;
     #{$modal}_content {
       padding-top: 64px;
       padding-bottom: 80px;
@@ -156,7 +157,7 @@
   }
 
   &--menu {
-    z-index: 350;
+    z-index: 450;
     #{$modal}_content {
       padding-top: var(--header-height);
       padding-bottom: 80px;

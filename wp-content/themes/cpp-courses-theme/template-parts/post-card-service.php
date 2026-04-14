@@ -20,6 +20,14 @@ if ($icon_url === '') {
     $icon_url = get_template_directory_uri() . '/assets/img/course-icon-1.svg';
 }
 
+$card_title = '';
+if (function_exists('get_field')) {
+    $card_title = trim((string) get_field('cpp_svc_card_title'));
+}
+if ($card_title === '') {
+    $card_title = get_the_title();
+}
+
 $card_text = '';
 if (function_exists('get_field')) {
     $card_text = trim((string) get_field('cpp_svc_card_text'));
@@ -33,7 +41,7 @@ if ($card_text === '') {
         <div class="courses_card_icon">
             <img src="<?php echo esc_url($icon_url); ?>" alt="" width="48" height="48" loading="lazy" />
         </div>
-        <h3 class="courses_card_title"><?php the_title(); ?></h3>
+        <h3 class="courses_card_title"><?php echo esc_html($card_title); ?></h3>
     </div>
     <div class="courses_card_content">
         <p class="courses_card_text"><?php echo esc_html(wp_trim_words($card_text, 40)); ?></p>

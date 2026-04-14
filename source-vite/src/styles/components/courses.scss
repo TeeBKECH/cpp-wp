@@ -67,6 +67,12 @@
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
+
+      @include respond-to(lg) {
+        font-size: 15px;
+        line-height: calc(22 / 15);
+        -webkit-line-clamp: 4;
+      }
     }
 
     &_actions {

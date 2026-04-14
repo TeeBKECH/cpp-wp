@@ -1,4 +1,9 @@
 /* Reset and base styles  */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 * {
   padding: 0px;
   margin: 0px;

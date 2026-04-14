@@ -1,4 +1,4 @@
-// Кнопка-гамбургер: три линии, без привязки к header.
+// Кнопка-гамбургер: три линии → крестик при .active (плавно, общий transform-origin).
 
 .burger {
   $burger: &;
@@ -27,4 +27,24 @@
   height: 2px;
   background: currentColor;
   border-radius: 1px;
+  transform-origin: center;
+  transition:
+    transform 0.3s ease,
+    opacity 0.25s ease;
+}
+
+// Расстояние между центрами полосок = gap (5px) + высота линии (2px) = 7px
+.burger.active {
+  .burger_line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .burger_line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .burger_line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
 }

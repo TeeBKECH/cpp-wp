@@ -23,4 +23,18 @@
 
   &.wave-link--alt {
   }
+
+  // Волнистое подчёркивание только при наведении (большое меню и т.п.)
+  &.wave-link--hover {
+    &::after {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    @include onlyDescHover {
+      &:hover::after {
+        opacity: 1;
+      }
+    }
+  }
 }

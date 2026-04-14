@@ -21,6 +21,14 @@
       "library": "all"
     },
     {
+      "key": "field_cpp_svc_card_title",
+      "label": "Заголовок в карточке",
+      "name": "cpp_svc_card_title",
+      "type": "text",
+      "instructions": "Если пусто — используется название записи.",
+      "required": 0
+    },
+    {
       "key": "field_cpp_svc_card_text",
       "label": "Текст в карточке",
       "name": "cpp_svc_card_text",

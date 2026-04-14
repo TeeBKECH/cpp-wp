@@ -200,3 +200,25 @@ function cpp_courses_render_bottom_nav() {
     echo '</nav>';
 }
 
+/**
+ * Human-readable menu title assigned to a theme location (Appearance → Menus).
+ *
+ * @param string $location Registered theme_location slug.
+ * @return string Empty if no menu assigned.
+ */
+function cpp_courses_nav_menu_name_for_location($location) {
+    $location = (string) $location;
+    if ($location === '') {
+        return '';
+    }
+    $locations = get_nav_menu_locations();
+    if (empty($locations[$location])) {
+        return '';
+    }
+    $menu_obj = wp_get_nav_menu_object((int) $locations[$location]);
+    if (!$menu_obj || empty($menu_obj->name)) {
+        return '';
+    }
+    return (string) $menu_obj->name;
+}
+

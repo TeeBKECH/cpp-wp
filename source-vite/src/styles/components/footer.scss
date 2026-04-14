@@ -110,6 +110,8 @@
     display: flex;
     flex-direction: column;
     gap: 28px;
+    flex: 1;
+    min-height: 0;
 
     &-wrap {
       display: flex;
@@ -135,5 +137,28 @@
       padding-bottom: 4px;
       width: fit-content;
     }
+  }
+
+  &_seogravity {
+    display: inline-block;
+    margin-top: auto;
+    font-family: $font-main;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: 0.12px;
+    color: $color-footer-muted;
+    text-decoration: none;
+    max-width: 260px;
+
+    @include onlyDescHover {
+      &:hover {
+        color: $color-white;
+      }
+    }
+  }
+
+  &_col--contacts {
+    min-height: 100%;
   }
 }

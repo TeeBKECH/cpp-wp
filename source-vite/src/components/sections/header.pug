@@ -27,10 +27,10 @@ header.header
           a.header_mobile-phone(href="tel:+74951295041")
             img(src="assets/img/phone.svg", alt="Телефон")
           .header_mobile-menu
-            +Burger()(data-modal="mobile-menu")
+            +Burger()(data-modal="mobile-menu" class="burger--mobile")
   .header_bottom
     +Container()
-      +Burger()(data-modal="big-menu")
+      +Burger()(data-modal="big-menu" class="burger--big")
       ul.header_nav
         li: a.header_nav-link(href="#courses") Услуги
         li: a.header_nav-link(href="#about") О нас
