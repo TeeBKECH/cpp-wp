@@ -41,14 +41,18 @@ if (!$full) {
 
 $alt = get_post_meta($thumb_id, '_wp_attachment_image_alt', true);
 $alt = is_string($alt) && $alt !== '' ? $alt : get_the_title($post);
+$fancy_name = 'edu-' . $group;
 ?>
-<a
+<div
     class="orders_item orders_item--photo"
-    href="<?php echo esc_url($full); ?>"
-    data-fancybox="<?php echo esc_attr('edu-' . $group); ?>"
+    role="button"
+    tabindex="0"
+    data-fancybox="<?php echo esc_attr($fancy_name); ?>"
+    data-src="<?php echo esc_url($full); ?>"
     data-caption="<?php echo esc_attr(get_the_title($post)); ?>"
+    aria-label="<?php echo esc_attr($alt); ?>"
 >
     <div class="orders_item-img">
         <?php echo wp_get_attachment_image($thumb_id, 'medium', false, array('loading' => 'lazy', 'alt' => $alt)); ?>
     </div>
-</a>
+</div>

@@ -6,7 +6,8 @@ const modalConfigs = new Map()
 
 // Инициализация модальной системы
 export function initModalSystem() {
-  document.addEventListener('click', handleModalTriggers)
+  // capture: true — открытие модалок до всплытия (иначе Fancybox/другие слушатели могут съесть клик по бургеру)
+  document.addEventListener('click', handleModalTriggers, true)
   document.addEventListener('keydown', handleEscapePress)
   document.addEventListener('focusin', handleFocusTriggers)
 }
@@ -26,6 +27,16 @@ function handleModalTriggers(event) {
 
   const modalId = trigger.dataset.modal
   const action = trigger.dataset.modalAction || 'toggle'
+
+  event.stopPropagation()
+  if (trigger.tagName === 'BUTTON') {
+    event.preventDefault()
+  } else if (trigger.tagName === 'A') {
+    const href = trigger.getAttribute('href') || ''
+    if (href === '' || href === '#' || href.startsWith('#')) {
+      event.preventDefault()
+    }
+  }
 
   if (action === 'toggle') {
     toggleModal(modalId)
@@ -80,8 +91,6 @@ export function registerModal(modalId, options = {}) {
   const closeButtons = modalElement.querySelectorAll('[data-close]')
   closeButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      console.log(button.dataset.close)
-
       const closeModalId = button.dataset.close || modalId
       closeModal(closeModalId)
     })

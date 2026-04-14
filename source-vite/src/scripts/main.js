@@ -8,7 +8,6 @@ import { initPhoneMasks } from '@/scripts/components/phone-mask.js'
 import { buildToc } from '@/scripts/components/toc.js'
 import { initModalSystem, registerModal } from '@/scripts/components/modal.js'
 import { initCf7FormToasts } from '@/scripts/components/cf7-toast.js'
-import { initEducationLicenseGallery } from '@/scripts/components/education-license-fancybox.js'
 import { attachScrollVisibility } from '@/scripts/utils/scroll-visibility.js'
 
 import {
@@ -313,11 +312,9 @@ document.addEventListener('DOMContentLoaded', (e) => {
    */
   // Preview Image
   Fancybox.bind('[data-fancybox="preview"]', {})
-  initEducationLicenseGallery()
-  // Галереи и прочие группы (не лицензии education — они через initEducationLicenseGallery)
+  // Все группы Fancybox (слайдер, лицензии education — div + data-fancybox + data-src как в блоке галереи)
   const galleryGroups = new Set(['preview'])
   document.querySelectorAll('[data-fancybox]').forEach((el) => {
-    if (el.closest('.orders_list--photos, .orders--photos')) return
     const group = el.getAttribute('data-fancybox')
     if (!group || galleryGroups.has(group)) return
     galleryGroups.add(group)
