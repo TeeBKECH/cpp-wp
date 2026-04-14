@@ -24,6 +24,7 @@ require_once __DIR__ . '/inc/acf-register-home-groups.php';
 require_once __DIR__ . '/inc/register-acf-blocks.php';
 require_once __DIR__ . '/inc/acf-register-services-archive.php';
 require_once __DIR__ . '/inc/services-page-sections.php';
+require_once __DIR__ . '/inc/contact-form-7-markup.php';
 
 add_filter('acf/settings/save_json', function ($path) {
     return __DIR__ . '/acf-json';
