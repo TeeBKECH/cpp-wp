@@ -6,10 +6,12 @@ Input: CSV (UTF-8 or Excel UTF-8 BOM). Required column with page URL (any of:
 url, link, ссылка, адрес). Optional: title, yoast_title, yoast_description,
 seo_title, seo_description, description (meta description for Yoast).
 
-Content: HTML inside the first element matching CONTENT_SELECTOR (default
-.uk-margin-medium-top). Scripts/styles removed; inline `style` and `on*`
-handlers stripped. First <img> in that block is downloaded and attached as
-featured image unless --no-featured-image.
+Content: **only the children** of the first element matching CONTENT_SELECTOR
+(default `.uk-margin-medium-top`) — the wrapper itself is **not** included in
+`post_content`, so the editor sees normal block HTML. Scripts/styles removed;
+inline `style` / `on*` stripped; all `<span>` unwrapped; `<img>` / `<picture>`
+removed from body (broken old-site URLs). First image URL is still used for
+the featured image unless --no-featured-image.
 
 Output: scripts/import-artifacts/articles-import/run-import.sh and
 scripts/import-artifacts/articles-import/posts/<slug>/...
@@ -131,6 +133,24 @@ def sanitize_fragment(root) -> None:
             href = (tag.get("href") or "").strip().lower()
             if href.startswith("javascript:"):
                 tag.unwrap()
+
+
+def unwrap_all_spans(root) -> None:
+    """Remove span wrappers (keep children); repeat until none left."""
+    while True:
+        spans = root.find_all("span")
+        if not spans:
+            break
+        for span in spans:
+            span.unwrap()
+
+
+def remove_images_from_body(root) -> None:
+    """Drop img/picture so broken absolute URLs do not appear in post content."""
+    for pic in root.find_all("picture"):
+        pic.decompose()
+    for img in root.find_all("img"):
+        img.decompose()
 
 
 def remove_leading_h1_if_matches(root, title: str) -> None:
@@ -313,10 +333,9 @@ def main() -> int:
             print(f"  SKIP no {CONTENT_SELECTOR!r}", file=sys.stderr)
             continue
 
-        inner = BeautifulSoup(str(container), "html.parser").select_one(CONTENT_SELECTOR)
-        if not inner:
-            inner = container
-        sanitize_fragment(inner)
+        work = BeautifulSoup(str(container), "html.parser").select_one(CONTENT_SELECTOR)
+        if not work:
+            work = container
 
         h1 = soup.find("h1")
         title_page = h1.get_text(strip=True) if h1 else ""
@@ -324,10 +343,17 @@ def main() -> int:
         if not title:
             title = slug
 
-        remove_leading_h1_if_matches(inner, title)
+        remove_leading_h1_if_matches(work, title)
 
-        img_url = first_image_url(inner, url)
-        body_html = str(inner)
+        # Featured image from first <img> before we strip images from body.
+        img_url = first_image_url(work, url)
+
+        sanitize_fragment(work)
+        unwrap_all_spans(work)
+        remove_images_from_body(work)
+
+        # Inner HTML only: no .uk-margin-medium-top wrapper in post_content.
+        body_html = work.decode_contents()
 
         (post_dir / "title.txt").write_text(title, encoding="utf-8")
         (post_dir / "body.html").write_text(body_html, encoding="utf-8")
@@ -335,7 +361,7 @@ def main() -> int:
         (post_dir / "yoast_desc.txt").write_text(yo_d or "", encoding="utf-8")
 
         excerpt = ""
-        for p in inner.find_all("p"):
+        for p in work.find_all("p"):
             t = p.get_text(strip=True)
             if len(t) > 40:
                 excerpt = excerpt_for_database(re.sub(r"\s+", " ", t)[:800])
