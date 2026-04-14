@@ -1,7 +1,10 @@
 /**
  * CF7: show success/error in a fixed toast; hide inline response.
  */
+import { closeModal } from '@/scripts/components/modal.js'
+
 const TOAST_MS = 6000
+const LEAD_FORM_MODAL_ID = 'lead-form-modal'
 
 function extractStatusFromMessage(msg) {
   const m = String(msg).match(/\/([a-z0-9_-]+)\/?\s*$/i)
@@ -79,6 +82,11 @@ export function initCf7FormToasts() {
           const out = form.querySelector('.wpcf7-response-output')
           if (out) {
             out.style.display = 'none'
+          }
+        }
+        if (ev.type === 'wpcf7mailsent' && form && typeof form.closest === 'function') {
+          if (form.closest(`#${LEAD_FORM_MODAL_ID}`)) {
+            closeModal(LEAD_FORM_MODAL_ID)
           }
         }
       })
