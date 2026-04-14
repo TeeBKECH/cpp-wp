@@ -103,14 +103,14 @@ $cf7_form_post = cpp_courses_get_option('cpp_cf7_form_post', null);
                 </div>
                 <div class="cta_form">
                     <?php
-                    $cf7_shortcode = '';
+                    $cf7_id = 0;
                     if (is_array($cf7_form_post) && !empty($cf7_form_post['ID'])) {
-                        $cf7_shortcode = '[contact-form-7 id="' . (int) $cf7_form_post['ID'] . '"]';
+                        $cf7_id = (int) $cf7_form_post['ID'];
                     } elseif (is_numeric($cf7_form_post)) {
-                        $cf7_shortcode = '[contact-form-7 id="' . (int) $cf7_form_post . '"]';
+                        $cf7_id = (int) $cf7_form_post;
                     }
-                    if (!empty($cf7_shortcode)) {
-                        echo do_shortcode($cf7_shortcode); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    if ($cf7_id > 0) {
+                        echo cpp_courses_render_cf7_form($cf7_id); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     } else {
                         ?>
                         <div class="form form--light">

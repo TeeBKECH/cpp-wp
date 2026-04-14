@@ -27,6 +27,36 @@ function cpp_courses_get_option($field_name, $default = '') {
 }
 
 /**
+ * Extra CSS class(es) on the CF7 form wrapper for all theme-rendered forms.
+ * Filter `cpp_courses_cf7_form_class` to change (space-separated for several classes).
+ *
+ * @return string
+ */
+function cpp_courses_cf7_form_html_class() {
+    $class = apply_filters('cpp_courses_cf7_form_class', 'cpp-cf7-form');
+    $class = trim(preg_replace('/\s+/', ' ', (string) $class));
+    return $class;
+}
+
+/**
+ * Render Contact Form 7 by post ID with consistent html_class.
+ *
+ * @param int|string $form_post_id CF7 post ID from options / SCF.
+ * @return string
+ */
+function cpp_courses_render_cf7_form($form_post_id) {
+    $id = absint($form_post_id);
+    if ($id < 1) {
+        return '';
+    }
+    $html_class = cpp_courses_cf7_form_html_class();
+    if ($html_class === '') {
+        return do_shortcode('[contact-form-7 id="' . $id . '"]');
+    }
+    return do_shortcode('[contact-form-7 id="' . $id . '" html_class="' . esc_attr($html_class) . '"]');
+}
+
+/**
  * Normalize phone for tel: links.
  *
  * @param string $phone

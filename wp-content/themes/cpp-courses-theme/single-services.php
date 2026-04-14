@@ -43,7 +43,7 @@ while (have_posts()) :
     $fancy_id = 'cpp-svc-cta-form-' . get_the_ID();
     $cf7_html = '';
     if (!empty($cf7_form_post)) {
-        $cf7_html = do_shortcode('[contact-form-7 id="' . (int) $cf7_form_post . '"]');
+        $cf7_html = cpp_courses_render_cf7_form($cf7_form_post);
     }
     ?>
     <main class="main main--service">
