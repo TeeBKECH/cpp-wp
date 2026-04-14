@@ -3,6 +3,21 @@
 .modal.modal-form {
   .modal_content {
     background: #28405d;
+    position: relative;
+    z-index: 1000;
+  }
+
+  .form {
+    gap: 16px;
+  }
+
+  .form_fields {
+    gap: 16px;
+  }
+
+  textarea {
+    height: 150px;
+    min-height: 150px;
   }
 
   .modal-title,
@@ -25,17 +40,8 @@
 
   // < 992px ($breakpoint-lg)
   @include respond-to(lg) {
-    .form_fields {
-      gap: 16px;
-    }
-
     .form_fields_row {
       gap: 16px;
-    }
-
-    .form_field textarea {
-      height: 150px;
-      min-height: 150px;
     }
   }
 }
