@@ -75,26 +75,24 @@ function cpp_courses_enqueue_assets() {
     $theme_uri = get_template_directory_uri();
     $theme_dir = get_template_directory();
 
-    $css_files = glob($theme_dir . '/assets/css/*.css');
-    if (!empty($css_files)) {
-        $css_file = basename($css_files[0]);
+    // Явные имена: glob() сортирует по алфавиту и мог подключить устаревший app.BqJ1X3z3.js вместо app.js.
+    $css_path = $theme_dir . '/assets/css/app.css';
+    if (is_readable($css_path)) {
         wp_enqueue_style(
             'cpp-courses-app',
-            $theme_uri . '/assets/css/' . $css_file,
+            $theme_uri . '/assets/css/app.css',
             array(),
-            filemtime($css_files[0])
+            filemtime($css_path)
         );
     }
-    // theme-overrides.css was a temporary workaround; WP-specific build now produces correct URLs.
 
-    $js_files = glob($theme_dir . '/assets/js/*.js');
-    if (!empty($js_files)) {
-        $js_file = basename($js_files[0]);
+    $js_path = $theme_dir . '/assets/js/app.js';
+    if (is_readable($js_path)) {
         wp_enqueue_script(
             'cpp-courses-app',
-            $theme_uri . '/assets/js/' . $js_file,
+            $theme_uri . '/assets/js/app.js',
             array(),
-            filemtime($js_files[0]),
+            filemtime($js_path),
             true
         );
     }
