@@ -11,6 +11,22 @@
   font-size: 12px;
   line-height: calc(18 / 12);
 
+  // CF7 оборачивает [acceptance] в span — input не сосед .checkbox_box, ломается «+».
+  // :has() стилизует квадратик по состоянию input внутри label.
+  &:has(.checkbox_input:focus-visible) #{$checkbox}_box {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+
+  &:has(.checkbox_input:checked) #{$checkbox}_box {
+    border-color: $color-primary;
+    background: $color-white;
+
+    &::after {
+      opacity: 1;
+    }
+  }
+
   &_input {
     position: absolute;
     width: 1px;
