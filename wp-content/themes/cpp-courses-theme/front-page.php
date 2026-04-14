@@ -29,8 +29,6 @@ if ($front_id < 1) {
     return;
 }
 
-$lead_modal_cf7 = cpp_courses_get_modal_cf7_form_id();
-
 // --- Fields (option '' with post id for front page).
 $h1 = function_exists('get_field') ? (string) get_field('main_intro_title', $front_id) : '';
 if ($h1 === '') {
@@ -127,20 +125,21 @@ $partners = function_exists('get_field') ? get_field('partners_items', $front_id
                             <a class="button button--primary button--lg" href="<?php echo esc_url($btn_url); ?>" target="<?php echo esc_attr($btn_target); ?>">
                                 <span class="button_text"><?php echo esc_html($btn_title); ?></span>
                             </a>
-                        <?php elseif ($lead_modal_cf7 > 0) : ?>
-                            <a
-                                class="button button--primary button--lg"
-                                href="#"
-                                data-fancybox="cpp-lead"
-                                data-src="#cpp-lead-fancy-inline"
-                                data-type="inline"
-                            >
-                                <span class="button_text"><?php echo esc_html($btn_title); ?></span>
-                            </a>
                         <?php else : ?>
+                            <?php ob_start(); ?>
+                            <?php cpp_courses_render_lead_apply_control($btn_title, '', 'button button--primary button--lg'); ?>
+                            <?php
+                            $lead_btn = trim((string) ob_get_clean());
+                            if ($lead_btn !== '') :
+                                echo $lead_btn; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                            else :
+                                ?>
                             <a class="button button--primary button--lg" href="<?php echo esc_url(home_url('/#courses')); ?>">
                                 <span class="button_text"><?php echo esc_html($btn_title); ?></span>
                             </a>
+                                <?php
+                            endif;
+                            ?>
                         <?php endif; ?>
                     </div>
                 </div>

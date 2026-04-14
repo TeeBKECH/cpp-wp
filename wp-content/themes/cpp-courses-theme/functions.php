@@ -43,6 +43,7 @@ function cpp_courses_theme_setup() {
         array(
             'primary' => __('Primary Menu', 'cpp-courses-theme'),
             'mobile_primary' => __('Mobile Primary Menu', 'cpp-courses-theme'),
+            'mobile' => __('Mobile menu (альтернативная область)', 'cpp-courses-theme'),
             'footer' => __('Footer Menu', 'cpp-courses-theme'),
             'big_menu_education' => __('Big menu: Сведения об образовательной организации', 'cpp-courses-theme'),
             'big_menu_documents' => __('Big menu: Документы', 'cpp-courses-theme'),

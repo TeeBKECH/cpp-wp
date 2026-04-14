@@ -25,9 +25,6 @@ if ($icon_url === '') {
 $pay = function_exists('get_field') ? trim((string) get_field('vacancy_pay_line', $post->ID)) : '';
 $bullets = function_exists('get_field') ? get_field('vacancy_bullets', $post->ID) : null;
 $apply = function_exists('get_field') ? trim((string) get_field('vacancy_apply_url', $post->ID)) : '';
-if ($apply === '') {
-    $apply = home_url('/contacts/#contacts');
-}
 
 $desc = get_the_excerpt($post);
 if ($desc === '') {
@@ -63,8 +60,14 @@ if ($desc === '') {
                 ?>
             </ul>
         <?php endif; ?>
-        <a class="button button--outline button--sm" href="<?php echo esc_url($apply); ?>">
-            <span class="button_text"><?php esc_html_e('Откликнуться', 'cpp-courses-theme'); ?></span>
-        </a>
+        <?php
+        if ($apply !== '' && $apply !== '#' && filter_var($apply, FILTER_VALIDATE_URL)) :
+            ?>
+            <a class="button button--outline button--sm" href="<?php echo esc_url($apply); ?>" target="_blank" rel="noopener noreferrer">
+                <span class="button_text"><?php esc_html_e('Откликнуться', 'cpp-courses-theme'); ?></span>
+            </a>
+        <?php else : ?>
+            <?php cpp_courses_render_lead_apply_control(__('Откликнуться', 'cpp-courses-theme'), '', 'button button--outline button--sm'); ?>
+        <?php endif; ?>
     </div>
 </div>

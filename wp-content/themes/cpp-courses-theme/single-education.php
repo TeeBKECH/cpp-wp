@@ -32,15 +32,9 @@ while (have_posts()) :
     }
     $cta_link = function_exists('get_field') ? get_field('cpp_edu_cta_url') : null;
     $cta_external = '';
-    $cta_target = '_self';
     if (is_array($cta_link) && !empty($cta_link['url'])) {
         $cta_external = trim((string) $cta_link['url']);
-        if (!empty($cta_link['target'])) {
-            $cta_target = (string) $cta_link['target'];
-        }
     }
-
-    $lead_modal_cf7 = cpp_courses_get_modal_cf7_form_id();
     ?>
     <main class="main main--service">
         <section class="section section--page-intro">
@@ -53,25 +47,7 @@ while (have_posts()) :
                     <?php endif; ?>
                     <?php if ($show_cta) : ?>
                         <div class="page-intro_actions">
-                            <?php if ($cta_external !== '') : ?>
-                                <a class="button button--filled button--sm" href="<?php echo esc_url($cta_external); ?>" target="<?php echo esc_attr($cta_target); ?>">
-                                    <span class="button_text"><?php echo esc_html($cta_label); ?></span>
-                                </a>
-                            <?php elseif ($lead_modal_cf7 > 0) : ?>
-                                <button
-                                    type="button"
-                                    class="button button--filled button--sm"
-                                    data-fancybox="cpp-lead"
-                                    data-src="#cpp-lead-fancy-inline"
-                                    data-type="inline"
-                                >
-                                    <span class="button_text"><?php echo esc_html($cta_label); ?></span>
-                                </button>
-                            <?php else : ?>
-                                <a class="button button--filled button--sm" href="<?php echo esc_url(home_url('/contacts/#contacts')); ?>">
-                                    <span class="button_text"><?php echo esc_html($cta_label); ?></span>
-                                </a>
-                            <?php endif; ?>
+                            <?php cpp_courses_render_lead_apply_control($cta_label, $cta_external, 'button button--filled button--sm'); ?>
                         </div>
                     <?php endif; ?>
                 </div>

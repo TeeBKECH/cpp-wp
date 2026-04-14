@@ -85,6 +85,41 @@ function cpp_courses_get_modal_cf7_form_id() {
 }
 
 /**
+ * Whether the global Fancybox lead form snippet is configured.
+ *
+ * @return bool
+ */
+function cpp_courses_has_lead_fancybox() {
+    return cpp_courses_get_modal_cf7_form_id() > 0;
+}
+
+/**
+ * «Оставить заявку» / отклик: Fancybox с #cpp-lead-fancy-inline или внешняя ссылка если задана.
+ *
+ * @param string $label        Button text.
+ * @param string $external_url If non-empty valid URL — render <a>; else Fancybox when form exists.
+ * @param string $classes      Space-separated button classes.
+ * @return void
+ */
+function cpp_courses_render_lead_apply_control($label, $external_url = '', $classes = 'button button--filled button--sm') {
+    $label = trim((string) $label);
+    if ($label === '') {
+        $label = __('Оставить заявку', 'cpp-courses-theme');
+    }
+    $ext = trim((string) $external_url);
+    if ($ext !== '' && $ext !== '#' && filter_var($ext, FILTER_VALIDATE_URL)) {
+        echo '<a class="' . esc_attr($classes) . '" href="' . esc_url($ext) . '" target="_blank" rel="noopener noreferrer">';
+        echo '<span class="button_text">' . esc_html($label) . '</span></a>';
+        return;
+    }
+    if (!cpp_courses_has_lead_fancybox()) {
+        return;
+    }
+    echo '<button type="button" class="' . esc_attr($classes) . '" data-fancybox="cpp-lead" data-src="#cpp-lead-fancy-inline" data-type="inline">';
+    echo '<span class="button_text">' . esc_html($label) . '</span></button>';
+}
+
+/**
  * Normalize phone for tel: links.
  *
  * @param string $phone

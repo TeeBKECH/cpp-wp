@@ -313,19 +313,15 @@ document.addEventListener('DOMContentLoaded', (e) => {
   // Preview Image
   Fancybox.bind('[data-fancybox="preview"]', {})
   Fancybox.bind('[data-fancybox="cpp-lead"]', {})
-  // Gallery - динамическая инициализация для всех групп галереи
-  const galleryGroups = new Set()
-  document
-    .querySelectorAll(
-      '.gallery [data-fancybox], .gallery-mosaic [data-fancybox], .room_gallery [data-fancybox], .orders_list--photos [data-fancybox], .orders--photos [data-fancybox]',
-    )
-    .forEach((el) => {
-      const group = el.getAttribute('data-fancybox')
-      if (group && !galleryGroups.has(group)) {
-        galleryGroups.add(group)
-        Fancybox.bind(`[data-fancybox="${group}"]`, {})
-      }
-    })
+  // Все остальные группы Fancybox (галереи, лицензии education и т.д.) — без привязки к контейнеру
+  const galleryGroups = new Set(['cpp-lead', 'preview'])
+  document.querySelectorAll('[data-fancybox]').forEach((el) => {
+    const group = el.getAttribute('data-fancybox')
+    if (!group || galleryGroups.has(group)) return
+    galleryGroups.add(group)
+    const esc = window.CSS && typeof window.CSS.escape === 'function' ? window.CSS.escape(group) : group.replace(/"/g, '\\"')
+    Fancybox.bind(`[data-fancybox="${esc}"]`, {})
+  })
 
   /*
    * Accordions

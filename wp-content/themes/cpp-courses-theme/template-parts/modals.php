@@ -14,9 +14,10 @@ if (!defined('ABSPATH')) {
     <div class="modal_content">
         <nav class="nav nav--mobile">
             <?php
+            $mobile_loc = has_nav_menu('mobile_primary') ? 'mobile_primary' : 'mobile';
             wp_nav_menu(
                 array(
-                    'theme_location' => 'mobile',
+                    'theme_location' => $mobile_loc,
                     'container'      => false,
                     'menu_class'     => 'menu--mobile',
                     'fallback_cb'    => false,
@@ -74,7 +75,7 @@ if (!defined('ABSPATH')) {
                         ?>
                     </div>
                     <div class="menu_col">
-                        <p class="menu_col-title"><?php esc_html_e('Документы', 'cpp-courses-theme'); ?></p>
+                        <p class="menu_col-title"><?php esc_html_e('Услуги', 'cpp-courses-theme'); ?></p>
                         <?php
                         wp_nav_menu(
                             array(
@@ -88,7 +89,7 @@ if (!defined('ABSPATH')) {
                         ?>
                     </div>
                     <div class="menu_col">
-                        <p class="menu_col-title"><?php esc_html_e('Доступная среда', 'cpp-courses-theme'); ?></p>
+                        <p class="menu_col-title"><?php esc_html_e('Тесты', 'cpp-courses-theme'); ?></p>
                         <?php
                         wp_nav_menu(
                             array(

@@ -19,10 +19,14 @@ if (!$post instanceof WP_Post) {
     return;
 }
 
-$group = isset($args['fancybox_group']) && is_string($args['fancybox_group']) ? $args['fancybox_group'] : 'education';
-$group = sanitize_key($group);
+$group_raw = isset($args['fancybox_group']) && is_string($args['fancybox_group']) ? trim($args['fancybox_group']) : '';
+if ($group_raw === '') {
+    $group_raw = 'education';
+}
+// Для data-fancybox нужен безопасный ASCII-идентификатор (sanitize_key ломает кириллицу в slug таксономии).
+$group = sanitize_title($group_raw);
 if ($group === '') {
-    $group = 'education';
+    $group = 'edu-gallery-' . substr(md5($group_raw), 0, 8);
 }
 
 $thumb_id = (int) get_post_thumbnail_id($post);
