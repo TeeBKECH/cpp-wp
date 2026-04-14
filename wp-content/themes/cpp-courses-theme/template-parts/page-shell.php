@@ -39,7 +39,7 @@ if (is_front_page()) {
     <section class="section section--page-content">
         <div class="container">
             <div class="page-content">
-                <div class="page-content_main">
+                <div class="page-content_main page-content_main--blocks">
                     <?php the_content(); ?>
                 </div>
             </div>

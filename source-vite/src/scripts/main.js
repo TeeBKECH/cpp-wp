@@ -65,10 +65,9 @@ document.addEventListener('DOMContentLoaded', (e) => {
   buildToc({
     root: '.page-content_main',
     toc: '#toc-list',
-    // h2Sel: '.post__article-title',
-    // h3Sel: '.post__article-subtitle',
-    // submenuClass: 'submenu',
-    // anchorPrefix: 'sec-',
+    // Верстка: h2.section_title; Gutenberg: h2/h3.wp-block-heading (и обычные h2/h3 в контенте)
+    h2Sel: 'h2.section_title, .section_header > h2, h2.wp-block-heading, h2',
+    h3Sel: 'h3.section_title, .section_header > h3, h3.wp-block-heading, h3',
   })
   /*
    * Phone Masks

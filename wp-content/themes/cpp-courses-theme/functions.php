@@ -21,6 +21,7 @@ require_once __DIR__ . '/inc/quiz-ajax.php';
 require_once __DIR__ . '/inc/disable-search.php';
 require_once __DIR__ . '/inc/front-page-helpers.php';
 require_once __DIR__ . '/inc/acf-register-home-groups.php';
+require_once __DIR__ . '/inc/register-acf-blocks.php';
 
 add_filter('acf/settings/save_json', function ($path) {
     return __DIR__ . '/acf-json';
