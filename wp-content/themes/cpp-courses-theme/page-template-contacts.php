@@ -114,7 +114,7 @@ $cf7_form_post = cpp_courses_get_option('cpp_cf7_form_post', null);
                     } else {
                         ?>
                         <div class="form form--light">
-                            <p>Выбери форму Contact Form 7 в опциях сайта: поле `cpp_cf7_form_post`.</p>
+                            <p><?php esc_html_e('Выберите форму Contact Form 7 в опциях сайта: поле «Форма Contact Form 7 (страница контактов)».', 'cpp-courses-theme'); ?></p>
                         </div>
                         <?php
                     }

@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-$cf7_post = cpp_courses_get_option('cpp_cf7_form_post', null);
+$cf7_post = cpp_courses_get_cta_dark_cf7_form_id();
 $cf7_html = '';
 if (!empty($cf7_post)) {
     $cf7_html = cpp_courses_render_cf7_form($cf7_post);

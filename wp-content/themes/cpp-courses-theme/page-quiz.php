@@ -35,7 +35,7 @@ if ($results_title === '') {
 }
 $results_text = function_exists('get_field') ? (string) get_field('quiz_results_text', $page_id) : '';
 
-$cf7_form_post = cpp_courses_get_option('cpp_cf7_form_post', null);
+$cf7_form_post = cpp_courses_get_cta_dark_cf7_form_id();
 $cf7_html = '';
 if (!empty($cf7_form_post)) {
     $cf7_html = cpp_courses_render_cf7_form($cf7_form_post);

@@ -39,7 +39,7 @@ while (have_posts()) :
         }
     }
 
-    $cf7_form_post = cpp_courses_get_option('cpp_cf7_form_post', null);
+    $cf7_form_post = cpp_courses_get_cta_dark_cf7_form_id();
     $fancy_id = 'cpp-svc-cta-form-' . get_the_ID();
     $cf7_html = '';
     if (!empty($cf7_form_post)) {

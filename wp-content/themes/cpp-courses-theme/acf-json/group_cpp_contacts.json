@@ -87,10 +87,25 @@
     },
     {
       "key": "field_cpp_cf7_form_post",
-      "label": "Форма Contact Form 7",
+      "label": "Форма Contact Form 7 (страница контактов)",
       "name": "cpp_cf7_form_post",
       "type": "post_object",
-      "instructions": "Выбери форму Contact Form 7 из списка.",
+      "instructions": "Светлая форма на странице «Контакты» (form--light).",
+      "required": 0,
+      "wrapper": { "width": "", "class": "", "id": "" },
+      "post_type": ["wpcf7_contact_form"],
+      "taxonomy": "",
+      "allow_null": 1,
+      "multiple": 0,
+      "return_format": "id",
+      "ui": 1
+    },
+    {
+      "key": "field_cpp_cf7_cta_dark_form_post",
+      "label": "Форма CF7 для тёмной CTA («Написать нам»)",
+      "name": "cpp_cf7_cta_dark_form_post",
+      "type": "post_object",
+      "instructions": "Форма в секции section--cta section--dark, модалках услуг/главной, квизе (form--dark). Если пусто — используется форма контактов выше (для обратной совместимости).",
       "required": 0,
       "wrapper": { "width": "", "class": "", "id": "" },
       "post_type": ["wpcf7_contact_form"],
@@ -125,6 +140,7 @@
   "instruction_placement": "label",
   "hide_on_screen": "",
   "active": true,
-  "description": ""
+  "description": "",
+  "modified": 1744700000
 }
 

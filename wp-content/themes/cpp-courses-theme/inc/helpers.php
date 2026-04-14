@@ -60,6 +60,21 @@ function cpp_courses_render_cf7_form($form_post_id, $variant = 'dark') {
 }
 
 /**
+ * CF7 post ID for dark CTA blocks (section--cta), modals, quiz — not the contacts page form.
+ *
+ * @return int
+ */
+function cpp_courses_get_cta_dark_cf7_form_id() {
+    $dark = cpp_courses_get_option('cpp_cf7_cta_dark_form_post', null);
+    $dark_id = is_numeric($dark) ? (int) $dark : 0;
+    if ($dark_id > 0) {
+        return $dark_id;
+    }
+    $fallback = cpp_courses_get_option('cpp_cf7_form_post', null);
+    return is_numeric($fallback) ? (int) $fallback : 0;
+}
+
+/**
  * Normalize phone for tel: links.
  *
  * @param string $phone
