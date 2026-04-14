@@ -10,10 +10,10 @@
 
 | Назначение | Подходящие имена колонок |
 |------------|---------------------------|
-| URL страницы новости | `url`, `link`, `ссылка`, `адрес` … или любая ячейка с полным URL на `cpp-globez.ru` и путём `/новости/...` или `/novosti/...` |
-| Заголовок записи | `title`, `заголовок`, `h1` |
-| Yoast SEO title | `yoast_title`, `seo_title`, `meta_title` |
-| Yoast meta description | `yoast_description`, `seo_description`, `meta_description`, `описание` |
+| URL страницы новости | `Адрес` / `url`, `link`, `ссылка` … (строка должна содержать путь **новостей**: `/новости/`, `%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D1%82%D0%B8` или `/novosti/`) |
+| Заголовок записи (`post_title`) | **`H1-1`** (экспорт Screaming Frog), затем `h1`, `title`, `заголовок` |
+| Yoast SEO title | **`Title 1`** из отчёта, либо `yoast_title`, `seo_title` |
+| Yoast meta description | **`Description 1`**, либо `yoast_description`, `meta_description` |
 
 Строки без URL новости пропускаются.
 

@@ -62,7 +62,7 @@ def row_url_title_meta(row: dict[str, str]) -> tuple[str, str, str, str]:
     keymap = {normalize_header(k): v.strip() if isinstance(v, str) else str(v).strip() for k, v in row.items()}
 
     url = ""
-    for k in ("url", "link", "ссылка", "адрес", "page", "страница"):
+    for k in ("адрес", "url", "link", "ссылка", "page", "страница"):
         if k in keymap and keymap[k]:
             url = keymap[k]
             break
@@ -72,20 +72,23 @@ def row_url_title_meta(row: dict[str, str]) -> tuple[str, str, str, str]:
                 url = v
                 break
 
+    # Post title: Screaming Frog export uses H1-1; fallback Title 1 / title
     title = ""
-    for k in ("title", "заголовок", "h1", "name"):
+    for k in ("h1-1", "h1", "заголовок", "title", "name"):
         if k in keymap and keymap[k]:
             title = keymap[k]
             break
 
+    # Yoast SEO title / description (SF: "Title 1", "Description 1")
     yo_t = ""
-    for k in ("yoast_title", "seo_title", "meta_title", "title_seo", "seo title"):
+    for k in ("title 1", "yoast_title", "seo_title", "meta_title", "title_seo", "seo title"):
         if k in keymap and keymap[k]:
             yo_t = keymap[k]
             break
 
     yo_d = ""
     for k in (
+        "description 1",
         "yoast_description",
         "yoast_desc",
         "seo_description",
