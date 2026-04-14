@@ -222,3 +222,20 @@ function cpp_courses_nav_menu_name_for_location($location) {
     return (string) $menu_obj->name;
 }
 
+/**
+ * Title for a big-menu column: menu name from admin, or translated fallback.
+ *
+ * @param string $location Theme location slug.
+ * @param string $fallback Default title if no menu is assigned.
+ * @return string
+ */
+function cpp_courses_big_menu_column_title($location, $fallback) {
+    if (function_exists('cpp_courses_nav_menu_name_for_location')) {
+        $name = cpp_courses_nav_menu_name_for_location($location);
+        if ($name !== '') {
+            return $name;
+        }
+    }
+    return $fallback;
+}
+

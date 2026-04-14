@@ -181,7 +181,7 @@ $partners = function_exists('get_field') ? get_field('partners_items', $front_id
                     </div>
                     <div class="about_inner">
                         <?php if ($about_html !== '') : ?>
-                            <div class="about_text entry-content"><?php echo apply_filters('the_content', $about_html); ?></div>
+                            <div class="about_text about_text--truncatable entry-content"><?php echo apply_filters('the_content', $about_html); ?></div>
                         <?php endif; ?>
                         <?php if ($about_img !== '') : ?>
                             <div class="about_img-wrap">

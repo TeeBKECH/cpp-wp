@@ -62,16 +62,7 @@ if (!defined('ABSPATH')) {
             <div class="container">
                 <div class="menu_inner">
                     <div class="menu_col">
-                        <?php
-                        $big_menu_col1_title = '';
-                        if (function_exists('cpp_courses_nav_menu_name_for_location')) {
-                            $big_menu_col1_title = cpp_courses_nav_menu_name_for_location('big_menu_education');
-                        }
-                        if ($big_menu_col1_title === '') {
-                            $big_menu_col1_title = __('Сведения об организации', 'cpp-courses-theme');
-                        }
-                        ?>
-                        <p class="menu_col-title"><?php echo esc_html($big_menu_col1_title); ?></p>
+                        <p class="menu_col-title"><?php echo esc_html(cpp_courses_big_menu_column_title('big_menu_education', __('Сведения об организации', 'cpp-courses-theme'))); ?></p>
                         <?php
                         wp_nav_menu(
                             array(
@@ -85,7 +76,7 @@ if (!defined('ABSPATH')) {
                         ?>
                     </div>
                     <div class="menu_col">
-                        <p class="menu_col-title"><?php esc_html_e('Услуги', 'cpp-courses-theme'); ?></p>
+                        <p class="menu_col-title"><?php echo esc_html(cpp_courses_big_menu_column_title('big_menu_documents', __('Услуги', 'cpp-courses-theme'))); ?></p>
                         <?php
                         wp_nav_menu(
                             array(
@@ -99,7 +90,7 @@ if (!defined('ABSPATH')) {
                         ?>
                     </div>
                     <div class="menu_col">
-                        <p class="menu_col-title"><?php esc_html_e('Тесты', 'cpp-courses-theme'); ?></p>
+                        <p class="menu_col-title"><?php echo esc_html(cpp_courses_big_menu_column_title('big_menu_accessibility', __('Тесты', 'cpp-courses-theme'))); ?></p>
                         <?php
                         wp_nav_menu(
                             array(
