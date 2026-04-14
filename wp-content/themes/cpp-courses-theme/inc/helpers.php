@@ -75,7 +75,7 @@ function cpp_courses_get_cta_dark_cf7_form_id() {
 }
 
 /**
- * CF7 post ID for global lead modal (data-modal="lead-form-modal").
+ * CF7 post ID for Fancybox lead form (#cpp-lead-fancy-inline).
  *
  * @return int
  */

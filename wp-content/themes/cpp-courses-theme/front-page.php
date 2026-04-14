@@ -29,12 +29,7 @@ if ($front_id < 1) {
     return;
 }
 
-$cf7_form_post = cpp_courses_get_cta_dark_cf7_form_id();
-$cf7_html = '';
-if (!empty($cf7_form_post)) {
-    $cf7_html = cpp_courses_render_cf7_form($cf7_form_post);
-}
-$intro_fancy_id = 'cpp-home-intro-cta-' . $front_id;
+$lead_modal_cf7 = cpp_courses_get_modal_cf7_form_id();
 
 // --- Fields (option '' with post id for front page).
 $h1 = function_exists('get_field') ? (string) get_field('main_intro_title', $front_id) : '';
@@ -132,15 +127,12 @@ $partners = function_exists('get_field') ? get_field('partners_items', $front_id
                             <a class="button button--primary button--lg" href="<?php echo esc_url($btn_url); ?>" target="<?php echo esc_attr($btn_target); ?>">
                                 <span class="button_text"><?php echo esc_html($btn_title); ?></span>
                             </a>
-                        <?php elseif ($cf7_html !== '') : ?>
-                            <div id="<?php echo esc_attr($intro_fancy_id); ?>" class="cpp-svc-cta-fancybox-inline" style="display:none;width:100%;max-width:520px;">
-                                <?php echo $cf7_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                            </div>
+                        <?php elseif ($lead_modal_cf7 > 0) : ?>
                             <a
                                 class="button button--primary button--lg"
                                 href="#"
-                                data-fancybox="home-intro-cta"
-                                data-src="#<?php echo esc_attr($intro_fancy_id); ?>"
+                                data-fancybox="cpp-lead"
+                                data-src="#cpp-lead-fancy-inline"
                                 data-type="inline"
                             >
                                 <span class="button_text"><?php echo esc_html($btn_title); ?></span>

@@ -75,7 +75,7 @@ if (is_front_page()) {
             <div class="header_contact">
               <?php $email = cpp_courses_get_option('cpp_email', 'info@cpp-globez.ru'); ?>
               <a class="header_contact-main" href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a>
-              <a class="header_contact-sub wave-link" href="#" data-modal="lead-form-modal"><?php esc_html_e('Написать нам', 'cpp-courses-theme'); ?></a>
+              <a class="header_contact-sub wave-link" href="mailto:<?php echo esc_attr($email); ?>"><?php esc_html_e('Написать нам', 'cpp-courses-theme'); ?></a>
             </div>
             <div class="header_contact">
               <div class="header_contact-main"><?php echo esc_html(cpp_courses_get_option('cpp_address', '')); ?></div>

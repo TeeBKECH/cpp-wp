@@ -312,11 +312,12 @@ document.addEventListener('DOMContentLoaded', (e) => {
    */
   // Preview Image
   Fancybox.bind('[data-fancybox="preview"]', {})
+  Fancybox.bind('[data-fancybox="cpp-lead"]', {})
   // Gallery - динамическая инициализация для всех групп галереи
   const galleryGroups = new Set()
   document
     .querySelectorAll(
-      '.gallery [data-fancybox], .gallery-mosaic [data-fancybox], .room_gallery [data-fancybox], .orders_list--photos [data-fancybox]',
+      '.gallery [data-fancybox], .gallery-mosaic [data-fancybox], .room_gallery [data-fancybox], .orders_list--photos [data-fancybox], .orders--photos [data-fancybox]',
     )
     .forEach((el) => {
       const group = el.getAttribute('data-fancybox')
@@ -370,12 +371,6 @@ document.addEventListener('DOMContentLoaded', (e) => {
         if (btn) btn.setAttribute('aria-expanded', 'false')
       })
     },
-  })
-
-  registerModal('lead-form-modal', {
-    closeOnBackdrop: true,
-    closeOnEscape: true,
-    exclusive: true,
   })
 
   registerModal('big-menu', {

@@ -40,12 +40,7 @@ while (have_posts()) :
         }
     }
 
-    $cf7_form_post = cpp_courses_get_cta_dark_cf7_form_id();
-    $fancy_id = 'cpp-edu-cta-form-' . get_the_ID();
-    $cf7_html = '';
-    if (!empty($cf7_form_post)) {
-        $cf7_html = cpp_courses_render_cf7_form($cf7_form_post);
-    }
+    $lead_modal_cf7 = cpp_courses_get_modal_cf7_form_id();
     ?>
     <main class="main main--service">
         <section class="section section--page-intro">
@@ -62,15 +57,12 @@ while (have_posts()) :
                                 <a class="button button--filled button--sm" href="<?php echo esc_url($cta_external); ?>" target="<?php echo esc_attr($cta_target); ?>">
                                     <span class="button_text"><?php echo esc_html($cta_label); ?></span>
                                 </a>
-                            <?php elseif ($cf7_html !== '') : ?>
-                                <div id="<?php echo esc_attr($fancy_id); ?>" class="cpp-svc-cta-fancybox-inline" style="display:none;width:100%;max-width:520px;">
-                                    <?php echo $cf7_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                                </div>
+                            <?php elseif ($lead_modal_cf7 > 0) : ?>
                                 <button
                                     type="button"
                                     class="button button--filled button--sm"
-                                    data-fancybox="education-cta-<?php echo (int) get_the_ID(); ?>"
-                                    data-src="#<?php echo esc_attr($fancy_id); ?>"
+                                    data-fancybox="cpp-lead"
+                                    data-src="#cpp-lead-fancy-inline"
                                     data-type="inline"
                                 >
                                     <span class="button_text"><?php echo esc_html($cta_label); ?></span>
