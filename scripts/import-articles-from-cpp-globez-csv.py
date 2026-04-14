@@ -30,6 +30,7 @@ import csv
 import hashlib
 import re
 import sys
+import unicodedata
 from pathlib import Path
 from urllib.parse import unquote, urljoin, urlparse
 from urllib.request import Request, urlopen
@@ -191,6 +192,49 @@ def read_csv_rows(path: Path) -> list[dict[str, str]]:
     return rows
 
 
+def excerpt_for_database(raw: str, max_len: int = 2000) -> str:
+    """
+    Safe excerpt for wp_posts.post_excerpt: valid UTF-8, no NUL, length cap.
+    Avoids MySQL / WP_DB errors from mojibake or shell-corrupted strings.
+    """
+    if not raw:
+        return ""
+    t = unicodedata.normalize("NFKC", raw)
+    t = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", "", t)
+    t = re.sub(r"\s+", " ", t).strip()
+    b = t.encode("utf-8", errors="replace")
+    t = b.decode("utf-8", errors="replace")
+    if len(t) > max_len:
+        t = t[: max_len - 1].rstrip() + "…"
+    return t
+
+
+APPLY_EXCERPT_PHP = r"""<?php
+/**
+ * Set post_excerpt from excerpt.txt next to this file (no shell quoting issues).
+ * Run: CPP_IMPORT_POST_ID=123 wp eval-file apply-excerpt.php
+ *
+ * @package CppGlobezImport
+ */
+$post_id = absint( getenv( 'CPP_IMPORT_POST_ID' ) );
+if ( ! $post_id ) {
+	fwrite( STDERR, "apply-excerpt.php: set CPP_IMPORT_POST_ID to post ID\n" );
+	exit( 1 );
+}
+$file = __DIR__ . '/excerpt.txt';
+if ( ! is_readable( $file ) ) {
+	exit( 0 );
+}
+$excerpt = (string) file_get_contents( $file );
+wp_update_post(
+	array(
+		'ID'           => $post_id,
+		'post_excerpt' => $excerpt,
+	)
+);
+"""
+
+
 def unique_post_dir(base_slug: str) -> Path:
     d = POSTS_DIR / base_slug
     if not d.is_dir():
@@ -294,9 +338,10 @@ def main() -> int:
         for p in inner.find_all("p"):
             t = p.get_text(strip=True)
             if len(t) > 40:
-                excerpt = re.sub(r"\s+", " ", t)[:400]
+                excerpt = excerpt_for_database(re.sub(r"\s+", " ", t)[:800])
                 break
         (post_dir / "excerpt.txt").write_text(excerpt, encoding="utf-8")
+        (post_dir / "apply-excerpt.php").write_text(APPLY_EXCERPT_PHP, encoding="utf-8")
 
         featured_name = ""
         if not args.no_featured_image and img_url:
@@ -316,9 +361,9 @@ def main() -> int:
         sh_lines.append(f'POST_ID=$(wp post create "$SCRIPT_DIR/{rel}/body.html" \\')
         sh_lines.append('  --post_type=articles --post_status=publish \\')
         sh_lines.append(f'  --post_title="$(cat "$SCRIPT_DIR/{rel}/title.txt")" \\')
-        sh_lines.append(f'  --post_excerpt="$(tr "\\n" " " < "$SCRIPT_DIR/{rel}/excerpt.txt")" \\')
         sh_lines.append("  --porcelain)")
         sh_lines.append('if [[ -z "${POST_ID:-}" ]]; then echo "wp post create failed"; exit 1; fi')
+        sh_lines.append(f'CPP_IMPORT_POST_ID="$POST_ID" wp eval-file "$SCRIPT_DIR/{rel}/apply-excerpt.php"')
 
         if yo_t:
             sh_lines.append(
