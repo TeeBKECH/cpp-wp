@@ -27,29 +27,32 @@ function cpp_courses_get_option($field_name, $default = '') {
 }
 
 /**
- * Extra CSS class(es) on the CF7 form wrapper for all theme-rendered forms.
- * Filter `cpp_courses_cf7_form_class` to change (space-separated for several classes).
+ * CF7 wrapper classes matching static layout (.form .form--dark / .form .form--light).
  *
- * @return string
+ * @param string $variant 'dark' (CTA, modals, quiz) or 'light' (contacts page).
+ * @return string Space-separated classes for shortcode html_class=.
  */
-function cpp_courses_cf7_form_html_class() {
-    $class = apply_filters('cpp_courses_cf7_form_class', 'cpp-cf7-form');
+function cpp_courses_cf7_form_html_class($variant = 'dark') {
+    $variant = ($variant === 'light') ? 'light' : 'dark';
+    $default = $variant === 'light' ? 'form form--light' : 'form form--dark';
+    $class = apply_filters('cpp_courses_cf7_form_class', $default, $variant);
     $class = trim(preg_replace('/\s+/', ' ', (string) $class));
     return $class;
 }
 
 /**
- * Render Contact Form 7 by post ID with consistent html_class.
+ * Render Contact Form 7 by post ID with layout html_class (CF7 shortcode attribute).
  *
  * @param int|string $form_post_id CF7 post ID from options / SCF.
+ * @param string     $variant      'dark' or 'light' (see contacts.html vs CTA sections).
  * @return string
  */
-function cpp_courses_render_cf7_form($form_post_id) {
+function cpp_courses_render_cf7_form($form_post_id, $variant = 'dark') {
     $id = absint($form_post_id);
     if ($id < 1) {
         return '';
     }
-    $html_class = cpp_courses_cf7_form_html_class();
+    $html_class = cpp_courses_cf7_form_html_class($variant);
     if ($html_class === '') {
         return do_shortcode('[contact-form-7 id="' . $id . '"]');
     }

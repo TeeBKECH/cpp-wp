@@ -110,7 +110,7 @@ $cf7_form_post = cpp_courses_get_option('cpp_cf7_form_post', null);
                         $cf7_id = (int) $cf7_form_post;
                     }
                     if ($cf7_id > 0) {
-                        echo cpp_courses_render_cf7_form($cf7_id); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                        echo cpp_courses_render_cf7_form($cf7_id, 'light'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     } else {
                         ?>
                         <div class="form form--light">
