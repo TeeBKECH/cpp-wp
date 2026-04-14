@@ -1,4 +1,44 @@
-// CF7 block inside theme lead modal (.modal.modal-form).
+// Lead modal (CF7): dark panel + mobile form density.
+
+.modal.modal-form {
+  .modal_content {
+    background: #28405d;
+  }
+
+  .modal-title,
+  .modal-subtitle {
+    color: #fff;
+  }
+
+  .modal-title {
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 600;
+    font-family: $font-main;
+  }
+
+  .modal-subtitle {
+    font-size: 16px;
+    line-height: 1.4;
+    font-family: $font-main;
+  }
+
+  // < 992px ($breakpoint-lg)
+  @include respond-to(lg) {
+    .form_fields {
+      gap: 16px;
+    }
+
+    .form_fields_row {
+      gap: 16px;
+    }
+
+    .form_field textarea {
+      height: 150px;
+      min-height: 150px;
+    }
+  }
+}
 
 .cpp-lead-modal-form {
   width: 100%;
