@@ -1,0 +1,42 @@
+// CF7 feedback: toast at bottom; inline response box kept off-screen (text duplicated in toast via JS).
+
+.wpcf7-response-output {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  border: 0 !important;
+}
+
+.cpp-cf7-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%) translateY(120%);
+  z-index: 10050;
+  max-width: min(560px, calc(100vw - 32px));
+  padding: 14px 20px;
+  border-radius: 12px;
+  background: #182a40;
+  color: #fff;
+  font-family: $font-main;
+  font-size: 15px;
+  line-height: 1.45;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.25s ease,
+    transform 0.35s ease,
+    visibility 0.35s;
+
+  &--visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+}

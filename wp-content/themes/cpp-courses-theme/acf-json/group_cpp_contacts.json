@@ -116,6 +116,21 @@
       "ui": 1
     },
     {
+      "key": "field_cpp_cf7_modal_form_post",
+      "label": "Форма CF7 для модального окна «Оставить заявку»",
+      "name": "cpp_cf7_modal_form_post",
+      "type": "post_object",
+      "instructions": "Открывается по ссылке «Написать нам» в шапке (data-modal). Заголовок и подзаголовок задаются в теме.",
+      "required": 0,
+      "wrapper": { "width": "", "class": "", "id": "" },
+      "post_type": ["wpcf7_contact_form"],
+      "taxonomy": "",
+      "allow_null": 1,
+      "multiple": 0,
+      "return_format": "id",
+      "ui": 1
+    },
+    {
       "key": "field_cpp_edu_archive_intro",
       "label": "Текст под заголовком (архив «Сведения об образовании»)",
       "name": "cpp_edu_archive_intro",
@@ -141,6 +156,6 @@
   "hide_on_screen": "",
   "active": true,
   "description": "",
-  "modified": 1744700000
+  "modified": 1744800000
 }
 

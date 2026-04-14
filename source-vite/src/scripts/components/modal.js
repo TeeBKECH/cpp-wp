@@ -16,6 +16,14 @@ function handleModalTriggers(event) {
   const trigger = event.target.closest('[data-modal]')
   if (!trigger) return
 
+  // Ссылки с href="#" / якорем — не даём уходить со страницы при открытии модалки
+  if (trigger.tagName === 'A') {
+    const href = trigger.getAttribute('href') || ''
+    if (href === '#' || href.startsWith('#')) {
+      event.preventDefault()
+    }
+  }
+
   const modalId = trigger.dataset.modal
   const action = trigger.dataset.modalAction || 'toggle'
 

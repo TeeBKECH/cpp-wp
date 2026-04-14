@@ -7,6 +7,7 @@ import { initResponsiveSwiperAll } from '@/scripts/components/swiper.js'
 import { initPhoneMasks } from '@/scripts/components/phone-mask.js'
 import { buildToc } from '@/scripts/components/toc.js'
 import { initModalSystem, registerModal } from '@/scripts/components/modal.js'
+import { initCf7FormToasts } from '@/scripts/components/cf7-toast.js'
 import { attachScrollVisibility } from '@/scripts/utils/scroll-visibility.js'
 
 import {
@@ -348,6 +349,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
    * Modals
    */
   initModalSystem()
+  initCf7FormToasts()
   // Регистрируем модалки
   const burgerBtn = document.querySelector('.burger, [data-modal="mobile-menu"]')
   registerModal('mobile-menu', {
@@ -368,6 +370,12 @@ document.addEventListener('DOMContentLoaded', (e) => {
         if (btn) btn.setAttribute('aria-expanded', 'false')
       })
     },
+  })
+
+  registerModal('lead-form-modal', {
+    closeOnBackdrop: true,
+    closeOnEscape: true,
+    exclusive: true,
   })
 
   registerModal('big-menu', {

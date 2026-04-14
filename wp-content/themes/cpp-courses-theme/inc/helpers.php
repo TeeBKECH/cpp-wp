@@ -75,6 +75,16 @@ function cpp_courses_get_cta_dark_cf7_form_id() {
 }
 
 /**
+ * CF7 post ID for global lead modal (data-modal="lead-form-modal").
+ *
+ * @return int
+ */
+function cpp_courses_get_modal_cf7_form_id() {
+    $id = cpp_courses_get_option('cpp_cf7_modal_form_post', null);
+    return is_numeric($id) ? (int) $id : 0;
+}
+
+/**
  * Normalize phone for tel: links.
  *
  * @param string $phone
