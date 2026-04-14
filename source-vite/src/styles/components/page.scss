@@ -104,26 +104,18 @@
         gap: 30px;
       }
 
-      // Контент из Gutenberg без обёрток .page-content_section: те же типографика и отступы
+      // Контент из Gutenberg без обёрток .page-content_section: те же типографика; шаг между блоками 16px
       &--blocks {
+        gap: 16px;
+
         > * {
+          margin-top: 0 !important;
           margin-bottom: 0;
         }
 
-        > * + * {
-          margin-top: 32px;
-
-          @include respond-to(lg) {
-            margin-top: 24px;
-          }
-
-          @include respond-to(md) {
-            margin-top: 16px;
-          }
-        }
-
         > .page-content_gallery,
-        > .wp-block-acf-cpp-gallery-slider {
+        > .wp-block-acf-cpp-gallery-slider,
+        > .wp-block-acf-cpp-certificate {
           margin-top: 0;
         }
 

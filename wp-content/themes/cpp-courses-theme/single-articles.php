@@ -54,6 +54,12 @@ if (have_posts()) :
                         <div class="page-content_main page-content_main--blocks">
                             <?php the_content(); ?>
                         </div>
+                        <aside class="page-content_sidebar" aria-label="<?php echo esc_attr__('Содержание страницы', 'cpp-courses-theme'); ?>">
+                            <div class="widget">
+                                <div class="widget_title"><?php esc_html_e('Содержание:', 'cpp-courses-theme'); ?></div>
+                                <ul class="toc-list" id="toc-list"></ul>
+                            </div>
+                        </aside>
                     </div>
                 </div>
             </section>
