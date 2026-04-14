@@ -68,3 +68,28 @@ class Cpp_Courses_Big_Menu_Column_Walker extends Walker_Nav_Menu {
     }
 }
 
+/**
+ * Mobile drawer menu: <ul class="menu--mobile"><li class="menu_item">…
+ */
+class Cpp_Courses_Mobile_Nav_Walker extends Walker_Nav_Menu {
+    public function start_lvl(&$output, $depth = 0, $args = null) {
+    }
+
+    public function end_lvl(&$output, $depth = 0, $args = null) {
+    }
+
+    public function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
+        if ($depth > 0) {
+            return;
+        }
+        $url = !empty($item->url) ? esc_url($item->url) : '#';
+        $title = apply_filters('the_title', $item->title, $item->ID);
+        $output .= '<li class="menu_item"><a class="menu_item_link" href="' . $url . '">';
+        $output .= '<span class="menu_item_text">' . esc_html($title) . '</span>';
+        $output .= '<div class="menu_item_icon" aria-hidden="true"></div></a></li>';
+    }
+
+    public function end_el(&$output, $item, $depth = 0, $args = null) {
+    }
+}
+

@@ -75,7 +75,7 @@ function cpp_courses_get_cta_dark_cf7_form_id() {
 }
 
 /**
- * CF7 post ID for Fancybox lead form (#cpp-lead-fancy-inline).
+ * CF7 post ID for lead modal (#lead-form-modal).
  *
  * @return int
  */
@@ -89,15 +89,15 @@ function cpp_courses_get_modal_cf7_form_id() {
  *
  * @return bool
  */
-function cpp_courses_has_lead_fancybox() {
+function cpp_courses_has_lead_modal_form() {
     return cpp_courses_get_modal_cf7_form_id() > 0;
 }
 
 /**
- * «Оставить заявку» / отклик: Fancybox с #cpp-lead-fancy-inline или внешняя ссылка если задана.
+ * «Оставить заявку» / отклик: theme modal #lead-form-modal (data-modal) или внешняя ссылка.
  *
  * @param string $label        Button text.
- * @param string $external_url If non-empty valid URL — render <a>; else Fancybox when form exists.
+ * @param string $external_url If non-empty valid URL — render <a>; else modal trigger when form exists.
  * @param string $classes      Space-separated button classes.
  * @return void
  */
@@ -112,10 +112,10 @@ function cpp_courses_render_lead_apply_control($label, $external_url = '', $clas
         echo '<span class="button_text">' . esc_html($label) . '</span></a>';
         return;
     }
-    if (!cpp_courses_has_lead_fancybox()) {
+    if (!cpp_courses_has_lead_modal_form()) {
         return;
     }
-    echo '<button type="button" class="' . esc_attr($classes) . '" data-fancybox="cpp-lead" data-src="#cpp-lead-fancy-inline" data-type="inline">';
+    echo '<button type="button" class="' . esc_attr($classes) . '" data-modal="lead-form-modal" data-modal-action="open">';
     echo '<span class="button_text">' . esc_html($label) . '</span></button>';
 }
 

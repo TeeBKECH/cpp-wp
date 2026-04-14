@@ -21,6 +21,7 @@ if (!defined('ABSPATH')) {
                     'container'      => false,
                     'menu_class'     => 'menu--mobile',
                     'fallback_cb'    => false,
+                    'walker'         => new Cpp_Courses_Mobile_Nav_Walker(),
                 )
             );
             ?>

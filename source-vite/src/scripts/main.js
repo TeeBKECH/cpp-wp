@@ -8,6 +8,7 @@ import { initPhoneMasks } from '@/scripts/components/phone-mask.js'
 import { buildToc } from '@/scripts/components/toc.js'
 import { initModalSystem, registerModal } from '@/scripts/components/modal.js'
 import { initCf7FormToasts } from '@/scripts/components/cf7-toast.js'
+import { initEducationLicenseGallery } from '@/scripts/components/education-license-fancybox.js'
 import { attachScrollVisibility } from '@/scripts/utils/scroll-visibility.js'
 
 import {
@@ -312,10 +313,11 @@ document.addEventListener('DOMContentLoaded', (e) => {
    */
   // Preview Image
   Fancybox.bind('[data-fancybox="preview"]', {})
-  Fancybox.bind('[data-fancybox="cpp-lead"]', {})
-  // Все остальные группы Fancybox (галереи, лицензии education и т.д.) — без привязки к контейнеру
-  const galleryGroups = new Set(['cpp-lead', 'preview'])
+  initEducationLicenseGallery()
+  // Галереи и прочие группы (не лицензии education — они через initEducationLicenseGallery)
+  const galleryGroups = new Set(['preview'])
   document.querySelectorAll('[data-fancybox]').forEach((el) => {
+    if (el.closest('.orders_list--photos, .orders--photos')) return
     const group = el.getAttribute('data-fancybox')
     if (!group || galleryGroups.has(group)) return
     galleryGroups.add(group)
@@ -367,6 +369,12 @@ document.addEventListener('DOMContentLoaded', (e) => {
         if (btn) btn.setAttribute('aria-expanded', 'false')
       })
     },
+  })
+
+  registerModal('lead-form-modal', {
+    closeOnBackdrop: true,
+    closeOnEscape: true,
+    exclusive: true,
   })
 
   registerModal('big-menu', {
