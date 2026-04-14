@@ -19,6 +19,9 @@ $education_archive = get_post_type_archive_link('education');
 if (!$education_archive) {
     $education_archive = home_url('/education/');
 }
+$title_one_line = preg_replace('/\s+/', ' ', wp_strip_all_tags((string) $title_full));
+$privacy_page = get_page_by_path('privacy-policy');
+$privacy_url = $privacy_page ? get_permalink($privacy_page) : home_url('/privacy-policy/');
 ?>
 <footer class="footer">
     <div class="container">
@@ -30,10 +33,10 @@ if (!$education_archive) {
                     <?php endif; ?>
                     <span class="footer_logo-text"><?php echo wp_kses_post($title_full); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
                 </div>
-                <p class="footer_copy">©<?php echo esc_html(date_i18n('Y')); ?> - <?php echo wp_kses_post($title_full); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+                <p class="footer_copy">©<?php echo esc_html(date_i18n('Y')); ?> - <?php echo esc_html($title_one_line); ?></p>
                 <ul class="footer_legal">
-                    <li><a class="footer_link" href="<?php echo esc_url($education_archive); ?>">Сведения об образовательной организации</a></li>
-                    <li><a class="footer_link" href="#">Политика конфиденциальности</a></li>
+                    <li><a class="footer_link" href="<?php echo esc_url($education_archive); ?>"><?php esc_html_e('Сведения об образовательной организации', 'cpp-courses-theme'); ?></a></li>
+                    <li><a class="footer_link" href="<?php echo esc_url($privacy_url); ?>"><?php esc_html_e('Политика конфиденциальности', 'cpp-courses-theme'); ?></a></li>
                 </ul>
             </div>
 

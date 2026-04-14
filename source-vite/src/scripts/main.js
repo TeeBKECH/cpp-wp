@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
   const galleryGroups = new Set()
   document
     .querySelectorAll(
-      '.gallery [data-fancybox], .gallery-mosaic [data-fancybox], .room_gallery [data-fancybox]',
+      '.gallery [data-fancybox], .gallery-mosaic [data-fancybox], .room_gallery [data-fancybox], .orders_list--photos [data-fancybox]',
     )
     .forEach((el) => {
       const group = el.getAttribute('data-fancybox')

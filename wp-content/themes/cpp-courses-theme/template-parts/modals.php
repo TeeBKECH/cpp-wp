@@ -59,16 +59,44 @@ if (!defined('ABSPATH')) {
         <div class="menu menu--big">
             <div class="container">
                 <div class="menu_inner">
-                    <!-- TODO: Вынести пункты big menu в админку/SCF, пока заглушка -->
                     <div class="menu_col">
-                        <p class="menu_col-title">Меню</p>
+                        <p class="menu_col-title"><?php esc_html_e('Сведения об образовательной организации', 'cpp-courses-theme'); ?></p>
                         <?php
                         wp_nav_menu(
                             array(
-                                'theme_location' => 'primary',
+                                'theme_location' => 'big_menu_education',
                                 'container'      => false,
                                 'menu_class'     => 'menu_col-list',
                                 'fallback_cb'    => false,
+                                'walker'         => new Cpp_Courses_Big_Menu_Column_Walker(),
+                            )
+                        );
+                        ?>
+                    </div>
+                    <div class="menu_col">
+                        <p class="menu_col-title"><?php esc_html_e('Документы', 'cpp-courses-theme'); ?></p>
+                        <?php
+                        wp_nav_menu(
+                            array(
+                                'theme_location' => 'big_menu_documents',
+                                'container'      => false,
+                                'menu_class'     => 'menu_col-list',
+                                'fallback_cb'    => false,
+                                'walker'         => new Cpp_Courses_Big_Menu_Column_Walker(),
+                            )
+                        );
+                        ?>
+                    </div>
+                    <div class="menu_col">
+                        <p class="menu_col-title"><?php esc_html_e('Доступная среда', 'cpp-courses-theme'); ?></p>
+                        <?php
+                        wp_nav_menu(
+                            array(
+                                'theme_location' => 'big_menu_accessibility',
+                                'container'      => false,
+                                'menu_class'     => 'menu_col-list',
+                                'fallback_cb'    => false,
+                                'walker'         => new Cpp_Courses_Big_Menu_Column_Walker(),
                             )
                         );
                         ?>

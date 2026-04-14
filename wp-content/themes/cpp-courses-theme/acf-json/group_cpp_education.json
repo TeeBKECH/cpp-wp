@@ -121,11 +121,12 @@
     },
     {
       "key": "field_cpp_edu_cta_url",
-      "label": "Ссылка кнопки",
+      "label": "Ссылка кнопки (если нужна страница, не модалка)",
       "name": "cpp_edu_cta_url",
-      "type": "url",
-      "instructions": "Полный URL. Если пусто — модальное окно с Contact Form 7 из настроек сайта (опции).",
+      "type": "link",
+      "instructions": "Если URL пустой — кнопка откроет форму CF7 из опций сайта. Если задан URL — обычная ссылка.",
       "required": 0,
+      "return_format": "array",
       "conditional_logic": [
         [
           {
