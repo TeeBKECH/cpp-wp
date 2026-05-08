@@ -4,7 +4,8 @@
 
 Использование:
   pip install openpyxl
-  python3 scripts/export-quiz-bank-sheet-to-csv.py "Группы_тестов_охранники_обычная_нумерация.xlsx" -o scripts/quiz-bank.csv
+  python3 scripts/export-quiz-bank-sheet-to-csv.py "Группы_тестов_охранники_обычная_нумерация.xlsx"
+  (по умолчанию пишет в wp-content/themes/…/quiz-import/quiz-bank.csv)
 
 Строка 0 в Excel — слугое название банка (пропускается).
 Строка 1 — заголовки колонок (первая строка CSV).
@@ -26,8 +27,8 @@ def main() -> int:
         "-o",
         "--output",
         type=Path,
-        default=Path("scripts/quiz-bank.csv"),
-        help="Output CSV path (UTF-8)",
+        default=Path("wp-content/themes/cpp-courses-theme/quiz-import/quiz-bank.csv"),
+        help="Output CSV path (UTF-8); default: theme quiz-import/quiz-bank.csv",
     )
     p.add_argument(
         "--sheet",

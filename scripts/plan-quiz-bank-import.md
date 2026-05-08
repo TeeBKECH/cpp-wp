@@ -48,9 +48,9 @@ SCF: поле cpp_quiz_multiple выключено (false).
 
 ## Как запускать импорт
 
-Экспорт листа в CSV UTF-8 или чтение xlsx через Python с библиотекой openpyxl.
+Готовый CSV и скрипт лежат в теме: **wp-content/themes/cpp-courses-theme/quiz-import/** (quiz-bank.csv, import-quiz-bank.php, README.md). На сервере достаточно WP-CLI, Python не нужен.
 
-На сервере WordPress: команда WP-CLI eval-file с PHP-скриптом, который вызывает wp_insert_post для типа quiz и update_field для полей SCF.
+Пересборка CSV из Excel — только если обновили xlsx: скрипт **scripts/export-quiz-bank-sheet-to-csv.py** и openpyxl (см. README в папке quiz-import).
 
 ## Идемпотентность
 
