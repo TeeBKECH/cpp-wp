@@ -21,27 +21,32 @@ endwhile;
 $page_id = get_queried_object_id();
 $question_ids = function_exists('cpp_quiz_get_ordered_question_ids') ? cpp_quiz_get_ordered_question_ids($page_id) : array();
 $extra_links = array();
-if (function_exists('get_field')) {
+if (function_exists('have_rows') && have_rows('quiz_another_links', $page_id)) {
+    while (have_rows('quiz_another_links', $page_id)) {
+        the_row();
+        $link = get_sub_field('url');
+        if (!is_array($link) || empty($link['url'])) {
+            continue;
+        }
+        $extra_links[] = array(
+            'url' => (string) $link['url'],
+            'title' => !empty($link['title']) ? (string) $link['title'] : (string) $link['url'],
+            'target' => !empty($link['target']) ? (string) $link['target'] : '_self',
+        );
+    }
+} elseif (function_exists('get_field')) {
+    // Fallback if repeater API is unavailable in the current environment.
     $another_links = get_field('quiz_another_links', $page_id);
     if (is_array($another_links)) {
         foreach ($another_links as $row) {
-            // Support both subfield names: `url` (current) and `link` (legacy/internal drafts).
-            $link = null;
-            if (is_array($row) && isset($row['url'])) {
-                $link = $row['url'];
-            } elseif (is_array($row) && isset($row['link'])) {
-                $link = $row['link'];
-            }
-            $url = is_array($link) && !empty($link['url']) ? (string) $link['url'] : '';
-            if ($url === '') {
+            $link = is_array($row) && isset($row['url']) ? $row['url'] : null;
+            if (!is_array($link) || empty($link['url'])) {
                 continue;
             }
-            $title = is_array($link) && !empty($link['title']) ? (string) $link['title'] : $url;
-            $target = is_array($link) && !empty($link['target']) ? (string) $link['target'] : '_self';
             $extra_links[] = array(
-                'url' => $url,
-                'title' => $title,
-                'target' => $target,
+                'url' => (string) $link['url'],
+                'title' => !empty($link['title']) ? (string) $link['title'] : (string) $link['url'],
+                'target' => !empty($link['target']) ? (string) $link['target'] : '_self',
             );
         }
     }
