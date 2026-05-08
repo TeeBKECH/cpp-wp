@@ -26,6 +26,10 @@
 
   &_footer {
     padding-top: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
 
     @include respond-to(lg) {
       padding-top: 120px;
@@ -39,5 +43,6 @@
   &_link {
     color: #3d5d84;
     position: relative;
+    width: fit-content;
   }
 }

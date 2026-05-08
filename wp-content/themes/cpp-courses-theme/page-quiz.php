@@ -20,14 +20,26 @@ endwhile;
 
 $page_id = get_queried_object_id();
 $question_ids = function_exists('cpp_quiz_get_ordered_question_ids') ? cpp_quiz_get_ordered_question_ids($page_id) : array();
-$extra_link = function_exists('get_field') ? get_field('quiz_rosvgard_link', $page_id) : null;
-$extra_url = is_array($extra_link) && !empty($extra_link['url']) ? (string) $extra_link['url'] : '';
-$extra_title = is_array($extra_link) && !empty($extra_link['title']) ? (string) $extra_link['title'] : '';
-if ($extra_title === '' && $extra_url !== '') {
-    $extra_title = $extra_url;
+$extra_links = array();
+if (function_exists('get_field')) {
+    $another_links = get_field('quiz_another_links', $page_id);
+    if (is_array($another_links)) {
+        foreach ($another_links as $row) {
+            $link = is_array($row) && isset($row['link']) ? $row['link'] : null;
+            $url = is_array($link) && !empty($link['url']) ? (string) $link['url'] : '';
+            if ($url === '') {
+                continue;
+            }
+            $title = is_array($link) && !empty($link['title']) ? (string) $link['title'] : $url;
+            $target = is_array($link) && !empty($link['target']) ? (string) $link['target'] : '_self';
+            $extra_links[] = array(
+                'url' => $url,
+                'title' => $title,
+                'target' => $target,
+            );
+        }
+    }
 }
-
-$extra_target = is_array($extra_link) && !empty($extra_link['target']) ? (string) $extra_link['target'] : '_self';
 
 $results_title = function_exists('get_field') ? (string) get_field('quiz_results_title', $page_id) : '';
 if ($results_title === '') {
@@ -88,9 +100,11 @@ $has_quiz = count($question_ids) > 0;
                     </div>
                 <?php endif; ?>
             </div>
-            <?php if ($extra_url !== '') : ?>
+            <?php if (!empty($extra_links)) : ?>
                 <div class="test-intro_footer" id="cpp-quiz-intro-footer">
-                    <a class="test-intro_link wave-link" href="<?php echo esc_url($extra_url); ?>" target="<?php echo esc_attr($extra_target); ?>"><?php echo esc_html($extra_title); ?></a>
+                    <?php foreach ($extra_links as $item) : ?>
+                        <a class="test-intro_link wave-link" href="<?php echo esc_url($item['url']); ?>" target="<?php echo esc_attr($item['target']); ?>"><?php echo esc_html($item['title']); ?></a>
+                    <?php endforeach; ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -119,9 +133,11 @@ $has_quiz = count($question_ids) > 0;
                             <?php echo $cf7_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                         </div>
                     <?php endif; ?>
-                    <?php if ($extra_url !== '') : ?>
+                    <?php if (!empty($extra_links)) : ?>
                         <div class="test-quiz_footer">
-                            <a class="test-quiz_link wave-link" href="<?php echo esc_url($extra_url); ?>" target="<?php echo esc_attr($extra_target); ?>"><?php echo esc_html($extra_title); ?></a>
+                            <?php foreach ($extra_links as $item) : ?>
+                                <a class="test-quiz_link wave-link" href="<?php echo esc_url($item['url']); ?>" target="<?php echo esc_attr($item['target']); ?>"><?php echo esc_html($item['title']); ?></a>
+                            <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
                 </div>
