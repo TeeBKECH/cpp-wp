@@ -20,59 +20,76 @@ endwhile;
 
 $page_id = get_queried_object_id();
 $question_ids = function_exists('cpp_quiz_get_ordered_question_ids') ? cpp_quiz_get_ordered_question_ids($page_id) : array();
-$extra_links = array();
-if (function_exists('have_rows') && have_rows('quiz_another_links', $page_id)) {
-    while (have_rows('quiz_another_links', $page_id)) {
-        the_row();
-        $link = get_sub_field('url');
-        $url = '';
-        $title = '';
-        $target = '_self';
-
-        if (is_array($link)) {
-            $url = !empty($link['url']) ? (string) $link['url'] : '';
-            $title = !empty($link['title']) ? (string) $link['title'] : '';
-            $target = !empty($link['target']) ? (string) $link['target'] : '_self';
-        } elseif (is_string($link) && trim($link) !== '') {
-            // Some SCF/ACF configs may return plain URL string.
-            $url = trim($link);
-        }
-
+/**
+ * Normalize link value to ['url','title','target'] or null.
+ *
+ * @param mixed $value
+ * @return array<string,string>|null
+ */
+function cpp_quiz_normalize_link($value) {
+    // Link field as array.
+    if (is_array($value) && isset($value['url'])) {
+        $url = trim((string) $value['url']);
         if ($url === '') {
-            continue;
+            return null;
         }
-        $extra_links[] = array(
+        $title = !empty($value['title']) ? (string) $value['title'] : $url;
+        $target = !empty($value['target']) ? (string) $value['target'] : '_self';
+        return array(
             'url' => $url,
-            'title' => $title !== '' ? $title : $url,
+            'title' => $title,
             'target' => $target,
         );
     }
-} elseif (function_exists('get_field')) {
-    // Fallback if repeater API is unavailable in the current environment.
+
+    // Link field as plain URL string.
+    if (is_string($value)) {
+        $url = trim($value);
+        if ($url === '') {
+            return null;
+        }
+        return array(
+            'url' => $url,
+            'title' => $url,
+            'target' => '_self',
+        );
+    }
+
+    return null;
+}
+
+$extra_links = array();
+if (function_exists('get_field')) {
     $another_links = get_field('quiz_another_links', $page_id);
     if (is_array($another_links)) {
         foreach ($another_links as $row) {
-            $link = is_array($row) && isset($row['url']) ? $row['url'] : null;
-            $url = '';
-            $title = '';
-            $target = '_self';
-
-            if (is_array($link)) {
-                $url = !empty($link['url']) ? (string) $link['url'] : '';
-                $title = !empty($link['title']) ? (string) $link['title'] : '';
-                $target = !empty($link['target']) ? (string) $link['target'] : '_self';
-            } elseif (is_string($link) && trim($link) !== '') {
-                $url = trim($link);
-            }
-
-            if ($url === '') {
+            // Repeater row shape: ['url' => linkField] (current).
+            if (is_array($row) && array_key_exists('url', $row)) {
+                $norm = cpp_quiz_normalize_link($row['url']);
+                if ($norm !== null) {
+                    $extra_links[] = $norm;
+                }
                 continue;
             }
-            $extra_links[] = array(
-                'url' => $url,
-                'title' => $title !== '' ? $title : $url,
-                'target' => $target,
-            );
+            // Legacy/internal shape fallback.
+            if (is_array($row) && array_key_exists('link', $row)) {
+                $norm = cpp_quiz_normalize_link($row['link']);
+                if ($norm !== null) {
+                    $extra_links[] = $norm;
+                }
+                continue;
+            }
+            // In case get_field returns link array directly per row.
+            $norm = cpp_quiz_normalize_link($row);
+            if ($norm !== null) {
+                $extra_links[] = $norm;
+            }
+        }
+    } else {
+        // In case field accidentally configured as single link (not repeater).
+        $norm = cpp_quiz_normalize_link($another_links);
+        if ($norm !== null) {
+            $extra_links[] = $norm;
         }
     }
 }
