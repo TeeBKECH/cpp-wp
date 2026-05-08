@@ -6,6 +6,8 @@
 |------|------------|
 | `quiz-bank.csv` | Готовый выгруз из Excel (лист «Банк вопросов»), UTF-8. Уезжает на сервер вместе с темой (rsync/deploy). |
 | `import-quiz-bank.php` | Скрипт импорта через WP-CLI. На хостинге не нужны Python и openpyxl. |
+| `ready-tests.csv` | Готовый выгруз листа «Готовые тесты» (название теста + № вопросов). |
+| `assign-quiz-items-from-ready-tests.php` | Заполняет `quiz_items` на страницах по `ready-tests.csv`. |
 
 ## Зачем CSV уже в репозитории
 
@@ -29,6 +31,32 @@ wp eval-file wp-content/themes/cpp-courses-theme/quiz-import-v2/import-quiz-bank
 
 ```bash
 QUIZ_IMPORT_STATUS=publish QUIZ_IMPORT_PAGE_ID=123 wp eval-file wp-content/themes/cpp-courses-theme/quiz-import-v2/import-quiz-bank.php
+```
+
+## Вторая часть: заполнение quiz_items по «Готовым тестам»
+
+Проверка (dry-run):
+
+```bash
+QUIZ_ASSIGN_DRY_RUN=1 wp eval-file wp-content/themes/cpp-courses-theme/quiz-import-v2/assign-quiz-items-from-ready-tests.php
+```
+
+Реальный запуск:
+
+```bash
+wp eval-file wp-content/themes/cpp-courses-theme/quiz-import-v2/assign-quiz-items-from-ready-tests.php
+```
+
+Если страницы под названия тестов ещё не созданы:
+
+```bash
+QUIZ_ASSIGN_CREATE_PAGES=1 QUIZ_ASSIGN_STATUS=draft wp eval-file wp-content/themes/cpp-courses-theme/quiz-import-v2/assign-quiz-items-from-ready-tests.php
+```
+
+По умолчанию скрипт не перезаписывает уже заполненные `quiz_items`. Для перезаписи:
+
+```bash
+QUIZ_ASSIGN_FORCE=1 wp eval-file wp-content/themes/cpp-courses-theme/quiz-import-v2/assign-quiz-items-from-ready-tests.php
 ```
 
 ## Если ваш WP-CLI режет `--dry-run`
