@@ -22,7 +22,7 @@
       "name": "quiz_another_links",
       "type": "repeater",
       "instructions": "Ссылки выводятся внизу страницы теста друг под другом.",
-      "layout": "row",
+      "layout": "block",
       "button_label": "Добавить ссылку",
       "sub_fields": [
         {
