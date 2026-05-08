@@ -328,14 +328,10 @@ $has_quiz = count($question_ids) > 0;
     opts.innerHTML = '';
     const type = data.input_type === 'checkbox' ? 'checkbox' : 'radio';
     const name = 'cpp_q_' + data.index;
-    const saved = state.userAnswers[data.index];
 
     (data.answers || []).forEach(function (a) {
       const i = a.i;
-      const checked =
-        type === 'radio'
-          ? Array.isArray(saved) && saved.length === 1 && String(saved[0]) === String(i)
-          : Array.isArray(saved) && saved.map(String).indexOf(String(i)) !== -1;
+      const checked = false;
 
       if (type === 'radio') {
         const lab = document.createElement('label');
@@ -385,7 +381,7 @@ $has_quiz = count($question_ids) > 0;
       input_type: data.input_type
     };
     updatePrimaryButton();
-    applyAnswerHighlight(data.index);
+    // On new question render keep options neutral; coloring appears only after user selection.
     saveState();
   }
 
@@ -615,12 +611,11 @@ $has_quiz = count($question_ids) > 0;
       showIntro();
     });
 
-  loadState();
-  const maxIdx = (state.total || cfg.totalHint) - 1;
-  if (state.started && cfg.totalHint > 0 && state.index >= 0 && state.index <= maxIdx) {
-    showQuiz();
-    fetchQuestion(state.index).then(renderQuestion).catch(showIntro);
-  }
+  // Always start from intro on page load (no auto-restore previous attempt).
+  try {
+    localStorage.removeItem(cfg.storageKey);
+  } catch (e) {}
+  showIntro();
 })();
 </script>
 <?php
