@@ -55,6 +55,14 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+
+    &-buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
   }
 
   &_footer {
@@ -64,5 +72,49 @@
   &_link {
     color: #3d5d84;
     position: relative;
+  }
+
+  // Мгновенная проверка выбора: правильные зелёные, выбранные неверные красные.
+  &_options {
+    .radio,
+    .checkbox {
+      &.is-correct {
+        .radio_text,
+        .checkbox_text {
+          color: #2b8a3e;
+        }
+
+        .radio_box,
+        .checkbox_box {
+          border-color: #2b8a3e;
+          box-shadow: 0 0 0 1px rgba(43, 138, 62, 0.2);
+        }
+
+        .radio_box::after,
+        .checkbox_box::after {
+          background: #2b8a3e;
+          opacity: 1;
+        }
+      }
+
+      &.is-wrong {
+        .radio_text,
+        .checkbox_text {
+          color: #c92a2a;
+        }
+
+        .radio_box,
+        .checkbox_box {
+          border-color: #c92a2a;
+          box-shadow: 0 0 0 1px rgba(201, 42, 42, 0.2);
+        }
+
+        .radio_box::after,
+        .checkbox_box::after {
+          background: #c92a2a;
+          opacity: 1;
+        }
+      }
+    }
   }
 }

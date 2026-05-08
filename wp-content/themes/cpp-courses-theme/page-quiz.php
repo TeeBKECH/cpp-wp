@@ -145,9 +145,14 @@ $has_quiz = count($question_ids) > 0;
                             <div class="test-quiz_options" id="cpp-quiz-options"></div>
                             <div class="test-quiz_actions">
                                 <span class="test-quiz_progress" id="cpp-quiz-progress" aria-live="polite"></span>
-                                <button class="button button--filled button--md" type="button" id="cpp-quiz-primary">
-                                    <span class="button_text" id="cpp-quiz-primary-label"><?php esc_html_e('Далее →', 'cpp-courses-theme'); ?></span>
-                                </button>
+                                <div class="test-quiz_actions-buttons">
+                                    <button class="button button--outline button--md" type="button" id="cpp-quiz-show-results">
+                                        <span class="button_text"><?php esc_html_e('Показать результаты', 'cpp-courses-theme'); ?></span>
+                                    </button>
+                                    <button class="button button--filled button--md" type="button" id="cpp-quiz-primary">
+                                        <span class="button_text" id="cpp-quiz-primary-label"><?php esc_html_e('Далее →', 'cpp-courses-theme'); ?></span>
+                                    </button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -180,17 +185,17 @@ $has_quiz = count($question_ids) > 0;
                             </button>
                         </div>
                     </div>
-                    <?php if ($cf7_html !== '') : ?>
-                        <div class="test-quiz_form cpp-quiz-results-form">
-                            <h3 class="cpp-quiz-results-form_title"><?php esc_html_e('Оставить заявку', 'cpp-courses-theme'); ?></h3>
-                            <?php echo $cf7_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                        </div>
-                    <?php endif; ?>
                     <?php if (!empty($extra_links)) : ?>
                         <div class="test-quiz_footer">
                             <?php foreach ($extra_links as $item) : ?>
                                 <a class="test-quiz_link wave-link" href="<?php echo esc_url($item['url']); ?>" target="<?php echo esc_attr($item['target']); ?>"><?php echo esc_html($item['title']); ?></a>
                             <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($cf7_html !== '') : ?>
+                        <div class="test-quiz_form cpp-quiz-results-form">
+                            <h3 class="cpp-quiz-results-form_title"><?php esc_html_e('Оставить заявку', 'cpp-courses-theme'); ?></h3>
+                            <?php echo $cf7_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -224,6 +229,7 @@ $has_quiz = count($question_ids) > 0;
   const opts = document.getElementById('cpp-quiz-options');
   const primaryBtn = document.getElementById('cpp-quiz-primary');
   const primaryLabel = document.getElementById('cpp-quiz-primary-label');
+  const showResultsBtn = document.getElementById('cpp-quiz-show-results');
   const progressEl = document.getElementById('cpp-quiz-progress');
   const scoreEl = document.getElementById('cpp-quiz-results-score');
   const reviewEl = document.getElementById('cpp-quiz-review');
@@ -305,10 +311,9 @@ $has_quiz = count($question_ids) > 0;
   }
 
   function updatePrimaryButton() {
-    const last = state.total > 0 && state.index >= state.total - 1;
-    primaryLabel.textContent = last ? cfg.labelFinish : cfg.labelNext;
-    primaryBtn.classList.toggle('button--primary', last);
-    primaryBtn.classList.toggle('button--filled', !last);
+    primaryLabel.textContent = cfg.labelNext;
+    primaryBtn.classList.add('button--filled');
+    primaryBtn.classList.remove('button--primary');
     renderProgress();
   }
 
@@ -380,7 +385,27 @@ $has_quiz = count($question_ids) > 0;
       input_type: data.input_type
     };
     updatePrimaryButton();
+    applyAnswerHighlight(data.index);
     saveState();
+  }
+
+  function applyAnswerHighlight(index) {
+    const key = Array.isArray(state.correctKey[index]) ? state.correctKey[index].map(String) : [];
+    const user = Array.isArray(state.userAnswers[index]) ? state.userAnswers[index].map(String) : [];
+    const labels = opts.querySelectorAll('label.radio, label.checkbox');
+    labels.forEach(function (lab) {
+      lab.classList.remove('is-correct', 'is-wrong');
+      const input = lab.querySelector('input');
+      if (!input) return;
+      const value = String(input.value);
+      const isCorrect = key.indexOf(value) !== -1;
+      const isSelected = user.indexOf(value) !== -1;
+      if (isCorrect) {
+        lab.classList.add('is-correct');
+      } else if (isSelected) {
+        lab.classList.add('is-wrong');
+      }
+    });
   }
 
   function readCurrentSelection() {
@@ -525,17 +550,14 @@ $has_quiz = count($question_ids) > 0;
   }
 
   function onPrimaryClick() {
-    const last = state.total > 0 && state.index >= state.total - 1;
-    if (last) {
-      const sel = readCurrentSelection();
-      state.userAnswers[state.index] = sel;
-      saveState();
+    const sel = readCurrentSelection();
+    state.userAnswers[state.index] = sel;
+    applyAnswerHighlight(state.index);
+    saveState();
+    if (state.total > 0 && state.index >= state.total - 1) {
       showResults();
       return;
     }
-    const sel = readCurrentSelection();
-    state.userAnswers[state.index] = sel;
-    saveState();
     if (state.index < state.total - 1) {
       state.index++;
       saveState();
@@ -559,6 +581,22 @@ $has_quiz = count($question_ids) > 0;
     });
 
   primaryBtn.addEventListener('click', onPrimaryClick);
+
+  showResultsBtn &&
+    showResultsBtn.addEventListener('click', function () {
+      const sel = readCurrentSelection();
+      state.userAnswers[state.index] = sel;
+      applyAnswerHighlight(state.index);
+      saveState();
+      showResults();
+    });
+
+  opts.addEventListener('change', function () {
+    const sel = readCurrentSelection();
+    state.userAnswers[state.index] = sel;
+    applyAnswerHighlight(state.index);
+    saveState();
+  });
 
   restartBtn &&
     restartBtn.addEventListener('click', function () {
