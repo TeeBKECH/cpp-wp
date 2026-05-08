@@ -5,37 +5,49 @@
 | Файл | Назначение |
 |------|------------|
 | `quiz-bank.csv` | Готовый выгруз из Excel (лист «Банк вопросов»), UTF-8. Уезжает на сервер вместе с темой (rsync/deploy). |
-| `import-quiz-bank.php` | Скрипт импорта через **WP-CLI** — на хостинге **не нужны** Python и openpyxl. |
+| `import-quiz-bank.php` | Скрипт импорта через WP-CLI. На хостинге не нужны Python и openpyxl. |
 
 ## Зачем CSV уже в репозитории
 
-Чтобы **вам и на сервере** не ставить Python и библиотеки только ради одной конвертации xlsx → csv. Импорт на проде — это `wp eval-file` и PHP (они уже есть для WordPress).
-
-Excel в корне репозитория меняется редко: при обновлении банка **один раз** можно перегенерировать CSV у себя или в CI (см. `scripts/export-quiz-bank-sheet-to-csv.py` в корне репо) и закоммитить новый `quiz-bank.csv` сюда.
+Чтобы не ставить Python на сервер только ради конвертации xlsx в csv. На проде импорт — это `wp eval-file` и PHP, которые уже нужны WordPress.
 
 ## Запуск на сервере
 
-Из **корня WordPress** (где `wp-config.php`):
+Из корня WordPress (где `wp-config.php`):
 
 ```bash
-wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php -- --dry-run
+QUIZ_IMPORT_DRY_RUN=1 wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php
 ```
 
-CSV подставится автоматически из этой папки. Черновики:
+Реальный импорт черновиками:
 
 ```bash
-wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php --
+wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php
 ```
 
-С публикацией и привязкой к странице теста (подставьте ID страницы с шаблоном QUIZ):
+С публикацией и привязкой к странице теста (подставьте ID страницы шаблона QUIZ):
 
 ```bash
-wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php -- --status=publish --page-id=123
+QUIZ_IMPORT_STATUS=publish QUIZ_IMPORT_PAGE_ID=123 wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php
 ```
 
-Опции: `--force`, `--csv=/другой/путь.csv` — см. шапку `import-quiz-bank.php`.
+## Если ваш WP-CLI режет `--dry-run`
 
-Требования: WP-CLI, PHP **mbstring**, активная тема и плагин SCF/ACF.
+Некоторые сборки WP-CLI не пропускают `--dry-run` после `eval-file` и падают с `unknown parameter`.
+Используйте env-переменные (рекомендуется) или токены без префикса:
+
+```bash
+wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php -- dry-run
+wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php -- status=publish page-id=123
+```
+
+## Переменные окружения
+
+- `QUIZ_IMPORT_DRY_RUN=1`
+- `QUIZ_IMPORT_FORCE=1`
+- `QUIZ_IMPORT_STATUS=draft|publish`
+- `QUIZ_IMPORT_PAGE_ID=123`
+- `QUIZ_IMPORT_CSV=/abs/path.csv` (если CSV не рядом со скриптом)
 
 ## Пересборка CSV после правок Excel
 
@@ -43,7 +55,7 @@ wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.ph
 
 ```bash
 pip install openpyxl
-python3 scripts/export-quiz-bank-sheet-to-csv.py "Группы_тестов_охранники_обычная_нумерация.xlsx" -o wp-content/themes/cpp-courses-theme/quiz-import/quiz-bank.csv
+python3 scripts/export-quiz-bank-sheet-to-csv.py "Группы_тестов_охранники_обычная_нумерация.xlsx"
 ```
 
-Затем коммит обновлённого `quiz-bank.csv`.
+По умолчанию скрипт пишет прямо сюда: `quiz-import/quiz-bank.csv`.

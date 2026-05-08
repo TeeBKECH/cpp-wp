@@ -5,18 +5,27 @@
  * Рядом с этим файлом лежит готовый quiz-bank.csv (репозиторий). На сервере
  * импорт не требует Python: достаточно WP-CLI и PHP.
  *
- * Запуск из корня WordPress:
+ * Надёжный запуск для WP-CLI, где флаги после eval-file не пробрасываются:
  *
- *   wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php -- --dry-run
+ *   QUIZ_IMPORT_DRY_RUN=1 wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php
+ *
+ * Также поддерживаются «безфлаговые» токены:
+ *
+ *   wp eval-file .../import-quiz-bank.php -- dry-run status=publish page-id=123
  *
  * Путь к CSV по умолчанию — quiz-bank.csv в этой же папке (можно передать другой).
  *
- * Опции (после --):
- *   --dry-run              только вывод, без записи в БД
- *   --status=draft|publish статус записей (по умолчанию draft)
- *   --page-id=ID          после импорта записать поле quiz_items на странице QUIZ
- *   --force                создавать заново даже при совпадении хеша строки
- *   --csv=PATH             явный путь к CSV
+ * Опции:
+ * 1) ENV:
+ *   QUIZ_IMPORT_DRY_RUN=1
+ *   QUIZ_IMPORT_FORCE=1
+ *   QUIZ_IMPORT_STATUS=draft|publish
+ *   QUIZ_IMPORT_PAGE_ID=123
+ *   QUIZ_IMPORT_CSV=/abs/path.csv
+ *
+ * 2) CLI токены:
+ *   dry-run | force | status=publish | page-id=123 | csv=/path.csv
+ *   также поддерживаются варианты с префиксом --: --dry-run, --status=...
  *
  * Формат CSV: первая строка — заголовки (№ вопроса, Вопрос, Ответ 1–3, Правильный вариант).
  *
@@ -24,7 +33,7 @@
  */
 
 if (!defined('ABSPATH')) {
-    fwrite(STDERR, "Запускайте через WP-CLI: wp eval-file …/quiz-import/import-quiz-bank.php -- …\n");
+    fwrite(STDERR, "Запускайте через WP-CLI: wp eval-file …/quiz-import/import-quiz-bank.php\n");
     exit(1);
 }
 
@@ -54,32 +63,56 @@ function cpp_quiz_import_parse_args() {
         if ($a === '--') {
             continue;
         }
-        if ($a === '--dry-run') {
+        if ($a === '--dry-run' || $a === 'dry-run') {
             $out['dry_run'] = true;
             continue;
         }
-        if ($a === '--force') {
+        if ($a === '--force' || $a === 'force') {
             $out['force'] = true;
             continue;
         }
-        if (strpos($a, '--status=') === 0) {
-            $out['status'] = substr($a, 9) === 'publish' ? 'publish' : 'draft';
+        if (strpos($a, '--status=') === 0 || strpos($a, 'status=') === 0) {
+            $v = preg_replace('/^--?status=/', '', $a);
+            $out['status'] = $v === 'publish' ? 'publish' : 'draft';
             continue;
         }
-        if (preg_match('/^--page-id=(\d+)$/', $a, $m)) {
+        if (preg_match('/^--?page-id=(\d+)$/', $a, $m)) {
             $out['page_id'] = (int) $m[1];
             continue;
         }
-        if (strpos($a, '--csv=') === 0) {
-            $out['csv'] = substr($a, 6);
+        if (strpos($a, '--csv=') === 0 || strpos($a, 'csv=') === 0) {
+            $out['csv'] = preg_replace('/^--?csv=/', '', $a);
             continue;
         }
         if ($a !== '' && $a[0] !== '-') {
             $positional[] = $a;
         }
     }
-    if ($out['csv'] === '' && isset($positional[0])) {
+    if ($out['csv'] === '' && isset($positional[0]) && strpos($positional[0], '=') === false && $positional[0] !== 'dry-run' && $positional[0] !== 'force') {
         $out['csv'] = $positional[0];
+    }
+
+    // ENV fallback (приоритетнее CLI, чтобы работало даже когда wp съедает токены)
+    $env_dry = getenv('QUIZ_IMPORT_DRY_RUN');
+    $env_force = getenv('QUIZ_IMPORT_FORCE');
+    $env_status = getenv('QUIZ_IMPORT_STATUS');
+    $env_page_id = getenv('QUIZ_IMPORT_PAGE_ID');
+    $env_csv = getenv('QUIZ_IMPORT_CSV');
+
+    if ($env_dry !== false && $env_dry !== '' && $env_dry !== '0') {
+        $out['dry_run'] = true;
+    }
+    if ($env_force !== false && $env_force !== '' && $env_force !== '0') {
+        $out['force'] = true;
+    }
+    if ($env_status !== false && $env_status !== '') {
+        $out['status'] = $env_status === 'publish' ? 'publish' : 'draft';
+    }
+    if ($env_page_id !== false && $env_page_id !== '' && is_numeric($env_page_id)) {
+        $out['page_id'] = (int) $env_page_id;
+    }
+    if ($env_csv !== false && $env_csv !== '') {
+        $out['csv'] = (string) $env_csv;
     }
     return $out;
 }
@@ -184,7 +217,7 @@ if ($csv_path === '') {
     }
 }
 if ($csv_path === '' || !is_readable($csv_path)) {
-    fwrite(STDERR, "Нет CSV: положите quiz-bank.csv рядом со скриптом или укажите путь: … -- path/to.csv\n");
+    fwrite(STDERR, "Нет CSV: положите quiz-bank.csv рядом со скриптом или задайте QUIZ_IMPORT_CSV=/path.csv\n");
     exit(1);
 }
 
@@ -278,7 +311,7 @@ while (($row = fgetcsv($fh)) !== false) {
             )
         );
         if (!empty($existing)) {
-            fwrite(STDOUT, "Строка {$row_num}: дубликат (hash), ID {$existing[0]} — пропуск. --force чтобы создать снова.\n");
+            fwrite(STDOUT, "Строка {$row_num}: дубликат (hash), ID {$existing[0]} — пропуск. force чтобы создать снова.\n");
             $ids_ordered[] = (int) $existing[0];
             $skipped++;
             continue;
