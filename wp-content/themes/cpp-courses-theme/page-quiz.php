@@ -25,13 +25,26 @@ if (function_exists('have_rows') && have_rows('quiz_another_links', $page_id)) {
     while (have_rows('quiz_another_links', $page_id)) {
         the_row();
         $link = get_sub_field('url');
-        if (!is_array($link) || empty($link['url'])) {
+        $url = '';
+        $title = '';
+        $target = '_self';
+
+        if (is_array($link)) {
+            $url = !empty($link['url']) ? (string) $link['url'] : '';
+            $title = !empty($link['title']) ? (string) $link['title'] : '';
+            $target = !empty($link['target']) ? (string) $link['target'] : '_self';
+        } elseif (is_string($link) && trim($link) !== '') {
+            // Some SCF/ACF configs may return plain URL string.
+            $url = trim($link);
+        }
+
+        if ($url === '') {
             continue;
         }
         $extra_links[] = array(
-            'url' => (string) $link['url'],
-            'title' => !empty($link['title']) ? (string) $link['title'] : (string) $link['url'],
-            'target' => !empty($link['target']) ? (string) $link['target'] : '_self',
+            'url' => $url,
+            'title' => $title !== '' ? $title : $url,
+            'target' => $target,
         );
     }
 } elseif (function_exists('get_field')) {
@@ -40,13 +53,25 @@ if (function_exists('have_rows') && have_rows('quiz_another_links', $page_id)) {
     if (is_array($another_links)) {
         foreach ($another_links as $row) {
             $link = is_array($row) && isset($row['url']) ? $row['url'] : null;
-            if (!is_array($link) || empty($link['url'])) {
+            $url = '';
+            $title = '';
+            $target = '_self';
+
+            if (is_array($link)) {
+                $url = !empty($link['url']) ? (string) $link['url'] : '';
+                $title = !empty($link['title']) ? (string) $link['title'] : '';
+                $target = !empty($link['target']) ? (string) $link['target'] : '_self';
+            } elseif (is_string($link) && trim($link) !== '') {
+                $url = trim($link);
+            }
+
+            if ($url === '') {
                 continue;
             }
             $extra_links[] = array(
-                'url' => (string) $link['url'],
-                'title' => !empty($link['title']) ? (string) $link['title'] : (string) $link['url'],
-                'target' => !empty($link['target']) ? (string) $link['target'] : '_self',
+                'url' => $url,
+                'title' => $title !== '' ? $title : $url,
+                'target' => $target,
             );
         }
     }
