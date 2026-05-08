@@ -7,7 +7,7 @@
  *
  * Надёжный запуск для WP-CLI, где флаги после eval-file не пробрасываются:
  *
- *   QUIZ_IMPORT_DRY_RUN=1 wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php
+ *   QUIZ_IMPORT_DRY_RUN=1 wp eval-file wp-content/themes/cpp-courses-theme/quiz-import-v2/import-quiz-bank.php
  *
  * Также поддерживаются «безфлаговые» токены:
  *
@@ -33,7 +33,7 @@
  */
 
 if (!defined('ABSPATH')) {
-    fwrite(STDERR, "Запускайте через WP-CLI: wp eval-file …/quiz-import/import-quiz-bank.php\n");
+    fwrite(STDERR, "Запускайте через WP-CLI: wp eval-file …/quiz-import-v2/import-quiz-bank.php\n");
     exit(1);
 }
 

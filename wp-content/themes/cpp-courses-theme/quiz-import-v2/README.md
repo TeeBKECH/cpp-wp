@@ -16,19 +16,19 @@
 Из корня WordPress (где `wp-config.php`):
 
 ```bash
-QUIZ_IMPORT_DRY_RUN=1 wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php
+QUIZ_IMPORT_DRY_RUN=1 wp eval-file wp-content/themes/cpp-courses-theme/quiz-import-v2/import-quiz-bank.php
 ```
 
 Реальный импорт черновиками:
 
 ```bash
-wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php
+wp eval-file wp-content/themes/cpp-courses-theme/quiz-import-v2/import-quiz-bank.php
 ```
 
 С публикацией и привязкой к странице теста (подставьте ID страницы шаблона QUIZ):
 
 ```bash
-QUIZ_IMPORT_STATUS=publish QUIZ_IMPORT_PAGE_ID=123 wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php
+QUIZ_IMPORT_STATUS=publish QUIZ_IMPORT_PAGE_ID=123 wp eval-file wp-content/themes/cpp-courses-theme/quiz-import-v2/import-quiz-bank.php
 ```
 
 ## Если ваш WP-CLI режет `--dry-run`
@@ -37,8 +37,8 @@ QUIZ_IMPORT_STATUS=publish QUIZ_IMPORT_PAGE_ID=123 wp eval-file wp-content/theme
 Используйте env-переменные (рекомендуется) или токены без префикса:
 
 ```bash
-wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php -- dry-run
-wp eval-file wp-content/themes/cpp-courses-theme/quiz-import/import-quiz-bank.php -- status=publish page-id=123
+wp eval-file wp-content/themes/cpp-courses-theme/quiz-import-v2/import-quiz-bank.php -- dry-run
+wp eval-file wp-content/themes/cpp-courses-theme/quiz-import-v2/import-quiz-bank.php -- status=publish page-id=123
 ```
 
 ## Переменные окружения
@@ -58,4 +58,4 @@ pip install openpyxl
 python3 scripts/export-quiz-bank-sheet-to-csv.py "Группы_тестов_охранники_обычная_нумерация.xlsx"
 ```
 
-По умолчанию скрипт пишет прямо сюда: `quiz-import/quiz-bank.csv`.
+По умолчанию скрипт пишет прямо сюда: `quiz-import-v2/quiz-bank.csv`.
