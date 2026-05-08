@@ -25,7 +25,13 @@ if (function_exists('get_field')) {
     $another_links = get_field('quiz_another_links', $page_id);
     if (is_array($another_links)) {
         foreach ($another_links as $row) {
-            $link = is_array($row) && isset($row['link']) ? $row['link'] : null;
+            // Support both subfield names: `url` (current) and `link` (legacy/internal drafts).
+            $link = null;
+            if (is_array($row) && isset($row['url'])) {
+                $link = $row['url'];
+            } elseif (is_array($row) && isset($row['link'])) {
+                $link = $row['link'];
+            }
             $url = is_array($link) && !empty($link['url']) ? (string) $link['url'] : '';
             if ($url === '') {
                 continue;
