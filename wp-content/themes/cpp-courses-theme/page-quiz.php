@@ -310,10 +310,16 @@ $has_quiz = count($question_ids) > 0;
     progressEl.textContent = cur + '/' + t;
   }
 
+  function hasCurrentSelection() {
+    const sel = readCurrentSelection();
+    return Array.isArray(sel) && sel.length > 0;
+  }
+
   function updatePrimaryButton() {
     primaryLabel.textContent = cfg.labelNext;
     primaryBtn.classList.add('button--filled');
     primaryBtn.classList.remove('button--primary');
+    primaryBtn.disabled = !hasCurrentSelection();
     renderProgress();
   }
 
@@ -592,6 +598,7 @@ $has_quiz = count($question_ids) > 0;
     state.userAnswers[state.index] = sel;
     applyAnswerHighlight(state.index);
     saveState();
+    updatePrimaryButton();
   });
 
   restartBtn &&
