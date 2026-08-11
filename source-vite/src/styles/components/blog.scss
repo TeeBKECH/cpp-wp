@@ -1,0 +1,116 @@
+$img: '@/assets/img';
+
+.blog {
+  width: 100%;
+  $blog: &;
+
+  &_grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-unit;
+    width: 100%;
+
+    @include respond-to(lg) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include respond-to(md) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    &--swiper {
+      display: flex;
+    }
+  }
+
+  &_card {
+    background: $color-bg-light;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    &_img-wrap {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+    }
+
+    &_img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &_body {
+      padding: 20px 24px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &_date {
+      font-family: $font-main;
+      font-weight: 400;
+      font-size: 14px;
+      color: #6b7a9e;
+      margin: 0 0 8px;
+    }
+
+    &_title {
+      font-family: $font-main;
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 1.35;
+      color: $color-heading;
+      margin: 0 0 12px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+
+      a {
+        color: inherit;
+        text-decoration: none;
+
+        @include onlyDescHover {
+          &:hover {
+            color: $color-primary;
+          }
+        }
+      }
+    }
+
+    &_desc {
+      font-family: $font-main;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.45;
+      color: $color-text-muted;
+      margin: 0 0 16px;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    &_link {
+      font-family: $font-main;
+      font-weight: 500;
+      font-size: 14px;
+      color: $color-primary;
+      text-decoration: underline;
+      align-self: flex-start;
+      position: relative;
+      padding-bottom: 6px;
+
+      @include onlyDescHover {
+        &:hover {
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+}

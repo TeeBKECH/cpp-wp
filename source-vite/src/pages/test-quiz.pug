@@ -1,0 +1,30 @@
+//- @title: Периодическая проверка частных охранников — тест — ЦПП
+//- @description: Вопросы периодической проверки частных охранников. Тест Росгвардии.
+//- @page_class: test-quiz
+extends ../layouts/default.pug
+
+block content
+  +PageIntro({
+    title: 'Периодическая проверка частных охранников',
+    breadcrumbs: [{ text: 'Главная', href: 'index.html' }, { text: 'Обучение охранников 4, 5 и 6 разрядов', href: '#' }],
+  })
+  section.section.section--test-quiz
+    +Container()
+      .test-quiz
+        form.test-quiz_form(action="#" method="get")
+          .test-quiz_question
+            p.test-quiz_question-text 1. Какие меры принуждения могут применять частные охранники?
+          .test-quiz_options
+            +Option('radio', { name: 'q1', value: '1' })
+              span Задержание на месте правонарушения лиц, совершивших противоправное посягательство на охраняемое имущество либо нарушающих внутриобъектовый и (или) пропускной режимы, применение физической силы, специальных средств и огнестрельного оружия, разрешенных в частной охранной деятельности.
+            +Option('radio', { name: 'q1', value: '2', checked: true })
+              span Проверка документов, досмотр переносимых вещей, применение физической силы, специальных средств и огнестрельного оружия, разрешенных в частной охранной деятельности.
+            +Option('radio', { name: 'q1', value: '3' })
+              span Изъятие предметов, досмотр транспорта, применение огнестрельного и холодного оружия.
+            +Option('checkbox', { name: 'q1', value: '5', mode: 'option' })
+              span Изъятие предметов, досмотр транспорта, применение огнестрельного и холодного оружия.
+          .test-quiz_actions
+            +Button('Далее →', 'filled', 'md')(type="submit")
+            +Button('Показать результаты', 'primary', 'md')(type="button")
+        .test-quiz_footer
+          a.test-quiz_link.wave-link(href="#") Перечень вопросов Росгвардии

@@ -1,0 +1,63 @@
+.links {
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  &_items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    &_num {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    a {
+      color: $color-heading;
+      font-size: 18px;
+      text-decoration: underline;
+      font-weight: 500;
+      font-family: $font-main;
+    }
+
+    p {
+      color: $color-text-muted;
+      font-size: 14px;
+      font-weight: 400;
+      font-family: $font-main;
+    }
+
+    &_status {
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: $color-primary;
+      font-size: 12px;
+      border: 1px solid transparent;
+    }
+
+    &-err {
+      color: #ff6363;
+      border-color: #ff6363;
+    }
+
+    &-warn {
+      color: yellow;
+      border-color: yellow;
+    }
+
+    &-ok {
+      color: #85ff85;
+      border-color: #85ff85;
+    }
+  }
+}

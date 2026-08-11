@@ -1,0 +1,71 @@
+{
+  "key": "group_cpp_quiz_page",
+  "title": "Страница теста (QUIZ)",
+  "fields": [
+    {
+      "key": "field_cpp_quiz_page_items",
+      "label": "Вопросы (порядок как в списке)",
+      "name": "quiz_items",
+      "type": "relationship",
+      "instructions": "Только записи типа quiz. Порядок строк = порядок вопросов в тесте.",
+      "required": 0,
+      "post_type": ["quiz"],
+      "taxonomy": "",
+      "filters": ["search"],
+      "return_format": "id",
+      "min": 0,
+      "max": 0
+    },
+    {
+      "key": "field_cpp_quiz_another_links",
+      "label": "Ссылки на другие тесты",
+      "name": "quiz_another_links",
+      "type": "repeater",
+      "instructions": "Ссылки выводятся внизу страницы теста друг под другом.",
+      "layout": "block",
+      "button_label": "Добавить ссылку",
+      "sub_fields": [
+        {
+          "key": "field_cpp_quiz_another_links_url",
+          "label": "Ссылка",
+          "name": "url",
+          "type": "link",
+          "return_format": "array",
+          "required": 1
+        }
+      ]
+    },
+    {
+      "key": "field_cpp_quiz_results_title",
+      "label": "Заголовок экрана результатов",
+      "name": "quiz_results_title",
+      "type": "text",
+      "default_value": "Результаты"
+    },
+    {
+      "key": "field_cpp_quiz_results_text",
+      "label": "Текст под результатами",
+      "name": "quiz_results_text",
+      "type": "textarea",
+      "instructions": "Показывается над формой обратной связи.",
+      "rows": 4
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "page_template",
+        "operator": "==",
+        "value": "page-quiz.php"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Шаблон страницы: QUIZ (page-quiz.php)."
+}

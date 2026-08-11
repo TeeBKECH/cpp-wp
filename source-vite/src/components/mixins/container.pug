@@ -1,0 +1,3 @@
+mixin Container(modifier)
+  .container(class=modifier ? `container--${modifier}` : null)&attributes(attributes)
+    block

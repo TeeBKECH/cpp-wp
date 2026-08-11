@@ -1,0 +1,40 @@
+//- Шапка: один компонент. header_top — логотип и контакты, header_bottom — навигация. Фиксированная.
+include ../mixins/container.pug
+include ../mixins/burger.pug
+
+header.header
+  .header_top
+    +Container('header')
+      .header_inner
+        a.header_logo(href="/")
+          img.header_logo-icon(src="assets/img/logo-icon.svg", alt="ЦПП", width="121", height="44")
+          span.header_logo-text Центр 
+              br 
+              | Профессиональной 
+              br 
+              | Подготовки 
+        .header_contacts
+          .header_contact
+            .header_contact-main +7 (495) 129-50-41
+            .header_contact-sub Пн - Пт с 10:00 - 18:00
+          .header_contact
+            a.header_contact-main(href="mailto:info@cpp-globez.ru") info@cpp-globez.ru
+            a.header_contact-sub.wave-link(href="#cta") Написать нам
+          .header_contact
+            .header_contact-main г. Мытищи, ул. Новослободская, вл. 1, стр. 1
+            a.header_contact-sub.wave-link(href="#") Как добраться?
+        .header_mobile
+          a.header_mobile-phone(href="tel:+74951295041")
+            img(src="assets/img/phone.svg", alt="Телефон")
+          .header_mobile-menu
+            +Burger()(data-modal="mobile-menu" class="burger--mobile")
+  .header_bottom
+    +Container()
+      +Burger()(data-modal="big-menu" class="burger--big")
+      ul.header_nav
+        li: a.header_nav-link(href="#courses") Услуги
+        li: a.header_nav-link(href="#about") О нас
+        li: a.header_nav-link(href="#") Сведения об образовательной организации
+        li: a.header_nav-link(href="#") Тесты
+        li: a.header_nav-link(href="#blog") Новости
+        li: a.header_nav-link(href="#cta") Контакты

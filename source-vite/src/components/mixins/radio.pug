@@ -1,0 +1,9 @@
+//- Кастомный радио-баттон (по аналогии с Checkbox): круг, точка при :checked.
+//- +Radio(name, value, checked?, id?)
+//- block — текст подписи.
+mixin Radio(name, value, checked, id)
+  label.radio&attributes(attributes)
+    input.radio_input(type="radio" name=name value=value checked=checked id=id)
+    span.radio_box(aria-hidden="true")
+    span.radio_text
+      block

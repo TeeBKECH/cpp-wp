@@ -1,0 +1,69 @@
+-
+  const links = [
+    {
+      link: 'Услуги',
+      href: 'services.html',
+      submenu: []
+    },
+    {
+      link: 'О нас',
+      href: 'index.html#about',
+      submenu: []
+    },
+    {
+      link: 'Документы',
+      href: 'edu-info.html',
+      submenu: []
+    },
+    {
+      link: 'Тесты',
+      href: 'test-intro.html',
+      submenu: []
+    },
+    {
+      link: 'Новости',
+      href: 'articles.html',
+      submenu: []
+    },
+    {
+      link: 'Контакты',
+      href: 'contacts.html',
+      submenu: []
+    },
+  ]
+
+mixin NavMobile(props = {})
+  nav.nav.nav--mobile&attributes(attributes)
+    ul.menu--mobile
+      each item, index in links
+        +MenuItemMobile(item)
+    .nav_contacts
+      .footer_contacts
+        .footer_contacts-wrap
+          p.footer_contacts-label г. Мытищи, ул. Новослободская, вл. 1, стр. 1
+          a.footer_contacts-value.wave-link(href="contacts.html#contacts") Как добраться?
+        .footer_contacts-wrap
+          a.footer_contacts-label(href="tel:+74951295041") +7 (495) 129-50-41
+          p.footer_contacts-value Пн - Пт с 10:00-18:00
+        .footer_contacts-wrap
+          a.footer_contacts-label(href="mailto:info@cpp-globez.ru") info@cpp-globez.ru
+          a.footer_contacts-value.wave-link(href="mailto:info@cpp-globez.ru") Написать письмо
+
+mixin MenuItemMobile(props = {})
+  li.menu_item
+    a.menu_item_link(href=props.href)
+      span.menu_item_text= props.link
+      .menu_item_icon
+
+mixin NavBottom(props = {})
+  - const {items = []} = props
+  nav.bottom-nav&attributes(attributes)
+    each item, index in items
+      +BottomNavItem(item)
+
+mixin BottomNavItem(props = {})
+  - const {icon = '', text = '', active = false} = props
+  a.bottom-nav_item(href=props.href, class=active ? 'bottom-nav_item--active' : '')
+    .bottom-nav_item-icon
+      img(src=`assets/img/${icon}.svg`, alt=`${text} Icon`)
+    span.bottom-nav_item-label= props.text

@@ -1,0 +1,174 @@
+.footer {
+  $footer: &;
+  background: $color-footer-bg;
+  color: $color-white;
+  padding-top: 60px;
+  padding-bottom: 80px;
+  border-top: 1px solid $color-footer-border;
+  border-bottom: 1px solid $color-footer-border;
+  margin-top: auto;
+
+  &_inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+
+    @include respond-to(lg) {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+
+  &_col {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    &--nav {
+      @media (max-width: 449.98px) {
+        gap: 16px;
+      }
+    }
+  }
+
+  &_logo {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  &_logo-icon {
+    width: 121px;
+    height: 44px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  &_logo-text {
+    font-family: $font-main;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    max-width: 114px;
+    color: $color-white;
+  }
+
+  &_copy {
+    font-family: $font-main;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 12px;
+    letter-spacing: 0.12px;
+    color: $color-footer-muted;
+    margin: 0;
+  }
+
+  &_legal {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &_title {
+    font-family: $font-main;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 18px;
+    letter-spacing: 0.18px;
+    color: $color-white;
+  }
+
+  &_links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    @media (max-width: 449.98px) {
+      gap: 8px;
+    }
+  }
+
+  &_link {
+    font-family: $font-main;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: calc(18 / 14);
+    letter-spacing: 0.14px;
+    color: #e3e5e7;
+    text-decoration: none;
+
+    &--action {
+      color: $color-footer-link;
+      text-decoration: underline;
+    }
+
+    @include onlyDescHover {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &_contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    flex: 1;
+    min-height: 0;
+
+    &-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    &-label,
+    &-value {
+      font-family: $font-main;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1;
+      color: #fff;
+      margin: 0;
+    }
+
+    &-value {
+      display: inline-block;
+      position: relative;
+      font-weight: 300;
+      font-size: 12px;
+      padding-bottom: 4px;
+      width: fit-content;
+    }
+  }
+
+  &_seogravity {
+    display: inline-block;
+    margin-top: auto;
+    font-family: $font-main;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: 0.12px;
+    color: $color-footer-muted;
+    text-decoration: none;
+    max-width: 260px;
+
+    @include onlyDescHover {
+      &:hover {
+        color: $color-white;
+      }
+    }
+  }
+
+  &_col--contacts {
+    min-height: 100%;
+  }
+}

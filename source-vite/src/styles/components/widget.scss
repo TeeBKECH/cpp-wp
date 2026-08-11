@@ -1,0 +1,19 @@
+.widget {
+  $widget: &;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: $color-bg-light;
+  position: sticky;
+  top: calc(var(--header-height) + 24px);
+
+  &_title {
+    font-family: $font-main;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: calc(24 / 18);
+    color: #043b7e;
+  }
+}

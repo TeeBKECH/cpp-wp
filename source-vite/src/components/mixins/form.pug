@@ -1,0 +1,23 @@
+mixin Form(props)
+  - let { mode = 'dark' } = props
+  form.form(action="#" method="post" class=`form--${mode}`)
+    .form_fields
+      .form_fields_row
+        .form_field
+          label(for="form-name") Ваше имя 
+            span.form_field_required *
+          input#form-name(type="text" name="name" required placeholder="Введите ваше имя...")
+        .form_field
+          label(for="form-phone") Номер телефона 
+            span.form_field_required *
+          input#form-phone(type="tel" name="phone" required placeholder="+7 (___) ___-__-__")
+      if (mode === 'light')
+        .form_fields_row.form_fields_row--alt
+          .form_field
+            label(for="form-comment") Комментарий
+            textarea#form-comment(name="comment" rows="4" placeholder="Комментарий...")
+    .form_agree
+      +Checkbox('form-agree', 'agree', true, mode)
+        | Я подтверждаю согласие на обработку моих персональных данных (закон №152-ФЗ «О персональных данных») и соглашаюсь с 
+        a.checkbox_link(href="#") политикой конфиденциальности
+    +Button('Отправить сообщение', 'filled', 'md')(type="submit" class="form_submit")

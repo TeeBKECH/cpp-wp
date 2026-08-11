@@ -1,0 +1,361 @@
+{
+  "key": "group_cpp_home",
+  "title": "Главная страница",
+  "fields": [
+    {
+      "key": "field_cpp_home_tab_intro",
+      "label": "Интро",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_home_intro_title",
+      "label": "Заголовок H1",
+      "name": "main_intro_title",
+      "type": "text",
+      "required": 0
+    },
+    {
+      "key": "field_cpp_home_intro_label",
+      "label": "Подпись над заголовком",
+      "name": "main_intro_label",
+      "type": "text"
+    },
+    {
+      "key": "field_cpp_home_intro_text",
+      "label": "Текст",
+      "name": "main_intro_text",
+      "type": "textarea",
+      "rows": 6
+    },
+    {
+      "key": "field_cpp_home_intro_button",
+      "label": "Кнопка (ссылка)",
+      "name": "main_intro_button",
+      "type": "link",
+      "instructions": "Если URL пуст — кнопка откроет форму CF7 из настроек сайта (модалка).",
+      "return_format": "array"
+    },
+    {
+      "key": "field_cpp_home_intro_video",
+      "label": "Фон: видео (приоритет над фото)",
+      "name": "main_intro_bg_video",
+      "type": "file",
+      "return_format": "array",
+      "library": "all",
+      "mime_types": "mp4,webm"
+    },
+    {
+      "key": "field_cpp_home_intro_image",
+      "label": "Фон: изображение",
+      "name": "main_intro_bg_image",
+      "type": "image",
+      "return_format": "array",
+      "preview_size": "medium",
+      "library": "all"
+    },
+    {
+      "key": "field_cpp_home_tab_courses",
+      "label": "Курсы",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_home_courses_title",
+      "label": "Заголовок секции",
+      "name": "main_courses_title",
+      "type": "text",
+      "default_value": "Курсы"
+    },
+    {
+      "key": "field_cpp_home_courses_subtitle",
+      "label": "Подзаголовок",
+      "name": "main_courses_subtitle",
+      "type": "text"
+    },
+    {
+      "key": "field_cpp_home_courses_items",
+      "label": "Услуги",
+      "name": "main_courses_items",
+      "type": "relationship",
+      "post_type": ["services"],
+      "return_format": "id",
+      "filters": ["search"]
+    },
+    {
+      "key": "field_cpp_home_tab_about",
+      "label": "О нас",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_home_about_title",
+      "label": "Заголовок секции",
+      "name": "main_about_title",
+      "type": "text",
+      "default_value": "О нас"
+    },
+    {
+      "key": "field_cpp_home_about_content",
+      "label": "Текст",
+      "name": "main_about_content",
+      "type": "wysiwyg",
+      "tabs": "all",
+      "toolbar": "basic",
+      "media_upload": 1
+    },
+    {
+      "key": "field_cpp_home_about_image",
+      "label": "Фото",
+      "name": "main_about_image",
+      "type": "image",
+      "return_format": "array",
+      "preview_size": "medium"
+    },
+    {
+      "key": "field_cpp_home_about_more",
+      "label": "Кнопка «Подробнее»",
+      "name": "main_about_more",
+      "type": "link",
+      "return_format": "array"
+    },
+    {
+      "key": "field_cpp_home_tab_teachers",
+      "label": "Преподавательский состав",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_home_teachers_title",
+      "label": "Заголовок секции",
+      "name": "main_teachers_title",
+      "type": "text"
+    },
+    {
+      "key": "field_cpp_home_teachers_subtitle",
+      "label": "Подзаголовок",
+      "name": "main_teachers_subtitle",
+      "type": "text"
+    },
+    {
+      "key": "field_cpp_home_teachers_items",
+      "label": "Преподаватели",
+      "name": "main_teachers_items",
+      "type": "relationship",
+      "post_type": ["teachers"],
+      "return_format": "id",
+      "filters": ["search"]
+    },
+    {
+      "key": "field_cpp_home_tab_edu_seo",
+      "label": "Образование (SEO)",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_home_edu_title",
+      "label": "Заголовок секции",
+      "name": "main_edu_seo_title",
+      "type": "text",
+      "default_value": "Образование"
+    },
+    {
+      "key": "field_cpp_home_edu_subtitle",
+      "label": "Подзаголовок",
+      "name": "main_edu_seo_subtitle",
+      "type": "text"
+    },
+    {
+      "key": "field_cpp_home_edu_image",
+      "label": "Фото",
+      "name": "main_edu_seo_image",
+      "type": "image",
+      "return_format": "array"
+    },
+    {
+      "key": "field_cpp_home_edu_content",
+      "label": "Текст",
+      "name": "main_edu_seo_content",
+      "type": "wysiwyg",
+      "tabs": "all",
+      "toolbar": "full",
+      "media_upload": 1
+    },
+    {
+      "key": "field_cpp_home_tab_orders",
+      "label": "Образование (список)",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_home_orders_title",
+      "label": "Заголовок секции",
+      "name": "main_orders_title",
+      "type": "text"
+    },
+    {
+      "key": "field_cpp_home_orders_items",
+      "label": "Записи education",
+      "name": "main_orders_items",
+      "type": "relationship",
+      "post_type": ["education"],
+      "return_format": "id",
+      "filters": ["search"]
+    },
+    {
+      "key": "field_cpp_home_tab_blog",
+      "label": "Публикации",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_home_blog_title",
+      "label": "Заголовок секции",
+      "name": "main_blog_title",
+      "type": "text",
+      "default_value": "Публикации"
+    },
+    {
+      "key": "field_cpp_home_blog_subtitle",
+      "label": "Подзаголовок",
+      "name": "main_blog_subtitle",
+      "type": "text"
+    },
+    {
+      "key": "field_cpp_home_blog_items",
+      "label": "Статьи",
+      "name": "main_blog_items",
+      "type": "relationship",
+      "post_type": ["articles"],
+      "return_format": "id",
+      "filters": ["search"]
+    },
+    {
+      "key": "field_cpp_home_blog_more",
+      "label": "Кнопка «Все публикации»",
+      "name": "main_blog_more",
+      "type": "link",
+      "return_format": "array"
+    },
+    {
+      "key": "field_cpp_home_tab_vacancy",
+      "label": "Вакансии",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_home_vacancy_title",
+      "label": "Заголовок секции",
+      "name": "main_vacancy_title",
+      "type": "text",
+      "default_value": "Вакансии"
+    },
+    {
+      "key": "field_cpp_home_vacancy_subtitle",
+      "label": "Подзаголовок",
+      "name": "main_vacancy_subtitle",
+      "type": "text"
+    },
+    {
+      "key": "field_cpp_home_vacancy_items",
+      "label": "Вакансии",
+      "name": "main_vacancy_items",
+      "type": "relationship",
+      "post_type": ["vacancy"],
+      "return_format": "id",
+      "filters": ["search"]
+    },
+    {
+      "key": "field_cpp_home_tab_cpp_seo",
+      "label": "ЦПП (SEO текст)",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_home_cpp_seo_title",
+      "label": "Заголовок секции",
+      "name": "main_cpp_seo_title",
+      "type": "text",
+      "default_value": "ЦПП"
+    },
+    {
+      "key": "field_cpp_home_cpp_seo_content",
+      "label": "Текст",
+      "name": "main_cpp_seo_content",
+      "type": "wysiwyg",
+      "tabs": "all",
+      "toolbar": "full",
+      "media_upload": 1
+    },
+    {
+      "key": "field_cpp_home_tab_partners",
+      "label": "Наши партнёры",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_cpp_home_partners_title",
+      "label": "Заголовок секции",
+      "name": "main_partners_title",
+      "type": "text",
+      "default_value": "Наши партнеры"
+    },
+    {
+      "key": "field_cpp_home_partners_subtitle",
+      "label": "Подзаголовок",
+      "name": "main_partners_subtitle",
+      "type": "text"
+    },
+    {
+      "key": "field_cpp_home_partners_items",
+      "label": "Партнёры",
+      "name": "partners_items",
+      "type": "repeater",
+      "layout": "row",
+      "button_label": "Добавить",
+      "sub_fields": [
+        {
+          "key": "field_cpp_home_partner_name",
+          "label": "Имя (alt)",
+          "name": "partner_name",
+          "type": "text",
+          "required": 1
+        },
+        {
+          "key": "field_cpp_home_partner_logo",
+          "label": "Логотип",
+          "name": "partner_logo",
+          "type": "image",
+          "return_format": "array",
+          "preview_size": "medium",
+          "required": 1
+        }
+      ]
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "page_type",
+        "operator": "==",
+        "value": "front_page"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "active": true,
+  "description": "Поля только для страницы, назначенной главной (Настройки → Чтение)."
+}

@@ -1,0 +1,32 @@
+- var navItems = [{ text: 'Сведения об образовательной организации', href: '#svedeniya', accent: false }, { text: 'Вакантные места для приема', href: '#vacant', accent: false }, { text: 'Документы', href: '#documents', accent: false }, { text: 'Доступная среда', href: '#access', accent: false }, { text: 'Материально-техническое обеспечение', href: '#material', accent: false }, { text: 'Международное сотрудничество', href: '#international', accent: false }, { text: 'Образование', href: '#education', accent: false }, { text: 'Методические материалы', href: '#methods', accent: false }, { text: 'Образовательные стандарты', href: '#standards', accent: false }, { text: 'Руководство. Педагогический состав', href: '#teachers', accent: false }, { text: 'Стипендии и иные виды материальной поддержки', href: '#stipendii', accent: false }, { text: 'Структура и органы управления', href: '#structure', accent: false }, { text: 'Финансово-хозяйственная деятельность', href: '#finance', accent: false }, { text: 'Лицензии', href: '#licenses', accent: true }, { text: 'Приказы', href: '#orders', accent: true }, { text: 'Документы организации', href: '#org-docs', accent: false }]
+
+mixin PageIntro(props)
+  - const { title, desc, breadcrumbs, btn, date, views, altType, tabs, link } = props
+  section.section.section--page-intro(class=`${altType ? 'section--page-intro--alt' : ''}`)
+    +Container()
+      .page-intro
+        if breadcrumbs 
+          +Breadcrumbs(breadcrumbs)
+        if title
+          h1.page-intro_title!= title
+        if desc
+          p.page-intro_desc!= desc
+        if btn
+          .page-intro_actions
+            +Button(btn, 'filled', 'sm')
+        if date || views
+          .page-intro_info
+            if date
+              .page-intro_info-item
+                span.page-intro_info-item-text= date
+            if views
+              .page-intro_info-item
+                span.page-intro_info-item-icon
+                span.page-intro_info-item-text= views
+        if tabs
+          .page-intro_tabs
+            each item in navItems
+              +Button(item.text, 'outline', 'sm')(href=item.href)
+        if link
+          .page-intro_link
+            a.page-intro_link-text.wave-link(href=link)= link

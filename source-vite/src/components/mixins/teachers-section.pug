@@ -1,0 +1,19 @@
+//- Секция «Преподавательский состав» — переиспользуемая на других страницах.
+//- +TeachersSection(id, title, subtitle, list)
+//- list: [{ img, name, role, extra }] — img без расширения (assets/img/<img>.png)
+//- Container подключается в layout
+mixin TeachersSection(sectionId, title, subtitle, list)
+  section.section.section--teachers(id=sectionId || 'teachers')
+    +Container(sectionId)
+      .teachers.section_content
+        +SectionHeader(title, subtitle)
+        .teachers_grid(class=`teachers_grid--${sectionId}`) 
+          each person in list
+            article.teachers_card
+              .teachers_card_img-wrap
+                img.teachers_card_img(src="assets/img/" + person.img + ".png", alt=person.name, width="260", height="290")
+              .teachers_card_content
+                h3.teachers_card_name= person.name
+                p.teachers_card_role= person.role
+                if person.extra
+                  p.teachers_card_role= person.extra

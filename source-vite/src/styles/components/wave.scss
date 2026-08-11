@@ -1,0 +1,40 @@
+.wave-link {
+  position: relative;
+  padding-bottom: 4px;
+
+  // Волнистая линия в псевдоэлементе, чтобы маска не скрывала текст ссылки
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 6px;
+    background: currentColor;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 6'%3E%3Cpath d='M0,3 Q3,0 6,3 T12,3' stroke='white' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    mask-size: 9px 5px;
+    mask-repeat: repeat-x;
+    mask-position: 0 100%;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 6'%3E%3Cpath d='M0,3 Q3,0 6,3 T12,3' stroke='white' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    -webkit-mask-size: 9px 5px;
+    -webkit-mask-repeat: repeat-x;
+    -webkit-mask-position: 0 100%;
+  }
+
+  &.wave-link--alt {
+  }
+
+  // Волнистое подчёркивание только при наведении (большое меню и т.п.)
+  &.wave-link--hover {
+    &::after {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    @include onlyDescHover {
+      &:hover::after {
+        opacity: 1;
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+//- Секция «Курсы» — переиспользуемая на других страницах.
+//- +CoursesSection(id, title, subtitle, list)
+//- list: [{ icon, title, text, link }]
+//- Container, CourseCard подключаются в layout
+mixin CoursesSection(sectionId, title, subtitle, list)
+  section.section.section--courses(id=sectionId || 'courses')
+    +Container(sectionId)
+      .courses.section_content
+        +SectionHeader(title, subtitle)
+        .courses_grid(class=`courses_grid--${sectionId}`)
+          each item in list
+            +CourseCard(item)

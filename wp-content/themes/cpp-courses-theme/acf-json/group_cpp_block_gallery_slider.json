@@ -1,0 +1,46 @@
+{
+  "key": "group_cpp_block_gallery_slider",
+  "title": "Блок: Галерея (слайдер)",
+  "fields": [
+    {
+      "key": "field_cpp_gallery_slides",
+      "label": "Слайды",
+      "name": "cpp_gallery_slides",
+      "type": "repeater",
+      "layout": "row",
+      "button_label": "Добавить слайд",
+      "min": 1,
+      "sub_fields": [
+        {
+          "key": "field_cpp_gallery_slide_image",
+          "label": "Изображение",
+          "name": "image",
+          "type": "image",
+          "return_format": "array",
+          "preview_size": "medium",
+          "library": "all",
+          "required": 1
+        },
+        {
+          "key": "field_cpp_gallery_slide_alt",
+          "label": "Alt (если пусто — подпись файла)",
+          "name": "alt",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "acf/cpp-gallery-slider"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "active": true
+}

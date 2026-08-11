@@ -1,0 +1,63 @@
+include ../components/mixins/head.pug
+include ../components/mixins/page.pug
+include ../components/mixins/modal.pug
+include ../components/mixins/link.pug
+include ../components/mixins/accordion.pug
+include ../components/mixins/pagination.pug
+include ../components/mixins/gallery.pug
+include ../components/mixins/menu.pug
+include ../components/mixins/nav-mobile.pug
+//- Миксины контента: подключаются один раз в layout, на страницах не дублировать include
+include ../components/mixins/section.pug
+include ../components/mixins/form.pug
+include ../components/mixins/swiper.pug
+include ../components/mixins/container.pug
+include ../components/mixins/button.pug
+include ../components/mixins/checkbox.pug
+include ../components/mixins/radio.pug
+include ../components/mixins/option.pug
+include ../components/mixins/breadcrumbs.pug
+include ../components/mixins/course-card.pug
+include ../components/mixins/courses-section.pug
+include ../components/mixins/teachers-section.pug
+include ../components/mixins/cta-section.pug
+include ../components/mixins/orders-section.pug
+include ../components/mixins/blog-card.pug
+include ../components/mixins/about-section.pug
+include ../components/mixins/education-section.pug
+include ../components/mixins/blog-section.pug
+include ../components/mixins/services-section.pug
+
+doctype html
+html(lang="ru")
+  // page — объект из templateParameters (см. vite.config.js)
+  +Head(page)
+
+  body.body
+
+    // Modal Mobile Menu
+    +Modal('mobile-menu')(class='modal--mobile')
+      +NavMobile()
+
+    // Modal Big Menu
+    +Modal('big-menu')(class='modal--menu')
+      +Menu()
+
+    // Bottom Nav
+    +NavBottom({items: [
+      {icon: 'home', text: 'Главная', active: true},
+      {icon: 'notice', text: 'О нас'},
+      {icon: 'services', text: 'Услуги'},
+      {icon: 'docs', text: 'Документы'},
+      {icon: 'support', text: 'Контакты'},
+    ]})
+
+    // Scroll to top — показывается при скролле вниз (JS: attachScrollVisibility + invert)
+    button.scroll-to-top.hidden-by-scroll(type='button' aria-label='Наверх')
+      span.scroll-to-top_icon(aria-hidden='true')
+
+    .page(class=`${page.page_class ? 'page--' + page.page_class : ''}`)
+      include ../components/sections/header.pug
+      main.main(class=`${page.page_class ? 'main--' + page.page_class : ''}`)
+        block content
+      include ../components/sections/footer.pug

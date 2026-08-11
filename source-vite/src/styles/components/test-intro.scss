@@ -1,0 +1,48 @@
+// Вводная страница теста (макет 313-2835): заголовок, описание, кнопка «Приступить», ссылка.
+
+.test-intro {
+  $test-intro: &;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  &_text {
+    p {
+      font-family: $font-main;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.5;
+      color: $color-text;
+      margin: 0 0 16px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &_actions {
+  }
+
+  &_footer {
+    padding-top: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+
+    @include respond-to(lg) {
+      padding-top: 120px;
+    }
+
+    @include respond-to(md) {
+      padding-top: 80px;
+    }
+  }
+
+  &_link {
+    color: #3d5d84;
+    position: relative;
+    width: fit-content;
+  }
+}

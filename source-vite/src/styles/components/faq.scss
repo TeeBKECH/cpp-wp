@@ -1,0 +1,98 @@
+// Секция «Часто заданные вопросы»: аккордеон.
+
+.faq {
+  $faq: &;
+
+  &_header {
+    margin-bottom: $section-header-mb;
+  }
+
+  &_title {
+    font-family: $font-main;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 36 / 32;
+    color: $color-heading;
+    margin: 0 0 $section-title-mb;
+  }
+
+  &_subtitle {
+    font-family: $font-main;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1;
+    color: $color-text-muted;
+    margin: 0;
+  }
+
+  &_list {
+    border: 1px solid #e8ecf0;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  &_item {
+    border-bottom: 1px solid #e8ecf0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &_question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 24px;
+    font-family: $font-main;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.4;
+    color: $color-heading;
+    text-align: left;
+    background: $color-white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    @include onlyDescHover {
+      &:hover {
+        background: $color-bg-light;
+      }
+    }
+
+    &::after {
+      content: '+';
+      flex-shrink: 0;
+      font-size: 20px;
+      font-weight: 400;
+      color: $color-primary;
+    }
+  }
+
+  &_item.is-open &_question::after {
+    content: '−';
+  }
+
+  &_answer {
+    display: none;
+    padding: 0 24px 20px;
+  }
+
+  &_item.is-open &_answer {
+    display: block;
+  }
+
+  &_answer-inner {
+    font-family: $font-main;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    color: $color-text;
+    margin: 0;
+    padding: 0 0 0 24px;
+    border-left: 3px solid $color-primary;
+  }
+}

@@ -1,0 +1,71 @@
+/* QUIZ page template: progress + buttons layout (theme add-on; main styles from Vite build). */
+
+/* Some theme rules override [hidden]; force-hide quiz panels until JS shows them. */
+.cpp-quiz-panel--hidden {
+  display: none !important;
+}
+
+.section.section--test-intro.cpp-quiz-panel {
+  padding-bottom: 60px;
+}
+
+.cpp-quiz-review {
+  list-style: decimal;
+  margin: 1.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.cpp-quiz-review__item {
+  margin-bottom: 1.75rem;
+}
+
+.cpp-quiz-review__item .cpp-quiz-review__question {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--color-heading, #1a1a1a);
+  margin: 0 0 0.5rem;
+}
+
+.cpp-quiz-review__answer-line {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.cpp-quiz-review__label {
+  color: var(--color-heading, #1a1a1a);
+  margin-right: 0.35rem;
+}
+
+.cpp-quiz-review__value--ok {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.cpp-quiz-review__value--bad {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.cpp-quiz-results-actions {
+  margin-top: 1.75rem;
+}
+
+.test-quiz_actions {
+  flex-wrap: wrap;
+}
+
+.test-quiz_progress {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-heading, #1a1a1a);
+}
+
+.test-quiz_actions-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}

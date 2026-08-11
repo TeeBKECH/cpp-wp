@@ -1,0 +1,36 @@
+// CF7: toast above modals/Fancybox; hide inline response after show.
+
+.wpcf7-response-output {
+  display: none !important;
+}
+
+.cpp-cf7-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translate3d(-50%, 140%, 0);
+  z-index: 2147483000;
+  max-width: min(560px, calc(100vw - 32px));
+  padding: 16px 22px;
+  border-radius: 12px;
+  background: #182a40;
+  color: #fff;
+  font-family: $font-main;
+  font-size: 16px;
+  line-height: 1.45;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    transform 0.35s ease,
+    visibility 0.35s;
+
+  &--visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translate3d(-50%, 0, 0) !important;
+  }
+}

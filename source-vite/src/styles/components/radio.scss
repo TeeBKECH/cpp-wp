@@ -1,0 +1,78 @@
+// Кастомный радио-баттон: круг, обводка, точка при :checked (квиз и др.).
+
+.radio {
+  $radio: &;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  font-family: $font-main;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $color-text;
+
+  &_input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+
+    &:focus-visible + #{$radio}_box {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+    }
+
+    &:checked + #{$radio}_box {
+      border-color: $color-primary;
+      background: $color-white;
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+
+  &_box {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: $color-white;
+    border: 1px solid rgba($color-primary, 0.5);
+    box-shadow: 0 1px 3px rgba($color-primary, 0.15);
+    position: relative;
+    transition:
+      border-color 0.2s,
+      background 0.2s;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      margin: -5px 0 0 -5px;
+      border-radius: 50%;
+      background: $color-primary;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+  }
+
+  &_text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  @include onlyDescHover {
+    &:hover #{$radio}_box {
+      border-color: $color-primary;
+    }
+  }
+}

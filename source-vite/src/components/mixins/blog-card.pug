@@ -1,0 +1,13 @@
+//- Карточка статьи/публикации. +BlogCard({ img, date, title, desc, link }, linkText?)
+//- linkText по умолчанию «Читать далее»
+mixin BlogCard(item, linkText)
+  - linkText = linkText || 'Читать далее'
+  article.blog_card
+    a.blog_card_img-wrap(href=item.link)
+      img.blog_card_img(src="assets/img/" + item.img + ".png", alt="", width="360", height="203")
+    .blog_card_body
+      time.blog_card_date(datetime="2025-12-21")= item.date
+      h3.blog_card_title
+        a(href=item.link)= item.title
+      p.blog_card_desc= item.desc
+      a.blog_card_link.wave-link(href=item.link)= linkText

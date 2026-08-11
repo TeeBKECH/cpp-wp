@@ -1,0 +1,6 @@
+// reCAPTCHA v3 badge: скрываем визуально, форма продолжает работать.
+.grecaptcha-badge {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

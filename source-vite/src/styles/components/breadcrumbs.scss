@@ -1,0 +1,51 @@
+// Хлебные крошки: мелкий текст, ссылки и разделитель по макету.
+
+.breadcrumbs {
+  $breadcrumbs: &;
+
+  &_list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+  }
+
+  &_item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &_sep {
+    font-family: $font-main;
+    font-size: 14px;
+    color: #9eb6d2;
+    pointer-events: none;
+  }
+
+  &_link {
+    font-family: $font-main;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.35;
+    color: #3d5d84;
+    text-decoration: none;
+
+    @include onlyDescHover {
+      &:hover {
+        color: $color-primary;
+      }
+    }
+  }
+
+  &_current {
+    font-family: $font-main;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.35;
+    color: #9eb6d2;
+  }
+}

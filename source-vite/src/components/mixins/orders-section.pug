@@ -1,0 +1,29 @@
+//- Секция списка документов (приказы, доступная среда, лицензии-фото) — переиспользуемая.
+//- +OrdersSection(id, title, list, buttonText?, icon?, variant?)
+//- variant: 'list' (по умолчанию) — список с title/desc и кнопкой; 'photos' — сетка карточек-изображений (list: [{ img, alt, href }])
+//- buttonText: 'Скачать' | 'Перейти', icon: 'download' | отсутствует (для variant 'list')
+//- Container, Button подключаются в layout
+mixin OrdersSection(sectionId, title, list, buttonText, icon, variant)
+  - buttonText = buttonText || 'Скачать'
+  - variant = variant || 'list'
+  section.section.section--orders(id=sectionId || 'orders')
+    +Container()
+      .orders.section_content(class=variant === 'photos' ? 'orders--photos' : '')
+        +SectionHeader(title)
+        .orders_list(class=variant === 'photos' ? 'orders_list--photos' : '')
+          if variant === 'photos'
+            each item in list
+              a.orders_item.orders_item--photo(href=item.href)
+                .orders_item-img
+                  img(src=`assets/img/${item.img}.png`, alt=item.alt, width="160", height="220", loading="lazy")
+          else
+            each item in list
+              .orders_item
+                .orders_item_content
+                  a.orders_item-title(href=item.link)= item.title
+                  if item.desc
+                    p.orders_item-desc= item.desc
+                if icon
+                  +Button(buttonText, 'icon', 'sm')(href=item.link icon=icon download)
+                else
+                  +Button(buttonText, 'outline', 'sm')(href=item.link)

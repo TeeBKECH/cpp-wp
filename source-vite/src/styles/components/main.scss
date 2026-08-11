@@ -1,0 +1,163 @@
+.main {
+  &--links,
+  &--service,
+  &--articles,
+  &--article,
+  &--contacts,
+  &--edu-info,
+  &--test-intro,
+  &--test-quiz,
+  &--services {
+    // Фиксированная высота хедера (задаётся при загрузке), не скачет при скролле
+    padding-top: var(--header-height-full, 150px);
+  }
+
+  &--index {
+    .section--courses,
+    .section--teachers,
+    .section--orders,
+    .section--blog,
+    .section--vacancies,
+    .section--seo-text,
+    .section--about {
+      padding: 60px 0;
+
+      @include respond-to(lg) {
+        padding: 40px 0;
+      }
+    }
+
+    .section--education {
+      padding: 60px 0 80px;
+
+      @include respond-to(lg) {
+        padding: 40px 0;
+      }
+    }
+
+    .section--partners {
+      padding: 60px 0 120px;
+
+      @include respond-to(lg) {
+        padding: 40px 0 80px;
+      }
+    }
+  }
+
+  &--services {
+    .section--courses {
+      padding: 0 0 120px;
+
+      @include respond-to(lg) {
+        padding: 0 0 80px;
+      }
+    }
+
+    .section--about {
+      padding: 80px 0 60px;
+
+      @include respond-to(lg) {
+        padding: 40px 0 30px;
+      }
+    }
+
+    .section--teachers {
+      padding: 60px 0;
+
+      @include respond-to(lg) {
+        padding: 40px 0;
+      }
+    }
+
+    .section--seo-text {
+      padding: 60px 0 120px;
+
+      @include respond-to(lg) {
+        padding: 40px 0 80px;
+      }
+    }
+  }
+
+  &--service,
+  &--article,
+  // Новые шаблоны услуг (детальная + родитель): те же отступы у общих секций внизу.
+  // Хедер отбивает сам hero, поэтому padding-top у main здесь не нужен.
+  &--service-detail {
+    .section--faq,
+    .section--services,
+    .section--blog,
+    .section--teachers,
+    .section--about {
+      padding: 60px 0;
+
+      @include respond-to(lg) {
+        padding: 40px 0;
+      }
+    }
+
+    .section--education {
+      padding: 60px 0 120px;
+
+      @include respond-to(lg) {
+        padding: 40px 0 80px;
+      }
+    }
+  }
+
+  &--articles {
+    .section--blog {
+      padding: 0 0 120px;
+
+      @include respond-to(lg) {
+        padding: 0 0 80px;
+      }
+    }
+  }
+
+  &--contacts {
+    .section--contacts {
+      padding: 0 0 120px;
+
+      @include respond-to(lg) {
+        padding: 0 0 80px;
+      }
+    }
+  }
+
+  &--edu-info {
+    .section--orders {
+      padding: 60px 0 0;
+
+      @include respond-to(lg) {
+        padding: 40px 0;
+      }
+
+      &:last-child {
+        padding: 60px 0 120px;
+
+        @include respond-to(lg) {
+          padding: 40px 0 80px;
+        }
+      }
+    }
+  }
+
+  &--test-intro {
+    .section--test-intro {
+      padding: 0 0 120px;
+
+      @include respond-to(lg) {
+        padding: 0 0 80px;
+      }
+    }
+  }
+  &--test-quiz {
+    .section--test-quiz {
+      padding: 0 0 120px;
+
+      @include respond-to(lg) {
+        padding: 0 0 80px;
+      }
+    }
+  }
+}

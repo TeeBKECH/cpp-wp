@@ -1,0 +1,70 @@
+{
+  "key": "group_cpp_block_certificate",
+  "title": "Блок: Сертификат / документы",
+  "fields": [
+    {
+      "key": "field_cpp_cert_title",
+      "label": "Заголовок (H2)",
+      "name": "cpp_cert_title",
+      "type": "text"
+    },
+    {
+      "key": "field_cpp_cert_text",
+      "label": "Текст",
+      "name": "cpp_cert_text",
+      "type": "wysiwyg",
+      "tabs": "visual",
+      "toolbar": "basic",
+      "media_upload": 0
+    },
+    {
+      "key": "field_cpp_cert_files",
+      "label": "Файлы для скачивания",
+      "name": "cpp_cert_files",
+      "type": "repeater",
+      "layout": "row",
+      "button_label": "Добавить файл",
+      "sub_fields": [
+        {
+          "key": "field_cpp_cert_file_label",
+          "label": "Подпись кнопки",
+          "name": "label",
+          "type": "text",
+          "required": 1
+        },
+        {
+          "key": "field_cpp_cert_file",
+          "label": "Файл",
+          "name": "file",
+          "type": "file",
+          "return_format": "array",
+          "library": "all",
+          "required": 1
+        }
+      ]
+    },
+    {
+      "key": "field_cpp_cert_image",
+      "label": "Фото (превью, открывается в Fancybox)",
+      "name": "cpp_cert_image",
+      "type": "image",
+      "return_format": "array",
+      "preview_size": "medium",
+      "library": "all"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "acf/cpp-certificate"
+      }
+    ]
+  ],
+  "menu_order": 1,
+  "position": "normal",
+  "style": "default",
+  "active": true,
+  "modified": 1744550400
+}

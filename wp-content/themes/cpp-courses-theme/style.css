@@ -1,0 +1,13 @@
+/*
+Theme Name: CPP Courses Theme
+Theme URI: https://cpp.nikolaybuzinov.ru/
+Author: Cursor Cloud Agent
+Description: Initial WordPress theme scaffold based on source-vite build.
+Version: 0.1.0
+Requires at least: 6.0
+Tested up to: 6.5
+Requires PHP: 8.1
+Text Domain: cpp-courses-theme
+*/
+
+/* Deploy check: SSH pipeline verification marker. */

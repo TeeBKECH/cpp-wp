@@ -1,0 +1,16 @@
+// Секция «Другие услуги»: сетка карточек + свайпер (по аналогии с .blog)
+
+.services {
+  $services: &;
+
+  &_grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-unit;
+    width: 100%;
+
+    &--swiper {
+      display: flex;
+    }
+  }
+}

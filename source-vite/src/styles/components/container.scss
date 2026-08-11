@@ -1,0 +1,26 @@
+// Контейнер секции: ограничение ширины и боковые отступы. Размеры из variables.scss.
+// Разметка: section > .container > блок. Подключение миксина +Container() в Pug.
+
+.container {
+  width: 100%;
+  max-width: $container-width;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $container-padding;
+  padding-right: $container-padding;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+
+  &--header,
+  &--teachers,
+  &--blog,
+  &--vacancies,
+  &--other-services,
+  &--related,
+  &--courses {
+    @include respond-to(lg) {
+      padding-right: 0;
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "key": "group_cpp_quiz_question",
+  "title": "Вопрос теста (quiz)",
+  "fields": [
+    {
+      "key": "field_cpp_quiz_multiple",
+      "label": "Несколько верных ответов",
+      "name": "cpp_quiz_multiple",
+      "type": "true_false",
+      "instructions": "Включите — варианты как чекбоксы; выключено — одна верная (радиокнопки).",
+      "ui": 1,
+      "default_value": 0
+    },
+    {
+      "key": "field_cpp_quiz_answers",
+      "label": "Варианты ответов",
+      "name": "quiz_answers",
+      "type": "repeater",
+      "layout": "row",
+      "button_label": "Добавить ответ",
+      "sub_fields": [
+        {
+          "key": "field_cpp_quiz_answer_text",
+          "label": "Текст ответа",
+          "name": "answer_text",
+          "type": "text",
+          "required": 1
+        },
+        {
+          "key": "field_cpp_quiz_answer_correct",
+          "label": "Правильный ответ",
+          "name": "is_correct",
+          "type": "true_false",
+          "ui": 1,
+          "default_value": 0
+        }
+      ]
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "quiz"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Текст вопроса — в редакторе записи. Тип записи quiz задаётся в SCF."
+}

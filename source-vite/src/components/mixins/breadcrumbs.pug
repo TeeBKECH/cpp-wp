@@ -1,0 +1,12 @@
+//- Хлебные крошки. +Breadcrumbs([{ text: 'Главная', href: '/' }, { text: 'Услуги', href: '#' }])
+mixin Breadcrumbs(items)
+  nav.breadcrumbs(aria-label="Хлебные крошки")
+    ol.breadcrumbs_list
+      each item, i in items
+        li.breadcrumbs_item
+          if i > 0
+            span.breadcrumbs_sep(aria-hidden="true") /
+          if item.href && i < items.length - 1
+            a.breadcrumbs_link(href=item.href)= item.text
+          else
+            span.breadcrumbs_current(aria-current="page")= item.text

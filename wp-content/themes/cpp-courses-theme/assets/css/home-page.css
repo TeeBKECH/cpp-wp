@@ -1,0 +1,14 @@
+/* Front page: video background in intro (Vite build uses .intro_bg_image only). */
+
+.intro_bg .intro_bg_video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.intro_bg:has(.intro_bg_video) .intro_bg_image {
+  display: none;
+}

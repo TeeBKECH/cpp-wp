@@ -1,0 +1,13 @@
+//- Универсальный вариант ответа: radio или checkbox.
+//- +Option('radio', { name, value, checked?, id? })
+//-   span Текст варианта
+//- +Option('checkbox', { id, name, required?, mode? })
+//-   span Текст
+//- Container, Radio, Checkbox подключаются в layout
+mixin Option(type, props)
+  if type === 'radio'
+    +Radio(props.name, props.value, props.checked, props.id)&attributes(attributes)
+      block
+  else if type === 'checkbox'
+    +Checkbox(props.id, props.name, props.required, props.mode)&attributes(attributes)
+      block

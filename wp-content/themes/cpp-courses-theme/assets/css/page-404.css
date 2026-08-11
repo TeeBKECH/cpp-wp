@@ -1,0 +1,24 @@
+/* 404: align with service-style page-intro; single prominent CTA */
+
+.main--404 .section--page-intro {
+  padding-bottom: 48px;
+}
+
+.cpp-404-actions {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.cpp-404-actions .button--lg {
+  min-width: 220px;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .cpp-404-actions .button--lg {
+    min-width: 260px;
+  }
+}

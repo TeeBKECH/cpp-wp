@@ -1,0 +1,12 @@
+//- +Button(text, type?, size?)  type: 'primary' | 'filled' | 'secondary' | 'outline' | 'download', size: 'sm' | 'md' | 'lg'
+//- С иконкой: +Button('Скачать', 'download', 'md')(href='#' icon='download')
+mixin Button(text, type, size)
+  - type = type || 'primary'
+  - size = size || 'md'
+  - const iconName = attributes.icon
+  - if (iconName) delete attributes.icon
+  - const tag = attributes.href ? 'a' : 'button'
+  #{tag}.button(class=`button--${type} button--${size}`)&attributes(attributes)
+    if iconName
+      .button_icon(aria-hidden="true", class=`button_icon--${iconName}`)
+    span.button_text= text

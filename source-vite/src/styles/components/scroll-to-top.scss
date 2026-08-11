@@ -1,0 +1,59 @@
+// Кнопка «Наверх»: fixed справа снизу, показывается при скролле вниз (класс .hidden-by-scroll снимает JS).
+// Вид в духе кнопок навигации свайпера: круг, обводка, иконка стрелки вверх.
+
+.scroll-to-top {
+  $scroll-to-top: &;
+  position: fixed;
+  right: 20px;
+  bottom: 24px;
+  z-index: 350;
+
+  @include respond-to(lg) {
+    bottom: 92px; // выше нижнего меню (.bottom-nav ~68px + отступ)
+  }
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid #d1d8e0;
+  border-radius: 50%;
+  background: $color-white;
+  box-shadow: 0 4px 20px rgba($color-heading, 0.12);
+  cursor: pointer;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.2s ease;
+
+  @include onlyDescHover {
+    &:hover {
+      opacity: 0.9;
+      box-shadow: 0 6px 24px rgba($color-heading, 0.18);
+    }
+
+    &:active {
+      transform: scale(0.96);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+
+  &.hidden-by-scroll {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+  }
+
+  &_icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: center / contain no-repeat;
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 16.6668V3.3335M10 3.3335L4.16667 9.16683M10 3.3335L15.8333 9.16683' stroke='%23043B7E' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+}

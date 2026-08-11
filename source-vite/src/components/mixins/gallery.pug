@@ -1,0 +1,9 @@
+mixin GalleryService(props)
+  - const { items } = props
+  .gallery.gallery--service
+    .gallery_items
+      each item in items
+        .gallery_item(data-fancybox="gallery", data-src=item.img)
+          img(src=item.img, alt=item.alt, loading="lazy")
+    .gallery_nav
+      +SwiperNavigation('gallery')

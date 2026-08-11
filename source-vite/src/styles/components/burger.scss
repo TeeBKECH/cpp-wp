@@ -1,0 +1,50 @@
+// Кнопка-гамбургер: три линии → крестик при .active (плавно, общий transform-origin).
+
+.burger {
+  $burger: &;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+
+  @include onlyDescHover {
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+
+.burger_line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  transform-origin: center;
+  transition:
+    transform 0.3s ease,
+    opacity 0.25s ease;
+}
+
+// Расстояние между центрами полосок = gap (5px) + высота линии (2px) = 7px
+.burger.active {
+  .burger_line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .burger_line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .burger_line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+}

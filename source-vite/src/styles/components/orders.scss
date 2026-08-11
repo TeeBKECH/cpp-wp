@@ -1,0 +1,113 @@
+// Секция «Приказы» по макету 313-508: заголовок с линией, список с заголовком документа, описанием, кнопкой «Скачать» с иконкой.
+
+.orders {
+  $orders: &;
+
+  &_list {
+    border-top: 1px solid #e8ecf0;
+  }
+
+  &_item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
+    padding: 20px 0;
+    border-bottom: 1px solid #e8ecf0;
+
+    @include respond-to(md) {
+      align-items: flex-start;
+    }
+  }
+
+  &_item_content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &_item-title {
+    font-family: $font-main;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.35;
+    color: $color-primary;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 4px;
+
+    @include onlyDescHover {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &_item-desc {
+    font-family: $font-main;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 1.4;
+    color: #6b7484;
+    margin: 0;
+  }
+
+  &_item .button {
+    flex-shrink: 0;
+  }
+
+  // Вариант «Лицензии»: сетка карточек-изображений
+  &_list--photos {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 24px;
+    border-top: none;
+  }
+
+  &_item--photo {
+    display: block;
+    text-decoration: none;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+    padding: 0 !important;
+    border: none !important;
+
+    @include onlyDescHover {
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+      }
+    }
+  }
+
+  &_item-img {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 160 / 220;
+    background: $color-bg-light;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  @media (max-width: 992px) {
+    &_list--photos {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 576px) {
+    &_list--photos {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+  }
+}
