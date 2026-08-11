@@ -35,8 +35,11 @@ export function buildToc({
     }
   }
 
-  // Ищем заголовки в правильном порядке потока документа
-  const headings = Array.from(rootEl.querySelectorAll(`${h2Sel}, ${h3Sel}`)).filter(Boolean)
+  // Ищем заголовки в правильном порядке потока документа.
+  // Если h3Sel пуст — оглавление строится ТОЛЬКО по h2 (без подсписков).
+  const h3Enabled = Boolean(h3Sel && String(h3Sel).trim())
+  const selector = h3Enabled ? `${h2Sel}, ${h3Sel}` : h2Sel
+  const headings = Array.from(rootEl.querySelectorAll(selector)).filter(Boolean)
 
   if (!headings.length) {
     // Ничего не делаем, но и не падаем
@@ -128,10 +131,14 @@ export function buildToc({
       currentLi.appendChild(a)
       tocEl.appendChild(currentLi)
 
-      // Подсписок для h3
-      currentSubUl = document.createElement('ul')
-      currentSubUl.className = submenuClass
-      currentLi.appendChild(currentSubUl)
+      // Подсписок для h3 (только если h3 включены)
+      if (h3Enabled) {
+        currentSubUl = document.createElement('ul')
+        currentSubUl.className = submenuClass
+        currentLi.appendChild(currentSubUl)
+      } else {
+        currentSubUl = null
+      }
     } else {
       // Подзаголовок уезжает в текущий раздел, если он есть
       if (!currentLi || !currentSubUl) {

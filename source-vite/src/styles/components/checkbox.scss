@@ -11,6 +11,12 @@
   font-size: 12px;
   line-height: calc(18 / 12);
 
+  // CF7 рисует свой span-обёртку с сырым чекбоксом рядом с кастомным — прячем её.
+  // Реальный input (.checkbox_input) внутри остаётся кликабельным через label и :has().
+  .wpcf7-form-control-wrap {
+    display: none;
+  }
+
   // CF7 оборачивает [acceptance] в span — input не сосед .checkbox_box, ломается «+».
   // :has() стилизует квадратик по состоянию input внутри label.
   &:has(.checkbox_input:focus-visible) #{$checkbox}_box {

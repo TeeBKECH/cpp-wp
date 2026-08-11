@@ -23,6 +23,12 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
+
+    &--nav {
+      @media (max-width: 449.98px) {
+        gap: 16px;
+      }
+    }
   }
 
   &_logo {
@@ -83,6 +89,10 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+
+    @media (max-width: 449.98px) {
+      gap: 8px;
+    }
   }
 
   &_link {

@@ -3,6 +3,7 @@
 .modal.modal-form {
   .modal_content {
     background: #28405d;
+    max-height: calc(100vh - 70px);
   }
 
   .form {
@@ -14,8 +15,8 @@
   }
 
   textarea {
-    height: 150px;
-    min-height: 150px;
+    height: 100px;
+    min-height: 100px;
   }
 
   .modal-title,
@@ -40,6 +41,32 @@
   @include respond-to(lg) {
     .form_fields_row {
       gap: 16px;
+    }
+  }
+
+  // < 450px — denser modal form
+  @media (max-width: 449.98px) {
+    .modal_content {
+      gap: 8px;
+    }
+
+    .form_field {
+      gap: 7px;
+
+      label {
+        font-size: 16px;
+      }
+
+      input,
+      textarea {
+        padding: 15px 16px;
+      }
+    }
+
+    // CF7 wraps each control in this span; its box shifts text fields — neutralize it.
+    // Scoped to .form_field so it never touches the checkbox's wrap (hidden globally).
+    .form_field .wpcf7-form-control-wrap {
+      display: contents;
     }
   }
 }

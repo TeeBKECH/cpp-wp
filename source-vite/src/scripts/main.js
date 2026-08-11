@@ -67,9 +67,10 @@ document.addEventListener('DOMContentLoaded', (e) => {
   buildToc({
     root: '.page-content_main',
     toc: '#toc-list',
-    // Верстка: h2.section_title; Gutenberg: h2/h3.wp-block-heading (и обычные h2/h3 в контенте)
+    // Верстка: h2.section_title; Gutenberg: h2.wp-block-heading (и обычные h2 в контенте).
+    // В оглавление статьи выводим ТОЛЬКО h2 — h3 отключены (пустой h3Sel).
     h2Sel: 'h2.section_title, .section_header > h2, h2.wp-block-heading, h2',
-    h3Sel: 'h3.section_title, .section_header > h3, h3.wp-block-heading, h3',
+    h3Sel: '',
   })
   /*
    * Phone Masks
@@ -207,6 +208,38 @@ document.addEventListener('DOMContentLoaded', (e) => {
       }),
     }
   })
+  // Service parent — price cards Swiper (mobile only, larger active slide than courses)
+  initResponsiveSwiperAll('.svc-spprice_list', (root) => {
+    return {
+      Swiper,
+      modules: [],
+      itemsSelector: '.svc-spprice_card',
+      breakpoint: '(max-width: 767px)',
+      slidesPerView: 1.2,
+      spaceBetween: 16,
+      loop: false,
+      extendSwiperOptions: (opts) => ({
+        ...opts,
+        speed: 500,
+      }),
+    }
+  })
+  // Service sections — mobile swipers (like the price cards)
+  const svcMobileSwiper = (selector, itemsSelector) =>
+    initResponsiveSwiperAll(selector, () => ({
+      Swiper,
+      modules: [],
+      itemsSelector,
+      breakpoint: '(max-width: 767px)',
+      slidesPerView: 1.2,
+      spaceBetween: 16,
+      loop: false,
+      extendSwiperOptions: (opts) => ({ ...opts, speed: 500 }),
+    }))
+  svcMobileSwiper('.svc-steps_list', '.svc-steps_item')
+  svcMobileSwiper('.svc-base_grid', '.svc-base_card')
+  svcMobileSwiper('.svc-dcenter_cards', '.svc-dcenter_card')
+  svcMobileSwiper('.svc-tests_table tbody', 'tr')
   // Vacancies Swiper
   initResponsiveSwiperAll('.vacancies_grid--swiper', (root) => {
     return {
@@ -494,9 +527,9 @@ document.addEventListener('DOMContentLoaded', (e) => {
   }
 
   /*
-   * Bottom Nav — скрывать при скролле вниз, показывать при скролле вверх (класс hidden-by-scroll)
+   * Bottom Nav — всегда закреплён/виден (скрытие при скролле отключено).
    */
-  attachScrollVisibility('.bottom-nav', { threshold: 60, minDelta: 25 })
+  // attachScrollVisibility('.bottom-nav', { threshold: 60, minDelta: 25 })
 
   /*
    * Кнопка «Наверх» — показывать при скролле вниз, скрывать при скролле вверх (invert)

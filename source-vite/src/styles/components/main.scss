@@ -79,7 +79,10 @@
   }
 
   &--service,
-  &--article {
+  &--article,
+  // Новые шаблоны услуг (детальная + родитель): те же отступы у общих секций внизу.
+  // Хедер отбивает сам hero, поэтому padding-top у main здесь не нужен.
+  &--service-detail {
     .section--faq,
     .section--services,
     .section--blog,
